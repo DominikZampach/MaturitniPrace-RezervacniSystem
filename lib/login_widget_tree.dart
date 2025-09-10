@@ -1,6 +1,9 @@
 //? First WidgetTree that will appear, it checks, if User is logged in or not, if not, it will pop out LoginPage and if he is logged in, it will hop onto HomePage
 
 import 'package:flutter/material.dart';
+import 'package:rezervacni_system_maturita/services/auth_service.dart';
+import 'package:rezervacni_system_maturita/views/home.dart';
+import 'package:rezervacni_system_maturita/views/login.dart';
 
 class LoginWidgetTree extends StatefulWidget {
   const LoginWidgetTree({super.key});
