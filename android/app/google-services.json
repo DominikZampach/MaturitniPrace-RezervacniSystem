@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "352059326498",
+    "project_id": "rezervacni-system-maturita",
+    "storage_bucket": "rezervacni-system-maturita.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352059326498:android:4834c41740566907f68a7b",
+        "android_client_info": {
+          "package_name": "com.example.rezervacni_system_maturita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7CSlUFw5ZLZttTHz2-UVXO9n9QxFn2Xo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
