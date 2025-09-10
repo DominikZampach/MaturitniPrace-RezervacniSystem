@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +11,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text("Login"));
+    return Scaffold(
+      appBar: AppBar(title: Text("Login")),
+      body: Center(
+        child: Text("Login", style: TextStyle(fontSize: 100.sp)),
+      ),
+    );
   }
 }

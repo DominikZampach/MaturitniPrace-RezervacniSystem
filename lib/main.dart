@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,11 +9,8 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    name: "main",
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FirebaseFirestore.instance.settings = const Settings();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print(Firebase.apps);
 
   runApp(const MyApp());
 }
@@ -27,7 +24,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(1920, 1080), //Velikost testovacího zařízení
       minTextAdapt: true,
       splitScreenMode: false,
-      builder: (context, child) {
+      builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: "Rezervační systém kadeřnictví",
@@ -36,9 +33,10 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             colorScheme: Consts.colorScheme,
           ),
-          home: LoginWidgetTree(),
+          home: child,
         );
       },
+      child: LoginWidgetTree(),
     );
   }
 }
