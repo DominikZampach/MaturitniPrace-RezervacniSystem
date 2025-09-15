@@ -24,6 +24,7 @@
   <script>
     import { initializeApp } from "firebase/app";
     import { getAnalytics } from "firebase/analytics";
+    import { getAuth } from "firebase/auth";
     
     const firebaseConfig = {
       apiKey: "AIzaSyCqkG_hhXlVeJBARFdtfTvNLbgzQbaLhIo",
@@ -37,7 +38,16 @@
 
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const auth = getAuth(app);
   </script>
+
+  <!-- nastavení pro to, aby nebylo možné udělat okno menší než tyto hodnoty! -->
+  <style>
+  html, body {
+    min-width: 800px;
+    min-height: 600px;
+  }
+  </style>
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -52,7 +62,7 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>rezervacni_system_maturita</title>
+  <title>Rezervační systém kadeřnictví - Maturitní projekt</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
