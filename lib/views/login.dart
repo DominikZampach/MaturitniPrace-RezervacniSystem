@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/views/signup.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -57,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 _emailTextbox(context, verticalPadding, horizontalPadding),
                 _passwordTextbox(context, verticalPadding, horizontalPadding),
                 _loginButton(context, verticalPadding, horizontalPadding),
+                _signUpRedirect(context, verticalPadding, horizontalPadding),
               ],
             ),
           ),
@@ -132,7 +135,9 @@ class _LoginPageState extends State<LoginPage> {
         horizontal: horizontalPadding,
       ),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          ToastClass.showToastSnackbar(message: "U clicked on log in");
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           padding: EdgeInsets.symmetric(
@@ -148,6 +153,42 @@ class _LoginPageState extends State<LoginPage> {
             color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _signUpRedirect(
+    BuildContext context,
+    double verticalPadding,
+    double horizontalPadding,
+  ) {
+    return Padding(
+      padding: EdgeInsetsGeometry.symmetric(
+        vertical: verticalPadding,
+        horizontal: horizontalPadding,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Are you new here? ", style: TextStyle(fontSize: 10.sp)),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignupPage()),
+              );
+            },
+            child: Text(
+              "Create an account",
+              style: TextStyle(
+                fontSize: 10.sp,
+                color: Theme.of(context).colorScheme.primary,
+                decoration: TextDecoration.underline,
+                decorationColor: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
