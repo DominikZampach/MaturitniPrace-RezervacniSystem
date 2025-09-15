@@ -24,11 +24,11 @@ class _LoginWidgetTreeState extends State<LoginWidgetTree> {
       stream: AuthService().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const HomePage();
-        } else {
           print(
             snapshot.data,
           ); // For testing, I will need to identify which user is being logged
+          return const HomePage();
+        } else {
           return LoginPage();
         }
       },

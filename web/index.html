@@ -21,6 +21,24 @@
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js"></script>
 
+  <script>
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyCqkG_hhXlVeJBARFdtfTvNLbgzQbaLhIo",
+      authDomain: "rezervacni-system-maturi-e12ef.firebaseapp.com",
+      projectId: "rezervacni-system-maturi-e12ef",
+      storageBucket: "rezervacni-system-maturi-e12ef.firebasestorage.app",
+      messagingSenderId: "782176025406",
+      appId: "1:782176025406:web:f327df22fc7dc55b914a6f",
+      measurementId: "G-30Z9NPX5K5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
