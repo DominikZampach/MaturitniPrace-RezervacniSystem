@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
@@ -16,54 +14,77 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final double loginContainerWidth = 375.w;
-  final double loginContainerHeight = 375.h;
-
-  final double verticalPadding = 10.h;
-  final double horizontalPadding = 30.h;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: loginContainerWidth,
-          height: loginContainerHeight,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20.r),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black87.withValues(alpha: 0.2),
-                blurRadius: 5.r,
-                offset: Offset(0, 0),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool wide = constraints.maxWidth < 800;
+
+          // Tohle dělá to, že když je šířka menší než 800px, tak ten bílý container bude přes celou obrazovku jakoby
+          final double loginContainerWidth = wide
+              ? constraints.maxWidth
+              : 375.0.w;
+          final double loginContainerHeight = wide
+              ? constraints.maxHeight
+              : 375.0.h;
+
+          final double verticalPadding = 10;
+          final double horizontalPadding = 30;
+
+          return Center(
+            child: Container(
+              width: loginContainerWidth,
+              height: loginContainerHeight,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: wide
+                    ? BorderRadius.zero
+                    : BorderRadius.circular(20.r),
+                boxShadow: wide
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: Colors.black87.withValues(alpha: 0.2),
+                          blurRadius: 5.r,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
               ),
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(10.h),
-            child: Column(
-              children: [
-                Text(
-                  "Login",
-                  style: TextStyle(
-                    fontSize: 25.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: Padding(
+                padding: EdgeInsets.all(10.h),
+                child: Column(
+                  children: [
+                    Text(
+                      "Login",
+                      style: TextStyle(
+                        fontSize: 25.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
+                    _emailTextbox(context, verticalPadding, horizontalPadding),
+                    _passwordTextbox(
+                      context,
+                      verticalPadding,
+                      horizontalPadding,
+                    ),
+                    _loginButton(context, verticalPadding, horizontalPadding),
+                    _signUpRedirect(
+                      context,
+                      verticalPadding,
+                      horizontalPadding,
+                    ),
+                  ],
                 ),
-                Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12.sp),
-                ),
-                _emailTextbox(context, verticalPadding, horizontalPadding),
-                _passwordTextbox(context, verticalPadding, horizontalPadding),
-                _loginButton(context, verticalPadding, horizontalPadding),
-                _signUpRedirect(context, verticalPadding, horizontalPadding),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
