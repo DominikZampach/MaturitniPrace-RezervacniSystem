@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/views/signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -157,7 +158,23 @@ class _LoginPageState extends State<LoginPage> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          ToastClass.showToastSnackbar(message: "U clicked on log in");
+          if (_emailController.text.isEmpty) {
+            ToastClass.showToastSnackbar(
+              message: "You need to write your email",
+            );
+            return;
+          }
+
+          if (_passwordController.text.isEmpty) {
+            ToastClass.showToastSnackbar(message: "You need to write password");
+            return;
+          }
+
+          AuthService().loginEmailPassword(
+            email: _emailController.text,
+            password: _passwordController.text,
+            context: context,
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
