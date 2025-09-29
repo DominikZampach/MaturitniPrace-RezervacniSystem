@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: "Rezervační systém kadeřnictví",
+          title: "BookMyCut",
           theme: ThemeData(
             fontFamily: "Noto Sans",
             useMaterial3: true,

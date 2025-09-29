@@ -9,7 +9,7 @@ class ToastClass {
 
     Fluttertoast.showToast(
       msg: message,
-      backgroundColor: Consts.colorScheme.secondary,
+      backgroundColor: Consts.colorScheme.error,
       gravity: ToastGravity.SNACKBAR,
       toastLength: messageLength > shortToastMaxLength
           ? Toast.LENGTH_LONG
