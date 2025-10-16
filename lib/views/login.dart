@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/views/signup.dart';
+import 'package:rezervacni_system_maturita/widgets/email_textbox.dart';
+import 'package:rezervacni_system_maturita/widgets/password_textbox.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -68,11 +70,18 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 12.sp),
                     ),
-                    _emailTextbox(context, verticalPadding, horizontalPadding),
-                    _passwordTextbox(
-                      context,
-                      verticalPadding,
-                      horizontalPadding,
+                    EmailTextbox(
+                      context: context,
+                      verticalPadding: verticalPadding,
+                      horizontalPadding: horizontalPadding,
+                      emailController: _emailController,
+                    ),
+                    PasswordTextbox(
+                      context: context,
+                      verticalPadding: verticalPadding,
+                      horizontalPadding: horizontalPadding,
+                      hintText: "password",
+                      passwordController: _passwordController,
                     ),
                     _loginButton(context, verticalPadding, horizontalPadding),
                     _signUpRedirect(
@@ -86,62 +95,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _emailTextbox(
-    BuildContext context,
-    double verticalPadding,
-    double horizontalPadding,
-  ) {
-    return Padding(
-      padding: EdgeInsetsGeometry.symmetric(
-        vertical: verticalPadding,
-        horizontal: horizontalPadding,
-      ),
-      child: TextField(
-        controller: _emailController,
-        decoration: InputDecoration(
-          filled: true,
-          hintText: 'example@gmail.com',
-          hintStyle: TextStyle(fontWeight: FontWeight.w200, fontSize: 15.sp),
-          fillColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-        ),
-        style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp),
-      ),
-    );
-  }
-
-  Widget _passwordTextbox(
-    BuildContext context,
-    double verticalPadding,
-    double horizontalPadding,
-  ) {
-    return Padding(
-      padding: EdgeInsetsGeometry.symmetric(
-        vertical: verticalPadding,
-        horizontal: horizontalPadding,
-      ),
-      child: TextField(
-        controller: _passwordController,
-        decoration: InputDecoration(
-          filled: true,
-          hintText: "password",
-          hintStyle: TextStyle(fontWeight: FontWeight.w200, fontSize: 15.sp),
-          fillColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-        ),
-        obscureText: true,
-        obscuringCharacter: "*",
-        style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp),
       ),
     );
   }

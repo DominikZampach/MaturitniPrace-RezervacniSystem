@@ -25,13 +25,15 @@ class MyApp extends StatelessWidget {
       splitScreenMode: false,
       builder: (_, child) {
         return MaterialApp(
-          debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: true,
           title: "BookMyCut",
           theme: ThemeData(
             fontFamily: "Noto Sans",
             useMaterial3: true,
             colorScheme: Consts.colorScheme,
           ),
+          initialRoute: '/',
+          routes: {},
           home: child,
         );
       },

@@ -34,14 +34,8 @@ class AuthService {
       print("FirebaseAuthException caught: ${e.code}, ${e.message}");
 
       switch (e.code) {
-        case 'user-not-found':
-          message = "User not found.";
-          break;
-        case 'wrong-password':
-          message = "You entered wrong password.";
-          break;
-        case 'invalid-email':
-          message = "The email address is not valid.";
+        case 'invalid-credential':
+          message = "Invalid login.";
           break;
         default:
           message = "An unknown error occurred: ${e.message}";

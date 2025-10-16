@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
+import 'package:rezervacni_system_maturita/widgets/email_textbox.dart';
+import 'package:rezervacni_system_maturita/widgets/password_textbox.dart';
 
 class SignupPage extends StatelessWidget {
   SignupPage({super.key});
@@ -25,7 +27,7 @@ class SignupPage extends StatelessWidget {
               : 375.0.w;
           final double loginContainerHeight = wide
               ? constraints.maxHeight
-              : 475.0.h;
+              : 460.0.h;
 
           final double verticalPadding = 10;
           final double horizontalPadding = 30;
@@ -65,20 +67,25 @@ class SignupPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 12.sp),
                     ),
-                    _emailTextbox(context, verticalPadding, horizontalPadding),
-                    _passwordTextbox(
-                      context,
-                      verticalPadding,
-                      horizontalPadding,
-                      _passwordController,
-                      "password",
+                    EmailTextbox(
+                      context: context,
+                      verticalPadding: verticalPadding,
+                      horizontalPadding: horizontalPadding,
+                      emailController: _emailController,
                     ),
-                    _passwordTextbox(
-                      context,
-                      verticalPadding,
-                      horizontalPadding,
-                      _repeatPasswordController,
-                      "repeat password",
+                    PasswordTextbox(
+                      context: context,
+                      verticalPadding: verticalPadding,
+                      horizontalPadding: horizontalPadding,
+                      hintText: "password",
+                      passwordController: _passwordController,
+                    ),
+                    PasswordTextbox(
+                      context: context,
+                      verticalPadding: verticalPadding,
+                      horizontalPadding: horizontalPadding,
+                      hintText: "repeat password",
+                      passwordController: _repeatPasswordController,
                     ),
                     _signupButton(context, verticalPadding, horizontalPadding),
                     _loginRedirect(context, verticalPadding, horizontalPadding),
@@ -88,64 +95,6 @@ class SignupPage extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _emailTextbox(
-    BuildContext context,
-    double verticalPadding,
-    double horizontalPadding,
-  ) {
-    return Padding(
-      padding: EdgeInsetsGeometry.symmetric(
-        vertical: verticalPadding,
-        horizontal: horizontalPadding,
-      ),
-      child: TextField(
-        controller: _emailController,
-        decoration: InputDecoration(
-          filled: true,
-          hintText: 'example@gmail.com',
-          hintStyle: TextStyle(fontWeight: FontWeight.w200, fontSize: 15.sp),
-          fillColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-        ),
-        style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp),
-      ),
-    );
-  }
-
-  Widget _passwordTextbox(
-    BuildContext context,
-    double verticalPadding,
-    double horizontalPadding,
-    TextEditingController controller,
-    String hintText,
-  ) {
-    return Padding(
-      padding: EdgeInsetsGeometry.symmetric(
-        vertical: verticalPadding,
-        horizontal: horizontalPadding,
-      ),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          filled: true,
-          hintText: hintText,
-          hintStyle: TextStyle(fontWeight: FontWeight.w200, fontSize: 15.sp),
-          fillColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-        ),
-        obscureText: true,
-        obscuringCharacter: "*",
-        style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp),
       ),
     );
   }
