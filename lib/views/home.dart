@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/widgets/bookmycut_logo.dart';
+import 'package:rezervacni_system_maturita/widgets/navbar_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,6 +32,10 @@ class _LoginPageState extends State<HomePage> {
           );
         },
       ),
+      appBar: AppBar(
+        leading: null,
+        toolbarHeight: 0,
+      ), // Pouze na odstranění šipky zpět
     );
   }
 
@@ -57,6 +62,23 @@ class _LoginPageState extends State<HomePage> {
               clickFunction: () {
                 ToastClass.showToastSnackbar(message: "You clicked on logo");
               },
+            ),
+            SizedBox(height: 20),
+            NavbarItem(
+              verticalPadding: 10,
+              text: "Dashboard",
+              isSelected: true,
+            ),
+            NavbarItem(
+              verticalPadding: 10,
+              text: "Reservations",
+              isSelected: false,
+            ),
+            NavbarItem(verticalPadding: 10, text: "Browse", isSelected: false),
+            NavbarItem(
+              verticalPadding: 10,
+              text: "Settings",
+              isSelected: false,
             ),
           ],
         ),
