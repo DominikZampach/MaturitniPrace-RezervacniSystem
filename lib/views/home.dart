@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
+import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/widgets/bookmycut_logo.dart';
 import 'package:rezervacni_system_maturita/widgets/navbar_item.dart';
 
@@ -40,7 +43,28 @@ class _LoginPageState extends State<HomePage> {
   }
 
   Expanded _body() {
-    return Expanded(child: Container(color: Colors.white));
+    return Expanded(
+      child: Container(
+        color: Colors.white,
+        child: Row(
+          children: [
+            Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    DatabaseService dbService = DatabaseService();
+                    String userUID = FirebaseAuth.instance.currentUser!.uid;
+                    await dbService.getUser(userUID);
+                  },
+                  child: Text("TEST Database"),
+                ),
+              ],
+            ),
+            Column(),
+          ],
+        ),
+      ),
+    );
   }
 
   SizedBox _sideNavbar(
