@@ -53,8 +53,7 @@ class _LoginPageState extends State<HomePage> {
                 ElevatedButton(
                   onPressed: () async {
                     DatabaseService dbService = DatabaseService();
-                    String userUID = FirebaseAuth.instance.currentUser!.uid;
-                    await dbService.getUser(userUID);
+                    await dbService.getUser();
                   },
                   child: Text("TEST Database"),
                 ),

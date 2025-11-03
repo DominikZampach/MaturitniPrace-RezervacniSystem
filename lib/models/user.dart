@@ -1,0 +1,47 @@
+class User {
+  late String userUID;
+  late String jmeno;
+  late String prijmeni;
+  late String email;
+  late String telefon;
+  late bool povoleneNotifikace;
+  late List<String> oblibeniKadernici;
+  late bool jeMuz;
+
+  User({
+    required this.userUID,
+    required this.jmeno,
+    required this.prijmeni,
+    required this.email,
+    required this.telefon,
+    required this.povoleneNotifikace,
+    required this.jeMuz,
+    required this.oblibeniKadernici,
+  });
+
+  User.fromJson(String userUID, Map<String, Object?> json)
+    : this(
+        userUID: userUID,
+        jmeno: json["Jmeno_uzivatele"]! as String,
+        prijmeni: json["Prijmeni_uzivatele"]! as String,
+        email: json["Email_uzivatele"]! as String,
+        telefon: json["TelefonniCislo_uzivatele"]! as String,
+        povoleneNotifikace: json["PovoleneNotifikace"]! as bool,
+        jeMuz: json["Pohlavi_uzivatele"] == "male" ? true : false,
+        oblibeniKadernici: (json["IDs_OblibeniKadernici"]! as List<dynamic>)
+            .map((e) => e as String)
+            .toList(),
+      );
+
+  Map<String, Object?> toJson() {
+    return {
+      "Jmeno_uzivatele": jmeno,
+      "Prijmeni_uzivatele": prijmeni,
+      "Email_uzivatele": email,
+      "TelefonniCislo_uzivatele": telefon,
+      "PovoleneNotifikace": povoleneNotifikace,
+      "Pohlavi_uzivatele": jeMuz ? "male" : "female",
+      "IDs_OblibeniKadernici": oblibeniKadernici,
+    };
+  }
+}

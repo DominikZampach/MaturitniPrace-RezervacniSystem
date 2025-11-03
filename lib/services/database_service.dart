@@ -10,6 +10,7 @@ const HODNOCENI_COLLECTION_REF = "hodnoceni";
 const KADERNICKEUKONY_COLLECTION_REF = "kadernicke_ukony";
 
 class DatabaseService {
+  final FirebaseAuth instance = FirebaseAuth.instance;
   final FirebaseApp app = FirebaseAuth.instance.app;
   late FirebaseFirestore firestore;
 
@@ -17,10 +18,10 @@ class DatabaseService {
     firestore = FirebaseFirestore.instanceFor(app: app);
   }
 
-  Future<void> getUser(String userUID) async {
+  Future<void> getUser() async {
     dynamic user = firestore
         .collection(USERS_COLLECTION_REF)
-        .doc(userUID)
+        .doc(instance.currentUser!.uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
           if (documentSnapshot.exists) {

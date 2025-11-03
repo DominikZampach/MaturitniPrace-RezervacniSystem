@@ -11,9 +11,10 @@ class BookMyCutLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: clickFunction ?? () {},
-      child: Container(
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: clickFunction ?? () {},
         child: SvgPicture.asset(
           logoPath,
           height: size,

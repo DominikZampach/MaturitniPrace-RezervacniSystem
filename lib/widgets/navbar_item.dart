@@ -19,11 +19,20 @@ class NavbarItem extends StatelessWidget {
         vertical: verticalPadding,
         horizontal: 0,
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-          fontSize: 18.sp,
+      child: MouseRegion(
+        cursor: SystemMouseCursors
+            .click, //? Změna kurzoru, aby to uživatele nemátlo
+        child: GestureDetector(
+          onTap: () {
+            print("You have clicked on $text");
+          },
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              fontSize: 18.sp,
+            ),
+          ),
         ),
       ),
     );
