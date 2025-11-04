@@ -6,6 +6,7 @@ import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/widgets/bookmycut_logo.dart';
+import 'package:rezervacni_system_maturita/views/bodies/bodies_widget_tree.dart';
 import 'package:rezervacni_system_maturita/widgets/navbar_item.dart';
 import 'package:rezervacni_system_maturita/widgets/side_navbar.dart';
 
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                 selectedIndex: selectedIndex,
                 onItemSelect: onNavbarItemSelected,
               ),
-              _body(),
+              MainBody(selectedIndex: selectedIndex),
             ],
           );
         },
@@ -54,32 +55,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         leading: null,
         toolbarHeight: 0,
-      ), // Pouze na odstranění šipky zpět
-    );
-  }
-
-  Expanded _body() {
-    return Expanded(
-      child: Container(
-        color: Colors.white,
-        child: Row(
-          children: [
-            Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    DatabaseService dbService = DatabaseService();
-                    await dbService.getUser();
-                  },
-                  child: Text("TEST Database"),
-                ),
-                Text("Nigga"),
-              ],
-            ),
-            Column(),
-          ],
-        ),
-      ),
+      ), //? Pouze na odstranění šipky zpět
     );
   }
 }
