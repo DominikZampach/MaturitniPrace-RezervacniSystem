@@ -7,15 +7,25 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/widgets/bookmycut_logo.dart';
 import 'package:rezervacni_system_maturita/widgets/navbar_item.dart';
+import 'package:rezervacni_system_maturita/widgets/side_navbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _LoginPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _LoginPageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
+  int selectedIndex = 0;
+
+  void onNavbarItemSelected(int index) {
+    //? Callback funkce, kterou pošlu HomePage->Navbar->Navbar_Item, aby se po kliknutí změnil index tady!
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +39,13 @@ class _LoginPageState extends State<HomePage> {
 
           return Row(
             children: [
-              _sideNavbar(width, verticalPadding, horizontalPadding),
+              SideNavbar(
+                width: width,
+                verticalPadding: verticalPadding,
+                horizontalPadding: horizontalPadding,
+                selectedIndex: selectedIndex,
+                onItemSelect: onNavbarItemSelected,
+              ),
               _body(),
             ],
           );
@@ -57,52 +73,10 @@ class _LoginPageState extends State<HomePage> {
                   },
                   child: Text("TEST Database"),
                 ),
+                Text("Nigga"),
               ],
             ),
             Column(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  SizedBox _sideNavbar(
-    double width,
-    double verticalPadding,
-    double horizontalPadding,
-  ) {
-    return SizedBox(
-      height: double.infinity,
-      width: width * 0.15,
-      child: Container(
-        color: Consts.background,
-        padding: EdgeInsets.all(width * 0.01),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            BookMyCutLogo(
-              size: 75.w,
-              clickFunction: () {
-                ToastClass.showToastSnackbar(message: "You clicked on logo");
-              },
-            ),
-            SizedBox(height: 20),
-            NavbarItem(
-              verticalPadding: 10,
-              text: "Dashboard",
-              isSelected: true,
-            ),
-            NavbarItem(
-              verticalPadding: 10,
-              text: "Reservations",
-              isSelected: false,
-            ),
-            NavbarItem(verticalPadding: 10, text: "Browse", isSelected: false),
-            NavbarItem(
-              verticalPadding: 10,
-              text: "Settings",
-              isSelected: false,
-            ),
           ],
         ),
       ),

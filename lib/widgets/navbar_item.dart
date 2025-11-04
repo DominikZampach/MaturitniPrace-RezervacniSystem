@@ -5,11 +5,14 @@ class NavbarItem extends StatelessWidget {
   final double verticalPadding;
   final String text;
   final bool isSelected;
+  final VoidCallback onClick;
+
   const NavbarItem({
     super.key,
     required this.verticalPadding,
     required this.text,
     required this.isSelected,
+    required this.onClick,
   });
 
   @override
@@ -23,9 +26,7 @@ class NavbarItem extends StatelessWidget {
         cursor: SystemMouseCursors
             .click, //? Změna kurzoru, aby to uživatele nemátlo
         child: GestureDetector(
-          onTap: () {
-            print("You have clicked on $text");
-          },
+          onTap: onClick,
           child: Text(
             text,
             style: TextStyle(

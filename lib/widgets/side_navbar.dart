@@ -1,0 +1,71 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
+import 'package:rezervacni_system_maturita/widgets/bookmycut_logo.dart';
+import 'package:rezervacni_system_maturita/widgets/navbar_item.dart';
+
+class SideNavbar extends StatelessWidget {
+  final double width;
+  final double verticalPadding;
+  final double horizontalPadding;
+  final int selectedIndex;
+  final Function(int) onItemSelect;
+
+  const SideNavbar({
+    super.key,
+    required this.width,
+    required this.verticalPadding,
+    required this.horizontalPadding,
+    required this.selectedIndex,
+    required this.onItemSelect,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: double.infinity,
+      width: width * 0.15,
+      child: Container(
+        color: Consts.background,
+        padding: EdgeInsets.all(width * 0.01),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            BookMyCutLogo(
+              size: 75.w,
+              clickFunction: () {
+                ToastClass.showToastSnackbar(message: "You clicked on logo");
+              },
+            ),
+            SizedBox(height: 20),
+            NavbarItem(
+              verticalPadding: 10,
+              text: "Dashboard",
+              isSelected: selectedIndex == 0,
+              onClick: () => onItemSelect(0),
+            ),
+            NavbarItem(
+              verticalPadding: 10,
+              text: "Reservations",
+              isSelected: selectedIndex == 1,
+              onClick: () => onItemSelect(1),
+            ),
+            NavbarItem(
+              verticalPadding: 10,
+              text: "Browse",
+              isSelected: selectedIndex == 2,
+              onClick: () => onItemSelect(2),
+            ),
+            NavbarItem(
+              verticalPadding: 10,
+              text: "Settings",
+              isSelected: selectedIndex == 3,
+              onClick: () => onItemSelect(3),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
