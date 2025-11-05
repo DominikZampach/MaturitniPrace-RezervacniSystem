@@ -1,4 +1,4 @@
-class User {
+class Uzivatel {
   late String userUID;
   late String jmeno;
   late String prijmeni;
@@ -8,7 +8,7 @@ class User {
   late List<String> oblibeniKadernici;
   late bool jeMuz;
 
-  User({
+  Uzivatel({
     required this.userUID,
     required this.jmeno,
     required this.prijmeni,
@@ -19,7 +19,7 @@ class User {
     required this.oblibeniKadernici,
   });
 
-  User.fromJson(String userUID, Map<String, Object?> json)
+  Uzivatel.fromJson(String userUID, Map<String, Object?> json)
     : this(
         userUID: userUID,
         jmeno: json["Jmeno_uzivatele"]! as String,
