@@ -1,13 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rezervacni_system_maturita/logic/showToast.dart';
-import 'package:rezervacni_system_maturita/models/consts.dart';
-import 'package:rezervacni_system_maturita/services/database_service.dart';
-import 'package:rezervacni_system_maturita/widgets/bookmycut_logo.dart';
-import 'package:rezervacni_system_maturita/views/bodies/bodies_widget_tree.dart';
-import 'package:rezervacni_system_maturita/widgets/navbar_item.dart';
+import 'package:rezervacni_system_maturita/views/users/bodies/bodies_widget_tree.dart';
 import 'package:rezervacni_system_maturita/widgets/side_navbar.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,8 +24,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constrains) {
-          double width = constrains.maxWidth;
-          double height = constrains.maxHeight;
+          double screenWidth = constrains.maxWidth;
+          double screenHeight = constrains.maxHeight;
 
           final double verticalPadding = 10;
           final double horizontalPadding = 10;
@@ -41,13 +33,17 @@ class _HomePageState extends State<HomePage> {
           return Row(
             children: [
               SideNavbar(
-                width: width,
+                width: screenWidth,
                 verticalPadding: verticalPadding,
                 horizontalPadding: horizontalPadding,
                 selectedIndex: selectedIndex,
                 onItemSelect: onNavbarItemSelected,
               ),
-              MainBody(selectedIndex: selectedIndex),
+              MainBody(
+                selectedIndex: selectedIndex,
+                screenHeight: screenHeight,
+                screenWidth: screenWidth,
+              ),
             ],
           );
         },

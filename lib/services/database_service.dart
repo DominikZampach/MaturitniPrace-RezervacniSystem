@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
+import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 
 const USERS_COLLECTION_REF = "users";
@@ -59,5 +61,20 @@ class DatabaseService {
           toFirestore: (user, _) => {},
         );
     */
+  }
+
+  Future<Kadernik> getKadernik(String uid) async {
+    //TODO
+    return Kadernik();
+  }
+
+  Future<KadernickyUkon> getKadernickyUkon(String uid) async {
+    //TODO
+    return KadernickyUkon(
+      nazev: "",
+      delkaMinuty: 0,
+      popis: "",
+      odkazyFotografiiPrikladu: [],
+    );
   }
 }

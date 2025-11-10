@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
-import 'package:rezervacni_system_maturita/views/home.dart';
+import 'package:rezervacni_system_maturita/views/users/home.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
 
 class LoginWidgetTree extends StatefulWidget {

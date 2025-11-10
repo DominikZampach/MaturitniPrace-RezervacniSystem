@@ -1,3 +1,6 @@
+import 'package:rezervacni_system_maturita/models/kadernik.dart';
+import 'package:rezervacni_system_maturita/services/database_service.dart';
+
 class Uzivatel {
   late String userUID;
   late String jmeno;
@@ -43,5 +46,14 @@ class Uzivatel {
       "Pohlavi_uzivatele": jeMuz ? "male" : "female",
       "IDs_OblibeniKadernici": oblibeniKadernici,
     };
+  }
+
+  Future<List<Kadernik>> getOblibeniKadernici() async {
+    List<Kadernik> kadernici = List.empty();
+    DatabaseService dbService = DatabaseService();
+    for (String id in oblibeniKadernici) {
+      kadernici.add(await dbService.getKadernik(id));
+    }
+    return kadernici;
   }
 }
