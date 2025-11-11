@@ -1,10 +1,12 @@
 class KadernickyUkon {
+  late String id;
   late String nazev;
   late int delkaMinuty;
   late String popis;
   late List<String> odkazyFotografiiPrikladu;
 
   KadernickyUkon({
+    required this.id,
     required this.nazev,
     required this.delkaMinuty,
     required this.popis,
@@ -13,6 +15,7 @@ class KadernickyUkon {
 
   KadernickyUkon.fromJson(Map<String, Object?> json)
     : this(
+        id: json["ID_ukonu"]! as String,
         nazev: json["Nazev_ukonu"]! as String,
         delkaMinuty: json["DelkaMinuty_ukonu"]! as int,
         popis: json["Popis_ukonu"]! as String,
@@ -24,6 +27,7 @@ class KadernickyUkon {
 
   Map<String, Object?> toJson() {
     return {
+      "ID_ukonu": id,
       "Nazev_ukonu": nazev,
       "DelkaMinuty_ukonu": delkaMinuty,
       "Popis_ukonu": popis,

@@ -3,10 +3,7 @@ import 'package:rezervacni_system_maturita/services/database_service.dart';
 
 class Uzivatel {
   late String userUID;
-  late String jmeno;
-  late String prijmeni;
-  late String email;
-  late String telefon;
+  late String jmeno, prijmeni, email, telefon;
   late bool povoleneNotifikace;
   late List<String> oblibeniKadernici;
   late bool jeMuz;

@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
+import 'package:rezervacni_system_maturita/models/lokace.dart';
+import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 
 const USERS_COLLECTION_REF = "users";
@@ -71,10 +74,26 @@ class DatabaseService {
   Future<KadernickyUkon> getKadernickyUkon(String uid) async {
     //TODO
     return KadernickyUkon(
+      id: "",
       nazev: "",
       delkaMinuty: 0,
       popis: "",
       odkazyFotografiiPrikladu: [],
     );
+  }
+
+  Future<Lokace> getLokace(String uid) async {
+    //TODO
+    return Lokace();
+  }
+
+  Future<Hodnoceni> getHodnoceni(String uid) async {
+    //TODO
+    return Hodnoceni();
+  }
+
+  Future<Rezervace> getRezervace(String uid) async {
+    //TODO
+    return;
   }
 }
