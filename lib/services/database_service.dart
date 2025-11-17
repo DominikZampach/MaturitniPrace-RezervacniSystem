@@ -39,17 +39,7 @@ class DatabaseService {
     }
 
     //? Tady toto se provede, pokud se nenalezne User v databázi, pro teď se vráti dummy data
-    print('Document doesn\'t exist!');
-    return Uzivatel(
-      userUID: "123456789",
-      jmeno: "jmeno",
-      prijmeni: "prijmeni",
-      email: "email@email.com",
-      telefon: "000000000",
-      povoleneNotifikace: false,
-      jeMuz: false,
-      oblibeniKadernici: [],
-    );
+    throw Exception('Document in database doesn\'t exist!');
 
     /* Kód využitelný třeba pro write!
     dynamic user = firestore
@@ -67,33 +57,77 @@ class DatabaseService {
   }
 
   Future<Kadernik> getKadernik(String uid) async {
-    //TODO
-    return Kadernik();
+    final document = await firestore
+        .collection(KADERNICI_COLLECTION_REF)
+        .doc(uid)
+        .get();
+
+    if (document.exists) {
+      final data = document.data() as Map<String, Object?>;
+      Kadernik kadernik = await Kadernik.fromJson(data);
+      return kadernik;
+    }
+
+    throw Exception('Document in database doesn\'t exist!');
   }
 
   Future<KadernickyUkon> getKadernickyUkon(String uid) async {
-    //TODO
-    return KadernickyUkon(
-      id: "",
-      nazev: "",
-      delkaMinuty: 0,
-      popis: "",
-      odkazyFotografiiPrikladu: [],
-    );
+    final document = await firestore
+        .collection(KADERNICKEUKONY_COLLECTION_REF)
+        .doc(uid)
+        .get();
+
+    if (document.exists) {
+      final data = document.data() as Map<String, Object?>;
+      KadernickyUkon ukon = KadernickyUkon.fromJson(data);
+      return ukon;
+    }
+
+    throw Exception('Document in database doesn\'t exist!');
   }
 
   Future<Lokace> getLokace(String uid) async {
-    //TODO
-    return Lokace();
+    final document = await firestore
+        .collection(LOKACE_COLLECTION_REF)
+        .doc(uid)
+        .get();
+
+    if (document.exists) {
+      final data = document.data() as Map<String, Object?>;
+      Lokace lokace = Lokace.fromJson(data);
+      return lokace;
+    }
+
+    throw Exception('Document in database doesn\'t exist!');
   }
 
   Future<Hodnoceni> getHodnoceni(String uid) async {
-    //TODO
-    return Hodnoceni();
+    final document = await firestore
+        .collection(HODNOCENI_COLLECTION_REF)
+        .doc(uid)
+        .get();
+
+    if (document.exists) {
+      final data = document.data() as Map<String, Object?>;
+      Hodnoceni hodnoceni = Hodnoceni.fromJson(data);
+      return hodnoceni;
+    }
+
+    throw Exception('Document in database doesn\'t exist!');
   }
 
   Future<Rezervace> getRezervace(String uid) async {
-    //TODO
-    return;
+    final document = await firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .doc(uid)
+        .get();
+
+    if (document.exists) {
+      final data = document.data() as Map<String, Object?>;
+      Rezervace rezervace = await Rezervace.fromJson(data);
+      return rezervace;
+    }
+
+    throw Exception('Document in database doesn\'t exist!');
   }
 }

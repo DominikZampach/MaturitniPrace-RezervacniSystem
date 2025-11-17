@@ -3,6 +3,7 @@ class KadernickyUkon {
   late String nazev;
   late int delkaMinuty;
   late String popis;
+  late String typStrihuPodlePohlavi;
   late List<String> odkazyFotografiiPrikladu;
 
   KadernickyUkon({
@@ -10,6 +11,7 @@ class KadernickyUkon {
     required this.nazev,
     required this.delkaMinuty,
     required this.popis,
+    required this.typStrihuPodlePohlavi,
     required this.odkazyFotografiiPrikladu,
   });
 
@@ -19,6 +21,7 @@ class KadernickyUkon {
         nazev: json["Nazev_ukonu"]! as String,
         delkaMinuty: json["DelkaMinuty_ukonu"]! as int,
         popis: json["Popis_ukonu"]! as String,
+        typStrihuPodlePohlavi: json["TypStrihu_ukonu"]! as String,
         odkazyFotografiiPrikladu:
             (json["OdkazyFotografii_Ukonu"]! as List<dynamic>)
                 .map((e) => e as String)
@@ -31,6 +34,7 @@ class KadernickyUkon {
       "Nazev_ukonu": nazev,
       "DelkaMinuty_ukonu": delkaMinuty,
       "Popis_ukonu": popis,
+      "TypStrihu_ukonu": typStrihuPodlePohlavi,
       "OdkazyFotografii_Ukonu": odkazyFotografiiPrikladu,
     };
   }

@@ -36,7 +36,7 @@ class Kadernik {
     required this.odkazyFotografiiPrace,
   });
 
-  Future<Kadernik> fromJson(Map<String, Object?> json) async {
+  static Future<Kadernik> fromJson(Map<String, Object?> json) async {
     final Lokace lokace = await DatabaseService().getLokace(
       json["id_lokace"]! as String,
     );
