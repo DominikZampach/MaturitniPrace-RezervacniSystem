@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 

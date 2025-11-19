@@ -110,25 +110,7 @@ class _LoginPageState extends State<LoginPage> {
         horizontal: horizontalPadding,
       ),
       child: ElevatedButton(
-        onPressed: () {
-          if (_emailController.text.isEmpty) {
-            ToastClass.showToastSnackbar(
-              message: "You need to write your email",
-            );
-            return;
-          }
-
-          if (_passwordController.text.isEmpty) {
-            ToastClass.showToastSnackbar(message: "You need to write password");
-            return;
-          }
-
-          AuthService().loginEmailPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-            context: context,
-          );
-        },
+        onPressed: _login,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           padding: EdgeInsets.symmetric(
@@ -145,6 +127,24 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _login() async {
+    if (_emailController.text.isEmpty) {
+      ToastClass.showToastSnackbar(message: "You need to write your email");
+      return;
+    }
+
+    if (_passwordController.text.isEmpty) {
+      ToastClass.showToastSnackbar(message: "You need to write password");
+      return;
+    }
+
+    await AuthService().loginEmailPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+      context: context,
     );
   }
 

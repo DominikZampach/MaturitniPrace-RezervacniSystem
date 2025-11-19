@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
 import 'package:rezervacni_system_maturita/widgets/email_textbox.dart';
 import 'package:rezervacni_system_maturita/widgets/password_textbox.dart';
 
-class SignupPage extends StatelessWidget {
-  SignupPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _repeatPasswordController =
       TextEditingController();
 
@@ -109,27 +117,7 @@ class SignupPage extends StatelessWidget {
         horizontal: horizontalPadding,
       ),
       child: ElevatedButton(
-        onPressed: () {
-          if (_emailController.text.isEmpty) {
-            ToastClass.showToastSnackbar(
-              message: "You need to write your email",
-            );
-            return;
-          }
-
-          if (_passwordController.text.isEmpty) {
-            ToastClass.showToastSnackbar(message: "You need to write password");
-            return;
-          }
-
-          if (_repeatPasswordController.text != _passwordController.text) {
-            ToastClass.showToastSnackbar(
-              message: "The password must be same in both textboxes",
-            );
-          }
-
-          //TODO: Implement register logic into auth_service.dart
-        },
+        onPressed: _register,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           padding: EdgeInsets.symmetric(
@@ -146,6 +134,38 @@ class SignupPage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _register() async {
+    if (_emailController.text.isEmpty) {
+      ToastClass.showToastSnackbar(message: "You need to write your email");
+      return;
+    }
+
+    if (_passwordController.text.isEmpty) {
+      ToastClass.showToastSnackbar(message: "You need to write password");
+      return;
+    }
+
+    if (_passwordController.text.length < 6) {
+      ToastClass.showToastSnackbar(
+        message: "Password should be at least 6 characters",
+      );
+      return;
+    }
+
+    if (_repeatPasswordController.text != _passwordController.text) {
+      ToastClass.showToastSnackbar(
+        message: "The password must be same in both textboxes",
+      );
+      return;
+    }
+
+    await AuthService().registerEmailPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+      context: context,
     );
   }
 

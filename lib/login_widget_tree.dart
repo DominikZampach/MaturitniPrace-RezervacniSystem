@@ -1,36 +1,45 @@
-//? First WidgetTree that will appear, it checks, if User is logged in or not, if not, it will pop out LoginPage and if he is logged in, it will hop onto HomePage
-
 import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
-import 'package:rezervacni_system_maturita/views/users/home.dart';
+import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
+import 'package:rezervacni_system_maturita/views/users/add_user_information.dart';
+import 'package:rezervacni_system_maturita/views/users/home.dart';
+import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 
-class LoginWidgetTree extends StatefulWidget {
+class LoginWidgetTree extends StatelessWidget {
   const LoginWidgetTree({super.key});
-
-  @override
-  State<LoginWidgetTree> createState() => _LoginWidgetTreeState();
-}
-
-class _LoginWidgetTreeState extends State<LoginWidgetTree> {
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: AuthService().authStateChanges,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          print(
-            snapshot.data,
-          ); // For testing, I will need to identify which user is being logged
-          return const HomePage();
-        } else {
-          return LoginPage();
+        //? Uživatel není přihlášen -> ukaž login
+        if (!snapshot.hasData) {
+          return const LoginPage();
         }
+
+        //? Uživatel je přihlášen -> potřebujeme ověřit, jestli existuje jeho dokument
+        final user = snapshot.data!;
+        //print("User logged: ${user.uid}");
+
+        return FutureBuilder<bool>(
+          future: DatabaseService().doesUzivatelDocumentExist(),
+          builder: (context, userInfoSnapshot) {
+            //? Načítání Firestore
+            if (!userInfoSnapshot.hasData) {
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
+            }
+
+            final hasUserDocument = userInfoSnapshot.data!;
+
+            if (hasUserDocument) {
+              return const HomePage();
+            } else {
+              return const AddUserInformationPage();
+            }
+          },
+        );
       },
     );
   }

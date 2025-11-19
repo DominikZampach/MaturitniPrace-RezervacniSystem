@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
@@ -12,7 +11,6 @@ const USERS_COLLECTION_REF = "users";
 const KADERNICI_COLLECTION_REF = "kadernici";
 const REZERVACE_COLLECTION_REF = "rezervace";
 const LOKACE_COLLECTION_REF = "lokace";
-const HODNOCENI_COLLECTION_REF = "hodnoceni";
 const KADERNICKEUKONY_COLLECTION_REF = "kadernicke_ukony";
 
 class DatabaseService {
@@ -32,7 +30,7 @@ class DatabaseService {
         .get();
 
     //? Kontrola, pokud tento dokument existuje a případně vracíme uživatele
-    if (document.exists) {
+    if (document.data() != null) {
       final data = document.data() as Map<String, Object?>;
       Uzivatel uzivatel = Uzivatel.fromJson(instance.currentUser!.uid, data);
       return uzivatel;
@@ -62,7 +60,7 @@ class DatabaseService {
         .doc(uid)
         .get();
 
-    if (document.exists) {
+    if (document.data() != null) {
       final data = document.data() as Map<String, Object?>;
       Kadernik kadernik = await Kadernik.fromJson(data);
       return kadernik;
@@ -77,7 +75,7 @@ class DatabaseService {
         .doc(uid)
         .get();
 
-    if (document.exists) {
+    if (document.data() != null) {
       final data = document.data() as Map<String, Object?>;
       KadernickyUkon ukon = KadernickyUkon.fromJson(data);
       return ukon;
@@ -92,25 +90,10 @@ class DatabaseService {
         .doc(uid)
         .get();
 
-    if (document.exists) {
+    if (document.data() != null) {
       final data = document.data() as Map<String, Object?>;
       Lokace lokace = Lokace.fromJson(data);
       return lokace;
-    }
-
-    throw Exception('Document in database doesn\'t exist!');
-  }
-
-  Future<Hodnoceni> getHodnoceni(String uid) async {
-    final document = await firestore
-        .collection(HODNOCENI_COLLECTION_REF)
-        .doc(uid)
-        .get();
-
-    if (document.exists) {
-      final data = document.data() as Map<String, Object?>;
-      Hodnoceni hodnoceni = Hodnoceni.fromJson(data);
-      return hodnoceni;
     }
 
     throw Exception('Document in database doesn\'t exist!');
@@ -122,12 +105,48 @@ class DatabaseService {
         .doc(uid)
         .get();
 
-    if (document.exists) {
+    if (document.data() != null) {
       final data = document.data() as Map<String, Object?>;
       Rezervace rezervace = await Rezervace.fromJson(data);
       return rezervace;
     }
 
     throw Exception('Document in database doesn\'t exist!');
+  }
+
+  //? Zjištění, pokud existuje dokument s uid současného uživatele
+  Future<bool> doesUzivatelDocumentExist() async {
+    final document = await firestore
+        .collection(USERS_COLLECTION_REF)
+        .doc(instance.currentUser!.uid)
+        .get();
+
+    //? Potřeba kontrolovat takto, ne pomocí document.exists, protože pomocí .collection().doc()... se vždy něco vytvoří, ikdyž je to prázdné
+    print("Existuje dokument?: ${document.exists}");
+    print("Obsah dokumentu: ${document.data()}");
+    if (document.data() == null) {
+      return false;
+    }
+    return true;
+  }
+
+  //? Tvorba nového dokumentu v databázi
+  Future<void> createNewUzivatel(
+    String jmeno,
+    String prijmeni,
+    String telefon,
+    bool povoleneNotifikace,
+    bool jeMuz,
+  ) async {
+    Uzivatel novyUzivatel = Uzivatel(
+      userUID: instance.currentUser!.uid,
+      jmeno: jmeno,
+      prijmeni: prijmeni,
+      email: instance.currentUser!.email!,
+      telefon: telefon,
+      povoleneNotifikace: povoleneNotifikace,
+      jeMuz: jeMuz,
+      oblibeniKadernici: [],
+    );
   }
 }
