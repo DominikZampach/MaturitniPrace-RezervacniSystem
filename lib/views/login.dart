@@ -22,74 +22,73 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final bool wide = constraints.maxWidth < 800;
+          final bool smallerWidth = constraints.maxWidth < 800;
 
-          // Tohle dělá to, že když je šířka menší než 800px, tak ten bílý container bude přes celou obrazovku jakoby
-          final double loginContainerWidth = wide
+          //? Tohle dělá to, že když je šířka menší než 800px, tak ten bílý container bude přes celou obrazovku jakoby
+          final double containerWidth = smallerWidth
               ? constraints.maxWidth
               : 375.0.w;
-          final double loginContainerHeight = wide
-              ? constraints.maxHeight
-              : 375.0.h;
 
           final double verticalPadding = 10;
           final double horizontalPadding = 30;
 
           return Center(
-            child: Container(
-              width: loginContainerWidth,
-              height: loginContainerHeight,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: wide
-                    ? BorderRadius.zero
-                    : BorderRadius.circular(20.r),
-                boxShadow: wide
-                    ? null
-                    : [
-                        BoxShadow(
-                          color: Colors.black87.withValues(alpha: 0.2),
-                          blurRadius: 5.r,
-                          offset: Offset(0, 0),
+            //? SingleChildScroolView zajišťuje, že nikdy nebude něco přetékat přes okraj při zmenšování
+            child: SingleChildScrollView(
+              child: Container(
+                width: containerWidth,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: smallerWidth
+                      ? BorderRadius.zero
+                      : BorderRadius.circular(20.r),
+                  boxShadow: smallerWidth
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: Colors.black87.withValues(alpha: 0.2),
+                            blurRadius: 5.r,
+                            offset: Offset(0, 0),
+                          ),
+                        ],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(10.h),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 25.sp,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(10.h),
-                child: Column(
-                  children: [
-                    Text(
-                      "Login",
-                      style: TextStyle(
-                        fontSize: 25.sp,
-                        fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12.sp),
-                    ),
-                    EmailTextbox(
-                      context: context,
-                      verticalPadding: verticalPadding,
-                      horizontalPadding: horizontalPadding,
-                      emailController: _emailController,
-                    ),
-                    PasswordTextbox(
-                      context: context,
-                      verticalPadding: verticalPadding,
-                      horizontalPadding: horizontalPadding,
-                      hintText: "password",
-                      passwordController: _passwordController,
-                    ),
-                    _loginButton(context, verticalPadding, horizontalPadding),
-                    _signUpRedirect(
-                      context,
-                      verticalPadding,
-                      horizontalPadding,
-                    ),
-                  ],
+                      Text(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 12.sp),
+                      ),
+                      EmailTextbox(
+                        context: context,
+                        verticalPadding: verticalPadding,
+                        horizontalPadding: horizontalPadding,
+                        emailController: _emailController,
+                      ),
+                      PasswordTextbox(
+                        context: context,
+                        verticalPadding: verticalPadding,
+                        horizontalPadding: horizontalPadding,
+                        hintText: "password",
+                        passwordController: _passwordController,
+                      ),
+                      _loginButton(context, verticalPadding, horizontalPadding),
+                      _signUpRedirect(
+                        context,
+                        verticalPadding,
+                        horizontalPadding,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

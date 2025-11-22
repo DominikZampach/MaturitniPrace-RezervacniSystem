@@ -4,7 +4,6 @@ import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
 import 'package:rezervacni_system_maturita/views/users/add_user_information.dart';
 import 'package:rezervacni_system_maturita/views/users/home.dart';
-import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 
 class LoginWidgetTree extends StatelessWidget {
   const LoginWidgetTree({super.key});
@@ -20,9 +19,6 @@ class LoginWidgetTree extends StatelessWidget {
         }
 
         //? Uživatel je přihlášen -> potřebujeme ověřit, jestli existuje jeho dokument
-        final user = snapshot.data!;
-        //print("User logged: ${user.uid}");
-
         return FutureBuilder<bool>(
           future: DatabaseService().doesUzivatelDocumentExist(),
           builder: (context, userInfoSnapshot) {

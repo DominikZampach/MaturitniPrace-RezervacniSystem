@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
@@ -11,6 +12,7 @@ const USERS_COLLECTION_REF = "users";
 const KADERNICI_COLLECTION_REF = "kadernici";
 const REZERVACE_COLLECTION_REF = "rezervace";
 const LOKACE_COLLECTION_REF = "lokace";
+const HODNOCENI_COLLECTION_REF = "hodnoceni";
 const KADERNICKEUKONY_COLLECTION_REF = "kadernicke_ukony";
 
 class DatabaseService {
@@ -114,6 +116,21 @@ class DatabaseService {
     throw Exception('Document in database doesn\'t exist!');
   }
 
+  Future<Hodnoceni> getHodnoceni(String uid) async {
+    final document = await firestore
+        .collection(HODNOCENI_COLLECTION_REF)
+        .doc(uid)
+        .get();
+
+    if (document.data() != null) {
+      final data = document.data() as Map<String, Object?>;
+      Hodnoceni hodnoceni = Hodnoceni.fromJson(data);
+      return hodnoceni;
+    }
+
+    throw Exception('Document in database doesn\'t exist!');
+  }
+
   //? Zjištění, pokud existuje dokument s uid současného uživatele
   Future<bool> doesUzivatelDocumentExist() async {
     final document = await firestore
@@ -130,7 +147,7 @@ class DatabaseService {
     return true;
   }
 
-  //? Tvorba nového dokumentu v databázi
+  //? Tvorba nového uzivatele
   Future<void> createNewUzivatel(
     String jmeno,
     String prijmeni,
@@ -149,4 +166,20 @@ class DatabaseService {
       oblibeniKadernici: [],
     );
   }
+
+  //? Tvorba nové rezervace
+
+  //? Tvorba nového kadeřníka
+
+  //? Tvorba nového úkonu
+
+  //? Tvorba nové lokace
+
+  //? Získání všech rezervací uživatele
+
+  //? Získání rezervací v určitý den
+
+  //? Získání nejbližší rezervace uživatele
+
+  //? Získání všech kadeřníků
 }
