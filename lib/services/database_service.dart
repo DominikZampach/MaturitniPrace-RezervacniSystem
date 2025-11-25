@@ -205,5 +205,63 @@ class DatabaseService {
     return nejblizsiRezervace;
   }
 
+  //? Získání všech historických rezervací
+  Future<List<Rezervace>> getAllPastRezervace() async {
+    final DateTime now = DateTime.now();
+    final Timestamp nowTimestamp = Timestamp.fromDate(now);
+
+    final query = await firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .where('id_uzivatele', isEqualTo: instance.currentUser!.uid)
+        .where('DatumCas_rezervace', isLessThan: nowTimestamp)
+        .orderBy('DatumCas_rezervace', descending: false)
+        .get();
+
+    if (query.docs.isEmpty) {
+      print("Žádné historické rezervace!");
+      return [];
+    }
+
+    List<Rezervace> rezervaceList = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      Rezervace rezervace = await Rezervace.fromJson(data);
+      rezervaceList.add(rezervace);
+    }
+
+    return rezervaceList;
+  }
+
+  //? Získání všech budoucích rezervací
+  Future<List<Rezervace>?> getAllFutureRezervace() async {
+    final DateTime now = DateTime.now();
+    final Timestamp nowTimestamp = Timestamp.fromDate(now);
+
+    final query = await firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .where('id_uzivatele', isEqualTo: instance.currentUser!.uid)
+        .where('DatumCas_rezervace', isGreaterThanOrEqualTo: nowTimestamp)
+        .orderBy('DatumCas_rezervace', descending: false)
+        .get();
+
+    if (query.docs.isEmpty) {
+      print("Žádné budoucí rezervace!");
+      return [];
+    }
+
+    List<Rezervace> rezervaceList = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      Rezervace rezervace = await Rezervace.fromJson(data);
+      rezervaceList.add(rezervace);
+    }
+
+    return rezervaceList;
+  }
+
   //? Získání všech kadeřníků
 }

@@ -11,7 +11,9 @@ class Kadernik {
       pracovniDny,
       zacatekPracovniDoby,
       konecPracovniDoby,
-      casObedovePrestavky;
+      casObedovePrestavky,
+      telefon,
+      email;
   late Lokace lokace;
   late int delkaObedovePrestavky;
   late Map<String, int> ukonyCeny;
@@ -24,6 +26,8 @@ class Kadernik {
     required this.prijmeni,
     required this.odkazFotografie,
     required this.popisek,
+    required this.telefon,
+    required this.email,
     required this.pracovniDny,
     required this.zacatekPracovniDoby,
     required this.konecPracovniDoby,
@@ -46,6 +50,8 @@ class Kadernik {
       prijmeni: json["Prijmeni_kadernika"]! as String,
       odkazFotografie: json["OdkazFotografie_kadernika"]! as String,
       popisek: json["Popisek_kadernika"]! as String,
+      telefon: json["Telefon_kadernika"]! as String,
+      email: json["Email_kadernika"]! as String,
       pracovniDny: json["PracovniDny_kadernika"]! as String,
       zacatekPracovniDoby: json["ZacatekPracovniDoby_kadernika"]! as String,
       konecPracovniDoby: json["KonecPracovniDoby_kadernika"]! as String,

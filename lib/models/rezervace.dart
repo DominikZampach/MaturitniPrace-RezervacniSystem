@@ -11,7 +11,7 @@ class Rezervace {
   late List<KadernickyUkon> kadernickeUkony;
   late DateTime datumCasRezervace;
   late int delkaTrvani, celkovaCena;
-  late String poznamkaAdmina, poznamkaUzivatele;
+  late String poznamkaUzivatele;
   late DateTime datumCasVytvoreniRezervace;
 
   Rezervace({
@@ -20,7 +20,6 @@ class Rezervace {
     required this.kadernickeUkony,
     required this.datumCasRezervace,
     required this.delkaTrvani,
-    required this.poznamkaAdmina,
     required this.poznamkaUzivatele,
     required this.datumCasVytvoreniRezervace,
     required this.celkovaCena,
@@ -42,7 +41,6 @@ class Rezervace {
       kadernickeUkony: kadernickeUkony,
       datumCasRezervace: (json["DatumCas_rezervace"]! as Timestamp).toDate(),
       delkaTrvani: json["DelkaTrvaniMinuty_rezervace"]! as int,
-      poznamkaAdmina: json["PoznamkaAdmina"]! as String,
       poznamkaUzivatele: json["PoznamkaUzivatele"]! as String,
       datumCasVytvoreniRezervace:
           (json["DatumCasVytvoreni_rezervace"]! as Timestamp).toDate(),
@@ -57,7 +55,6 @@ class Rezervace {
       "ids_ukony": getKadernickeUkonyIdsFromListOfKadernickeUkony(),
       "DatumCas_rezervace": datumCasRezervace,
       "DelkaTrvaniMinuty_rezervace": delkaTrvani,
-      "PoznamkaAdmina": poznamkaAdmina,
       "PoznamkaUzivatele": poznamkaUzivatele,
       "DatumCasVytvoreni_rezervace": datumCasVytvoreniRezervace,
       "CelkovaCena_rezervace": celkovaCena,

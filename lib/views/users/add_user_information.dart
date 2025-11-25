@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 
 class AddUserInformationPage extends StatefulWidget {
