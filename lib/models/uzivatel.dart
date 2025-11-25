@@ -46,7 +46,7 @@ class Uzivatel {
   }
 
   Future<List<Kadernik>> getOblibeniKadernici() async {
-    List<Kadernik> kadernici = List.empty();
+    List<Kadernik> kadernici = [];
     DatabaseService dbService = DatabaseService();
     for (String id in oblibeniKadernici) {
       kadernici.add(await dbService.getKadernik(id));

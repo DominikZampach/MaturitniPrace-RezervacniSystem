@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
@@ -50,7 +51,6 @@ class Rezervace {
   }
 
   Map<String, Object?> toJson() {
-    //TODO
     return {
       "ID_rezervace": id,
       "id_kadernika": kadernik.id,
@@ -67,18 +67,32 @@ class Rezervace {
   static Future<List<KadernickyUkon>> convertToListOfKadernickeUkony(
     List<String> idsKadernickeUkony,
   ) async {
-    List<KadernickyUkon> kadernickeUkony = List.empty();
+    DatabaseService dbService = DatabaseService();
+    KadernickyUkon ukon;
+    List<KadernickyUkon> kadernickeUkony = [];
+
     for (String id in idsKadernickeUkony) {
-      kadernickeUkony.add(await DatabaseService().getKadernickyUkon(id));
+      print("ID ukonu: $id");
+      ukon = await dbService.getKadernickyUkon(id);
+      kadernickeUkony.add(ukon);
     }
+
     return kadernickeUkony;
   }
 
   List<String> getKadernickeUkonyIdsFromListOfKadernickeUkony() {
-    List<String> idsKadernickeUkony = List.empty();
+    List<String> idsKadernickeUkony = [];
     for (KadernickyUkon ukon in kadernickeUkony) {
       idsKadernickeUkony.add(ukon.id);
     }
     return idsKadernickeUkony;
+  }
+
+  String getDayMonthYearString() {
+    return DateFormat('d.M.yyyy').format(datumCasRezervace);
+  }
+
+  String getHourMinuteString() {
+    return DateFormat('HH:mm').format(datumCasRezervace);
   }
 }

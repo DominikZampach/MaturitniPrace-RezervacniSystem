@@ -15,18 +15,19 @@ class KadernickyUkon {
     required this.odkazyFotografiiPrikladu,
   });
 
-  KadernickyUkon.fromJson(Map<String, Object?> json)
-    : this(
-        id: json["ID_ukonu"]! as String,
-        nazev: json["Nazev_ukonu"]! as String,
-        delkaMinuty: json["DelkaMinuty_ukonu"]! as int,
-        popis: json["Popis_ukonu"]! as String,
-        typStrihuPodlePohlavi: json["TypStrihu_ukonu"]! as String,
-        odkazyFotografiiPrikladu:
-            (json["OdkazyFotografii_Ukonu"]! as List<dynamic>)
-                .map((e) => e as String)
-                .toList(),
-      );
+  static KadernickyUkon fromJson(Map<String, Object?> json) {
+    return KadernickyUkon(
+      id: json["ID_ukonu"]! as String,
+      nazev: json["Nazev_ukonu"]! as String,
+      delkaMinuty: json["DelkaMinuty_ukonu"]! as int,
+      popis: json["Popis_ukonu"]! as String,
+      typStrihuPodlePohlavi: json["TypStrihu_ukonu"]! as String,
+      odkazyFotografiiPrikladu:
+          (json["OdkazyFotografii_Ukonu"]! as List<dynamic>)
+              .map((e) => e as String)
+              .toList(),
+    );
+  }
 
   Map<String, Object?> toJson() {
     return {

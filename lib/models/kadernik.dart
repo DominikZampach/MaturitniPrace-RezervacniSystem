@@ -57,9 +57,13 @@ class Kadernik {
         json["Map_IdsUkonyCena"]! as Map<String, dynamic>,
       ), //! Nevím, pokud bude fungovat!
       odkazyFotografiiPrace:
-          (json["OdkazFotografie_kadernika"]! as List<dynamic>)
+          (json["OdkazyFotografiiPrace_kadernika"]! as List<dynamic>)
               .map((e) => e as String)
               .toList(),
     );
+  }
+
+  String getFullNameString() {
+    return "$jmeno '$prezdivka' $prijmeni";
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/views/users/bodies/bodies_widget_tree.dart';
 import 'package:rezervacni_system_maturita/widgets/side_navbar.dart';
@@ -17,6 +19,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       selectedIndex = index;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

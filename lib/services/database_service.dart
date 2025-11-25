@@ -79,6 +79,7 @@ class DatabaseService {
 
     if (document.data() != null) {
       final data = document.data() as Map<String, Object?>;
+      print("Data z dokumentu $uid: $data");
       KadernickyUkon ukon = KadernickyUkon.fromJson(data);
       return ukon;
     }
@@ -139,8 +140,8 @@ class DatabaseService {
         .get();
 
     //? Potřeba kontrolovat takto, ne pomocí document.exists, protože pomocí .collection().doc()... se vždy něco vytvoří, ikdyž je to prázdné
-    print("Existuje dokument?: ${document.exists}");
-    print("Obsah dokumentu: ${document.data()}");
+    //print("Existuje dokument?: ${document.exists}");
+    //print("Obsah dokumentu: ${document.data()}");
     if (document.data() == null) {
       return false;
     }
@@ -155,6 +156,7 @@ class DatabaseService {
     bool povoleneNotifikace,
     bool jeMuz,
   ) async {
+    //TODO
     Uzivatel novyUzivatel = Uzivatel(
       userUID: instance.currentUser!.uid,
       jmeno: jmeno,
@@ -180,6 +182,28 @@ class DatabaseService {
   //? Získání rezervací v určitý den
 
   //? Získání nejbližší rezervace uživatele
+  Future<Rezervace?> getNearestRezervace() async {
+    final DateTime now = DateTime.now();
+    final Timestamp nowTimestamp = Timestamp.fromDate(now);
+
+    final query = await firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .where('id_uzivatele', isEqualTo: instance.currentUser!.uid)
+        .where('DatumCas_rezervace', isGreaterThan: nowTimestamp)
+        .orderBy('DatumCas_rezervace', descending: false)
+        .limit(1)
+        .get();
+
+    if (query.docs.isEmpty) {
+      print("Nenalezena žádná budoucí rezervace!");
+      return null; //? Vrátí null, pokud neexistuje žádná budoucí rezervace
+    }
+
+    final documentData = query.docs.first.data();
+    //print("Načtená data o bodoucí rezervaci: ${documentData}");
+    Rezervace nejblizsiRezervace = await Rezervace.fromJson(documentData);
+    return nejblizsiRezervace;
+  }
 
   //? Získání všech kadeřníků
 }
