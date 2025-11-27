@@ -28,7 +28,10 @@ class _MainBodyState extends State<MainBody> {
         screenWidth: widget.screenWidth,
       );
     } else if (widget.selectedIndex == 1) {
-      return ReservationsBody();
+      return ReservationsBody(
+        screenHeight: widget.screenHeight,
+        screenWidth: widget.screenWidth,
+      );
     } else if (widget.selectedIndex == 2) {
       return BrowseBody();
     } else if (widget.selectedIndex == 3) {

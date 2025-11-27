@@ -46,10 +46,12 @@ class _HomePageState extends State<HomePage> {
                 selectedIndex: selectedIndex,
                 onItemSelect: onNavbarItemSelected,
               ),
-              MainBody(
-                selectedIndex: selectedIndex,
-                screenHeight: screenHeight,
-                screenWidth: screenWidth,
+              Expanded(
+                child: MainBody(
+                  selectedIndex: selectedIndex,
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                ),
               ),
             ],
           );

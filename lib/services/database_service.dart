@@ -183,6 +183,7 @@ class DatabaseService {
 
   //? Získání nejbližší rezervace uživatele
   Future<Rezervace?> getNearestRezervace() async {
+    // Funguje dobře
     final DateTime now = DateTime.now();
     final Timestamp nowTimestamp = Timestamp.fromDate(now);
 
@@ -207,6 +208,7 @@ class DatabaseService {
 
   //? Získání všech historických rezervací
   Future<List<Rezervace>> getAllPastRezervace() async {
+    // Funguje dobře
     final DateTime now = DateTime.now();
     final Timestamp nowTimestamp = Timestamp.fromDate(now);
 
@@ -235,7 +237,8 @@ class DatabaseService {
   }
 
   //? Získání všech budoucích rezervací
-  Future<List<Rezervace>?> getAllFutureRezervace() async {
+  Future<List<Rezervace>> getAllFutureRezervace() async {
+    // Funguje dobře
     final DateTime now = DateTime.now();
     final Timestamp nowTimestamp = Timestamp.fromDate(now);
 
@@ -264,4 +267,6 @@ class DatabaseService {
   }
 
   //? Získání všech kadeřníků
+
+  //? Získání oblíbených kadeřníků - možná nebude potřeba a budu filtrovat ty všechny co už mám
 }

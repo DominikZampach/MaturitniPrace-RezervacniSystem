@@ -21,9 +21,7 @@ class DashboardBody extends StatelessWidget {
     DatabaseService dbService = DatabaseService();
 
     final Uzivatel uzivatel = await dbService.getUzivatel();
-    print("Načtený uživatel: ${uzivatel.toJson()}");
     final Rezervace? rezervace = await dbService.getNearestRezervace();
-    print("Načtená rezervace: $rezervace");
 
     return _NactenaData(uzivatel: uzivatel, rezervace: rezervace);
   }
