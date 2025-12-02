@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/users/create_reservation_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/reservation_card.dart';
 
@@ -27,8 +28,6 @@ class ReservationsBody extends StatelessWidget {
       historicalRezervace: historicalRezervace,
       futureRezervace: futureRezervace,
     );
-
-    return _NactenaData(historicalRezervace: [], futureRezervace: []);
   }
 
   @override
@@ -47,6 +46,10 @@ class ReservationsBody extends StatelessWidget {
           );
         }
 
+        final double reservationCardFontSize = 11.sp;
+        final double h1FontSize = 18.sp;
+        final double h2FontSize = 15.sp;
+
         final List<Rezervace> futureRezervace = snapshot.data!.futureRezervace;
         final List<Rezervace> historicalRezervace =
             snapshot.data!.historicalRezervace;
@@ -60,14 +63,14 @@ class ReservationsBody extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.all(10.w),
-                child: _headingAndButtonRow(),
+                child: _headingAndButtonRow(context, h1FontSize),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 15.w, bottom: 20.h),
+                padding: EdgeInsets.only(left: 17.w, bottom: 10.h),
                 child: Text(
                   "Upcoming",
                   style: TextStyle(
-                    fontSize: 17.sp,
+                    fontSize: h2FontSize,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -78,14 +81,15 @@ class ReservationsBody extends StatelessWidget {
                   rezervace: rezervace,
                   screenWidth: screenWidth,
                   screenHeight: screenHeight,
+                  fontSize: reservationCardFontSize,
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 15.w, bottom: 20.h, top: 20.h),
+                padding: EdgeInsets.only(left: 17.w, bottom: 10.h, top: 20.h),
                 child: Text(
                   "History",
                   style: TextStyle(
-                    fontSize: 17.sp,
+                    fontSize: h2FontSize,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -96,6 +100,7 @@ class ReservationsBody extends StatelessWidget {
                   rezervace: rezervace,
                   screenWidth: screenWidth,
                   screenHeight: screenHeight,
+                  fontSize: reservationCardFontSize,
                 ),
               ),
             ],
@@ -105,51 +110,46 @@ class ReservationsBody extends StatelessWidget {
     );
   }
 
-  Row _headingAndButtonRow() {
+  Row _headingAndButtonRow(BuildContext context, double fontSize) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         //? Tento opacity object je vytvořený, abych měl vycentrovaný text :)
         IgnorePointer(
-          child: Opacity(
-            opacity: 0,
-            child: ElevatedButton.icon(
-              onPressed: () {},
-              label: Text(
-                "Create Reservation",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              icon: Icon(Icons.add),
-            ),
-          ),
+          child: Opacity(opacity: 0, child: _createReservationButton(context)),
         ),
 
         Text(
           "Your Reservations",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
           textAlign: TextAlign.center,
         ),
 
-        ElevatedButton.icon(
-          onPressed: () {},
-          label: Text(
-            "Create Reservation",
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          icon: Icon(Icons.add, color: Colors.black),
-          style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Consts.secondary),
-          ),
-        ),
+        _createReservationButton(context),
       ],
+    );
+  }
+
+  ElevatedButton _createReservationButton(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => CreateReservationDialog(),
+        );
+      },
+      label: Text(
+        "Create Reservation",
+        style: TextStyle(
+          fontSize: 14.sp,
+          color: Colors.black,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      icon: Icon(Icons.add, color: Colors.black),
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(Consts.secondary),
+      ),
     );
   }
 }

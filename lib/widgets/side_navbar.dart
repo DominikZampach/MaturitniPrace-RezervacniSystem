@@ -25,7 +25,7 @@ class SideNavbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: double.infinity,
-      width: width * 0.15,
+      width: width * 0.12,
       child: Container(
         color: Consts.background,
         padding: EdgeInsets.all(width * 0.01),

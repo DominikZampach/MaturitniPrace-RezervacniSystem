@@ -31,7 +31,7 @@ class NavbarItem extends StatelessWidget {
             text,
             style: TextStyle(
               fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-              fontSize: 18.sp,
+              fontSize: 13.sp,
             ),
           ),
         ),
