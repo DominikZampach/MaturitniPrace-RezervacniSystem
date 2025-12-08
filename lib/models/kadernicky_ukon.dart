@@ -14,7 +14,9 @@ class KadernickyUkon {
     required this.popis,
     required this.typStrihuPodlePohlavi,
     required this.odkazyFotografiiPrikladu,
-  });
+  }) {
+    cena = 0;
+  }
 
   static KadernickyUkon fromJson(Map<String, Object?> json) {
     return KadernickyUkon(

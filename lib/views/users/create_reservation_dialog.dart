@@ -27,10 +27,16 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
   String? _dropdownValueLokace;
   String? _dropdownValueKadernik;
   String? _radioValueType;
-  List<String> _selectedUkony = [];
+
+  List<KadernickyUkon> _selectedUkonyObjects = [];
+  List<String> _selectedUkonyStrings = [];
 
   List<Kadernik> _dropdownOptionsKadernik = [];
   List<String> _dropdownOptionsUkony = [];
+
+  Map<String, KadernickyUkon> _ukonStringToObjectMap = {};
+
+  double totalPrice = 0;
 
   @override
   void initState() {
@@ -58,17 +64,38 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
   void _updateUkony(CreateReservationLogic logika) {
     if (_dropdownValueKadernik != null && _radioValueType != null) {
-      _dropdownOptionsUkony = logika
-          .getKadernickeUkonyByKadernikAndGenderWithPrice(
+      // Metoda nyní vrátí Map<String, KadernickyUkon>
+      _ukonStringToObjectMap = logika
+          .getKadernickeUkonyByKadernikAndGenderWithPriceMap(
             _dropdownValueKadernik!,
             _radioValueType!,
           );
-      _selectedUkony = _selectedUkony
-          .where((ukon) => _dropdownOptionsUkony.contains(ukon))
+
+      // Možnosti pro DropDownMultiSelect jsou jen klíče (řetězce)
+      _dropdownOptionsUkony = _ukonStringToObjectMap.keys.toList();
+
+      // Filtrování vybraných objektů: ponecháme jen ty, které jsou stále v možnostech
+      Set<String> validIds = _ukonStringToObjectMap.values
+          .map((u) => u.id)
+          .toSet();
+      _selectedUkonyObjects = _selectedUkonyObjects
+          .where((ukon) => validIds.contains(ukon.id))
           .toList();
+      _selectedUkonyStrings = _selectedUkonyObjects
+          .map((u) => u.toString())
+          .toList();
+
+      totalPrice = 0;
+
+      if (_selectedUkonyObjects.isNotEmpty) {
+        for (KadernickyUkon ukon in _selectedUkonyObjects) {
+          totalPrice += ukon.cena;
+        }
+      }
     } else {
+      _ukonStringToObjectMap = {};
       _dropdownOptionsUkony = [];
-      _selectedUkony = [];
+      _selectedUkonyObjects = [];
     }
   }
 
@@ -248,17 +275,40 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                           SizedBox(
                             width: 300,
                             height: 70,
-                            child: DropDownMultiSelect(
+                            child: DropDownMultiSelect<String>(
                               options: _dropdownOptionsUkony,
-                              onChanged: (List<String> x) {
+                              onChanged: (List<String> selectedStrings) {
                                 setState(() {
-                                  _selectedUkony = x;
+                                  // Zde převedeme stringy zpět na objekty pomocí mapování
+                                  _selectedUkonyObjects = selectedStrings
+                                      .where(
+                                        (s) => _ukonStringToObjectMap
+                                            .containsKey(s),
+                                      )
+                                      .map((s) => _ukonStringToObjectMap[s]!)
+                                      .toList();
+
+                                  totalPrice = 0;
+
+                                  if (_selectedUkonyObjects.isNotEmpty) {
+                                    for (KadernickyUkon ukon
+                                        in _selectedUkonyObjects) {
+                                      totalPrice += ukon.cena;
+                                    }
+                                  }
                                 });
                               },
-                              selectedValues: _selectedUkony,
+                              selectedValues: _selectedUkonyStrings,
                               whenEmpty: "Select actions..",
                               selectedValuesStyle: TextStyle(fontSize: 0),
                               separator: "\n",
+                            ),
+                          ),
+                          Text(
+                            "$totalPrice Kč",
+                            style: TextStyle(
+                              fontSize: normalTextFontSize,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],

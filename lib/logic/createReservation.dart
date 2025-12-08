@@ -45,12 +45,13 @@ class CreateReservationLogic {
     return listKadernik;
   }
 
-  List<String> getKadernickeUkonyByKadernikAndGenderWithPrice(
+  Map<String, KadernickyUkon> getKadernickeUkonyByKadernikAndGenderWithPriceMap(
     String kadernikId,
     String gender,
   ) {
     Kadernik? selectedKadernik;
-    List<String> ukonyIds = [];
+    //? Mapa pro uložení: String (pro UI) -> KadernickyUkon (pro logiku)
+    Map<String, KadernickyUkon> ukonyMap = {};
 
     for (Kadernik kadernik in listAllKadernik) {
       if (kadernik.id == kadernikId) {
@@ -60,26 +61,24 @@ class CreateReservationLogic {
     }
 
     if (selectedKadernik == null) {
-      print("Kadeřník nenalezen.");
-      return [];
+      return {};
     }
 
+    //TODO: Nesmí být nikdy název 2x stejný jméno
     for (KadernickyUkon ukon in listAllKadernickyUkon) {
-      for (String id in selectedKadernik.ukonyCeny.keys) {
-        if (ukon.id == id &&
+      for (String ukonId in selectedKadernik.ukonyCeny.keys) {
+        if (ukon.id == ukonId &&
             ukon.typStrihuPodlePohlavi == gender.toLowerCase()) {
-          KadernickyUkon selectedUkon = ukon;
-          //selectedUkon.cena = selectedKadernik.ukonyCeny["id"] as double;
-          ukonyIds.add(selectedUkon.id);
+          final double? cena = selectedKadernik.ukonyCeny[ukonId] as double?;
+
+          if (cena != null) {
+            ukon.cena = cena;
+            ukonyMap[ukon.toString()] = ukon;
+          }
         }
       }
     }
 
-    print("Nalezené kadeřnické úkony:");
-    for (String ukon in ukonyIds) {
-      print("$ukon");
-    }
-
-    return ukonyIds;
+    return ukonyMap;
   }
 }
