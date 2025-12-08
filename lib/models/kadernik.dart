@@ -74,7 +74,7 @@ class Kadernik {
     return "$jmeno '$prezdivka' $prijmeni";
   }
 
-  Map<KadernickyUkon, double> getAllKadernickyUkonAndPrice() {
+  Map<String, double> getAllKadernickyUkonAndPrice() {
     //TODO
     return {};
   }

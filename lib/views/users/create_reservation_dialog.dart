@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:rezervacni_system_maturita/logic/createReservation.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
@@ -26,8 +27,10 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
   String? _dropdownValueLokace;
   String? _dropdownValueKadernik;
   String? _radioValueType;
+  List<String> _selectedUkony = [];
 
   List<Kadernik> _dropdownOptionsKadernik = [];
+  List<String> _dropdownOptionsUkony = [];
 
   @override
   void initState() {
@@ -51,6 +54,22 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
     );
 
     return logika;
+  }
+
+  void _updateUkony(CreateReservationLogic logika) {
+    if (_dropdownValueKadernik != null && _radioValueType != null) {
+      _dropdownOptionsUkony = logika
+          .getKadernickeUkonyByKadernikAndGenderWithPrice(
+            _dropdownValueKadernik!,
+            _radioValueType!,
+          );
+      _selectedUkony = _selectedUkony
+          .where((ukon) => _dropdownOptionsUkony.contains(ukon))
+          .toList();
+    } else {
+      _dropdownOptionsUkony = [];
+      _selectedUkony = [];
+    }
   }
 
   @override
@@ -94,6 +113,8 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
           }
 
           _radioValueType ??= "Male";
+
+          _updateUkony(snapshot.data!);
 
           return Center(
             child: Padding(
@@ -158,6 +179,8 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                                     .getAllKadernikFromLokace(newValue!);
                                 _dropdownValueKadernik =
                                     _dropdownOptionsKadernik.first.id;
+
+                                _updateUkony(snapshot.data!);
                               });
                             },
                           ),
@@ -181,6 +204,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 _dropdownValueKadernik = newValue;
+                                _updateUkony(snapshot.data!);
                               });
                             },
                           ),
@@ -189,6 +213,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                             onChanged: (String? value) {
                               setState(() {
                                 _radioValueType = value;
+                                _updateUkony(snapshot.data!);
                               });
                             },
                             child: Row(
@@ -220,29 +245,22 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                               ],
                             ),
                           ),
-                          /*
-                          DropdownButton(
-                            value: _dropdownValueType,
-                            borderRadius: BorderRadius.circular(15.r),
-                            underline: null,
-                            items: [
-                              DropdownMenuItem<String>(
-                                value: _dropdownValueType,
-                                child: Text(
-                                  "Male",
-                                  style: TextStyle(
-                                    fontSize: normalTextFontSize,
-                                  ),
-                                ),
-                              ),
-                            ],
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _dropdownValueKadernik = newValue;
-                              });
-                            },
+                          SizedBox(
+                            width: 300,
+                            height: 70,
+                            child: DropDownMultiSelect(
+                              options: _dropdownOptionsUkony,
+                              onChanged: (List<String> x) {
+                                setState(() {
+                                  _selectedUkony = x;
+                                });
+                              },
+                              selectedValues: _selectedUkony,
+                              whenEmpty: "Select actions..",
+                              selectedValuesStyle: TextStyle(fontSize: 0),
+                              separator: "\n",
+                            ),
                           ),
-                          */
                         ],
                       ),
                     ],

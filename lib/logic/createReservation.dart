@@ -44,4 +44,42 @@ class CreateReservationLogic {
     }
     return listKadernik;
   }
+
+  List<String> getKadernickeUkonyByKadernikAndGenderWithPrice(
+    String kadernikId,
+    String gender,
+  ) {
+    Kadernik? selectedKadernik;
+    List<String> ukonyIds = [];
+
+    for (Kadernik kadernik in listAllKadernik) {
+      if (kadernik.id == kadernikId) {
+        selectedKadernik = kadernik;
+        break;
+      }
+    }
+
+    if (selectedKadernik == null) {
+      print("Kadeřník nenalezen.");
+      return [];
+    }
+
+    for (KadernickyUkon ukon in listAllKadernickyUkon) {
+      for (String id in selectedKadernik.ukonyCeny.keys) {
+        if (ukon.id == id &&
+            ukon.typStrihuPodlePohlavi == gender.toLowerCase()) {
+          KadernickyUkon selectedUkon = ukon;
+          //selectedUkon.cena = selectedKadernik.ukonyCeny["id"] as double;
+          ukonyIds.add(selectedUkon.id);
+        }
+      }
+    }
+
+    print("Nalezené kadeřnické úkony:");
+    for (String ukon in ukonyIds) {
+      print("$ukon");
+    }
+
+    return ukonyIds;
+  }
 }

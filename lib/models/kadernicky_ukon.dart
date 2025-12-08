@@ -5,6 +5,7 @@ class KadernickyUkon {
   late String popis;
   late String typStrihuPodlePohlavi;
   late List<String> odkazyFotografiiPrikladu;
+  late double cena;
 
   KadernickyUkon({
     required this.id,
@@ -38,5 +39,10 @@ class KadernickyUkon {
       "TypStrihu_ukonu": typStrihuPodlePohlavi,
       "OdkazyFotografii_Ukonu": odkazyFotografiiPrikladu,
     };
+  }
+
+  @override
+  String toString() {
+    return "$nazev - $cena Kč";
   }
 }
