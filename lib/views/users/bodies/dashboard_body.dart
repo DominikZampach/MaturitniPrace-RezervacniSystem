@@ -17,11 +17,12 @@ class DashboardBody extends StatelessWidget {
     required this.screenWidth,
   });
 
-  Future<_NactenaData> nacteniDat() async {
+  Future<_NactenaData> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
     final Uzivatel uzivatel = await dbService.getUzivatel();
-    final Rezervace? rezervace = await dbService.getNearestRezervace();
+    final Rezervace? rezervace = await dbService
+        .getNearestRezervaceOfCurrentUser();
 
     return _NactenaData(uzivatel: uzivatel, rezervace: rezervace);
   }
@@ -30,7 +31,7 @@ class DashboardBody extends StatelessWidget {
   Widget build(BuildContext context) {
     //? Builder, který zajistí, že se načtou data o uživateli před
     return FutureBuilder<_NactenaData>(
-      future: nacteniDat(),
+      future: _nacteniDat(),
       builder: (context, snapshot) {
         print("Snapshot data: ${snapshot.data}");
         if (snapshot.connectionState == ConnectionState.waiting) {

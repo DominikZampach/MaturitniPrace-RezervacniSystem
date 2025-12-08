@@ -30,35 +30,42 @@ class SideNavbar extends StatelessWidget {
         color: Consts.background,
         padding: EdgeInsets.all(width * 0.01),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            BookMyCutLogo(
-              size: 75.w,
-              clickFunction: () {
-                ToastClass.showToastSnackbar(message: "You clicked on logo");
-              },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                BookMyCutLogo(
+                  size: 75.w,
+                  clickFunction: () {
+                    ToastClass.showToastSnackbar(
+                      message: "You clicked on logo",
+                    );
+                  },
+                ),
+                SizedBox(height: 20),
+                NavbarItem(
+                  verticalPadding: 10,
+                  text: "Dashboard",
+                  isSelected: selectedIndex == 0,
+                  onClick: () => onItemSelect(0),
+                ),
+                NavbarItem(
+                  verticalPadding: 10,
+                  text: "Reservations",
+                  isSelected: selectedIndex == 1,
+                  onClick: () => onItemSelect(1),
+                ),
+                NavbarItem(
+                  verticalPadding: 10,
+                  text: "Browse",
+                  isSelected: selectedIndex == 2,
+                  onClick: () => onItemSelect(2),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
             NavbarItem(
-              verticalPadding: 10,
-              text: "Dashboard",
-              isSelected: selectedIndex == 0,
-              onClick: () => onItemSelect(0),
-            ),
-            NavbarItem(
-              verticalPadding: 10,
-              text: "Reservations",
-              isSelected: selectedIndex == 1,
-              onClick: () => onItemSelect(1),
-            ),
-            NavbarItem(
-              verticalPadding: 10,
-              text: "Browse",
-              isSelected: selectedIndex == 2,
-              onClick: () => onItemSelect(2),
-            ),
-            NavbarItem(
-              verticalPadding: 10,
+              verticalPadding: verticalPadding,
               text: "Settings",
               isSelected: selectedIndex == 3,
               onClick: () => onItemSelect(3),

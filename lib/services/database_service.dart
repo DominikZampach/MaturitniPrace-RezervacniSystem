@@ -179,10 +179,38 @@ class DatabaseService {
 
   //? Získání všech rezervací uživatele
 
+  //? Získání všech budoucích rezervací
+  Future<List<Rezervace>> getAllFutureRezervace() async {
+    final DateTime now = DateTime.now();
+    final Timestamp nowTimestamp = Timestamp.fromDate(now);
+
+    final query = await firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .where('DatumCas_rezervace', isGreaterThan: nowTimestamp)
+        .orderBy('DatumCas_rezervace', descending: false)
+        .get();
+
+    if (query.docs.isEmpty) {
+      print("Nenalezeny žádné budoucí rezervace!");
+      return [];
+    }
+
+    List<Rezervace> rezervaceList = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      Rezervace rezervace = await Rezervace.fromJson(data);
+      rezervaceList.add(rezervace);
+    }
+
+    return rezervaceList;
+  }
+
   //? Získání rezervací v určitý den
 
   //? Získání nejbližší rezervace uživatele
-  Future<Rezervace?> getNearestRezervace() async {
+  Future<Rezervace?> getNearestRezervaceOfCurrentUser() async {
     // Funguje dobře
     final DateTime now = DateTime.now();
     final Timestamp nowTimestamp = Timestamp.fromDate(now);
@@ -206,8 +234,8 @@ class DatabaseService {
     return nejblizsiRezervace;
   }
 
-  //? Získání všech historických rezervací
-  Future<List<Rezervace>> getAllPastRezervace() async {
+  //? Získání všech historických rezervací současného uživatele
+  Future<List<Rezervace>> getAllPastRezervaceOfCurrentUser() async {
     // Funguje dobře
     final DateTime now = DateTime.now();
     final Timestamp nowTimestamp = Timestamp.fromDate(now);
@@ -236,8 +264,8 @@ class DatabaseService {
     return rezervaceList;
   }
 
-  //? Získání všech budoucích rezervací
-  Future<List<Rezervace>> getAllFutureRezervace() async {
+  //? Získání všech budoucích rezervací uživatele
+  Future<List<Rezervace>> getAllFutureRezervaceOfCurrentUser() async {
     // Funguje dobře
     final DateTime now = DateTime.now();
     final Timestamp nowTimestamp = Timestamp.fromDate(now);
@@ -267,6 +295,48 @@ class DatabaseService {
   }
 
   //? Získání všech kadeřníků
+  Future<List<Kadernik>> getAllKadernici() async {
+    final query = await firestore.collection(KADERNICI_COLLECTION_REF).get();
+
+    if (query.docs.isEmpty) {
+      print("Žádní kadeřníci v databázi!");
+      return [];
+    }
+
+    List<Kadernik> kadernici = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      Kadernik kadernik = await Kadernik.fromJson(data);
+      kadernici.add(kadernik);
+    }
+
+    return kadernici;
+  }
 
   //? Získání oblíbených kadeřníků - možná nebude potřeba a budu filtrovat ty všechny co už mám
+
+  //? Získání všech Kadeřnických úkonů
+  Future<List<KadernickyUkon>> getAllKadernickeUkony() async {
+    final query = await firestore
+        .collection(KADERNICKEUKONY_COLLECTION_REF)
+        .get();
+
+    if (query.docs.isEmpty) {
+      print("Žádné kadeřnické úkony v databázi!");
+      return [];
+    }
+
+    List<KadernickyUkon> ukony = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      KadernickyUkon ukon = KadernickyUkon.fromJson(data);
+      ukony.add(ukon);
+    }
+
+    return ukony;
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 
@@ -71,5 +72,10 @@ class Kadernik {
 
   String getFullNameString() {
     return "$jmeno '$prezdivka' $prijmeni";
+  }
+
+  Map<KadernickyUkon, double> getAllKadernickyUkonAndPrice() {
+    //TODO
+    return {};
   }
 }

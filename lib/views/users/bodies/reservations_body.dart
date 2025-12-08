@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
+import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
+import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/users/create_reservation_dialog.dart';
@@ -16,13 +18,13 @@ class ReservationsBody extends StatelessWidget {
     required this.screenWidth,
   });
 
-  Future<_NactenaData> nacteniDat() async {
+  Future<_NactenaData> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
     final List<Rezervace> historicalRezervace = await dbService
-        .getAllPastRezervace();
+        .getAllPastRezervaceOfCurrentUser();
     final List<Rezervace> futureRezervace = await dbService
-        .getAllFutureRezervace();
+        .getAllFutureRezervaceOfCurrentUser();
 
     return _NactenaData(
       historicalRezervace: historicalRezervace,
@@ -33,7 +35,7 @@ class ReservationsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: nacteniDat(),
+      future: _nacteniDat(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return LoadingWidget();
@@ -47,8 +49,11 @@ class ReservationsBody extends StatelessWidget {
         }
 
         final double reservationCardFontSize = 11.sp;
+        final double buttonFontSize = 12.sp;
         final double h1FontSize = 18.sp;
         final double h2FontSize = 15.sp;
+
+        final double leftPaddingH2 = 19.w;
 
         final List<Rezervace> futureRezervace = snapshot.data!.futureRezervace;
         final List<Rezervace> historicalRezervace =
@@ -63,10 +68,14 @@ class ReservationsBody extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.all(10.w),
-                child: _headingAndButtonRow(context, h1FontSize),
+                child: _headingAndButtonRow(
+                  context,
+                  h1FontSize,
+                  buttonFontSize,
+                ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 17.w, bottom: 10.h),
+                padding: EdgeInsets.only(left: leftPaddingH2, bottom: 10.h),
                 child: Text(
                   "Upcoming",
                   style: TextStyle(
@@ -85,7 +94,11 @@ class ReservationsBody extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 17.w, bottom: 10.h, top: 20.h),
+                padding: EdgeInsets.only(
+                  left: leftPaddingH2,
+                  bottom: 10.h,
+                  top: 20.h,
+                ),
                 child: Text(
                   "History",
                   style: TextStyle(
@@ -110,27 +123,40 @@ class ReservationsBody extends StatelessWidget {
     );
   }
 
-  Row _headingAndButtonRow(BuildContext context, double fontSize) {
+  Row _headingAndButtonRow(
+    BuildContext context,
+    double headingFontSize,
+    double buttonFontSize,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         //? Tento opacity object je vytvořený, abych měl vycentrovaný text :)
         IgnorePointer(
-          child: Opacity(opacity: 0, child: _createReservationButton(context)),
+          child: Opacity(
+            opacity: 0,
+            child: _createReservationButton(context, buttonFontSize),
+          ),
         ),
 
         Text(
           "Your Reservations",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: headingFontSize,
+          ),
           textAlign: TextAlign.center,
         ),
 
-        _createReservationButton(context),
+        _createReservationButton(context, buttonFontSize),
       ],
     );
   }
 
-  ElevatedButton _createReservationButton(BuildContext context) {
+  ElevatedButton _createReservationButton(
+    BuildContext context,
+    double fontSize,
+  ) {
     return ElevatedButton.icon(
       onPressed: () {
         showDialog(
@@ -141,7 +167,7 @@ class ReservationsBody extends StatelessWidget {
       label: Text(
         "Create Reservation",
         style: TextStyle(
-          fontSize: 14.sp,
+          fontSize: fontSize,
           color: Colors.black,
           fontWeight: FontWeight.w600,
         ),
