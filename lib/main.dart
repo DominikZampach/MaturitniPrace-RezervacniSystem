@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/firebase_options.dart';
 import 'package:rezervacni_system_maturita/login_widget_tree.dart';
@@ -32,8 +33,13 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             colorScheme: Consts.colorScheme,
           ),
-          initialRoute: '/',
-          routes: {},
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('cs', ''), Locale('en', '')],
+          locale: Locale("cs", ''),
           home: child,
         );
       },

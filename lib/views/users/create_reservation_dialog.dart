@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:multiselect/multiselect.dart';
 import 'package:rezervacni_system_maturita/logic/createReservation.dart';
+import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
@@ -37,6 +38,9 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
   Map<String, KadernickyUkon> _ukonStringToObjectMap = {};
 
   double totalPrice = 0;
+  double totalTime = 0;
+
+  DateTime? selectedDate;
 
   @override
   void initState() {
@@ -86,10 +90,12 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
           .toList();
 
       totalPrice = 0;
+      totalTime = 0;
 
       if (_selectedUkonyObjects.isNotEmpty) {
         for (KadernickyUkon ukon in _selectedUkonyObjects) {
           totalPrice += ukon.cena;
+          totalTime += ukon.delkaMinuty;
         }
       }
     } else {
@@ -172,9 +178,10 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                           _captionText("Cut type:"),
                           _captionText("Actions:"),
 
-                          _captionText("Estimated length of all actions:"),
                           _captionText("Estimated price:"),
-                          _captionText("Select available date and time:"),
+                          _captionText("Estimated length of all actions:"),
+                          _captionText("Select available date:"),
+                          _captionText("Select available time:"),
                           _captionText("Note:"),
                         ],
                       ),
@@ -311,84 +318,70 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  /*
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 15,
-                    children: [
-                      Text(
-                        "Hair salon:",
-                        style: TextStyle(
-                          fontSize: normalTextFontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      DropdownButton(
-                        value: _dropdownValueLokace,
-                        borderRadius: BorderRadius.circular(15.r),
-                        underline: null,
-                        items: [
-                          for (Lokace lokace in snapshot.data!.listAllLokace)
-                            DropdownMenuItem<String>(
-                              value: lokace.id,
-                              child: Text(
-                                "${lokace.nazev} - ${lokace.mesto}",
-                                style: TextStyle(fontSize: normalTextFontSize),
+                          Text(
+                            "$totalTime min",
+                            style: TextStyle(
+                              fontSize: normalTextFontSize,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final DateTime today = DateTime.now();
+                              final Kadernik kadernik = snapshot.data!
+                                  .getKadernikById(_dropdownValueKadernik!)!;
+
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                firstDate: DateTime(
+                                  today.year,
+                                  today.month,
+                                  today.day + 1,
+                                ),
+                                lastDate: DateTime(
+                                  today.year + 1,
+                                  today.month,
+                                  today.day,
+                                ),
+                                initialDatePickerMode: DatePickerMode.day,
+                                initialEntryMode:
+                                    DatePickerEntryMode.calendarOnly,
+                                locale: Locale('cs', ''),
+                                selectableDayPredicate: (DateTime day) {
+                                  //? Kontrola, že si uživatel nevybral nevalidní den
+                                  if (kadernik.pracovniDny.contains(
+                                    day.weekday.toString(),
+                                  )) {
+                                    return true;
+                                  }
+                                  return false;
+                                },
+                              );
+
+                              if (pickedDate == null) {
+                                selectedDate = null;
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(
+                                Consts.background,
+                              ),
+                              elevation: WidgetStatePropertyAll(4),
+                            ),
+                            child: Text(
+                              selectedDate == null
+                                  ? "Select date"
+                                  : "${selectedDate!.day}.${selectedDate!.month}",
+                              style: TextStyle(
+                                fontSize: normalTextFontSize,
+                                color: Colors.black,
                               ),
                             ),
+                          ),
                         ],
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _dropdownValueLokace = newValue;
-                            _dropdownOptionsKadernik = snapshot.data!
-                                .getAllKadernikFromLokace(newValue!);
-                            _dropdownValueKadernik =
-                                _dropdownOptionsKadernik.first.id;
-                          });
-                        },
                       ),
                     ],
                   ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 15,
-
-                    children: [
-                      Text(
-                        "Hairdresser:",
-                        style: TextStyle(
-                          fontSize: normalTextFontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      DropdownButton(
-                        value: _dropdownValueKadernik,
-                        items: [
-                          for (Kadernik kadernik in _dropdownOptionsKadernik)
-                            DropdownMenuItem<String>(
-                              value: kadernik.id,
-                              child: Text(
-                                "${kadernik.jmeno} ${kadernik.prijmeni}",
-                                style: TextStyle(fontSize: normalTextFontSize),
-                              ),
-                            ),
-                        ],
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _dropdownValueKadernik = newValue;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  */
                 ],
               ),
             ),

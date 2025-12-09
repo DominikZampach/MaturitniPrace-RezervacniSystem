@@ -53,12 +53,7 @@ class CreateReservationLogic {
     //? Mapa pro uložení: String (pro UI) -> KadernickyUkon (pro logiku)
     Map<String, KadernickyUkon> ukonyMap = {};
 
-    for (Kadernik kadernik in listAllKadernik) {
-      if (kadernik.id == kadernikId) {
-        selectedKadernik = kadernik;
-        break;
-      }
-    }
+    selectedKadernik = getKadernikById(kadernikId);
 
     if (selectedKadernik == null) {
       return {};
@@ -80,5 +75,14 @@ class CreateReservationLogic {
     }
 
     return ukonyMap;
+  }
+
+  Kadernik? getKadernikById(String kadernikId) {
+    for (Kadernik kadernik in listAllKadernik) {
+      if (kadernik.id == kadernikId) {
+        return kadernik;
+      }
+    }
+    return null;
   }
 }
