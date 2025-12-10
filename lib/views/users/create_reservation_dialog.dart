@@ -28,19 +28,23 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
   String? _dropdownValueLokace;
   String? _dropdownValueKadernik;
   String? _radioValueType;
+  String? _dropdownValueCasRezervace;
 
   List<KadernickyUkon> _selectedUkonyObjects = [];
   List<String> _selectedUkonyStrings = [];
 
   List<Kadernik> _dropdownOptionsKadernik = [];
   List<String> _dropdownOptionsUkony = [];
+  List<String> _dropdownOptionsCasyRezervace = [];
 
   Map<String, KadernickyUkon> _ukonStringToObjectMap = {};
 
-  double totalPrice = 0;
-  double totalTime = 0;
+  int totalPrice = 0;
+  int totalTime = 0;
 
   DateTime? selectedDate;
+
+  final TextEditingController _noteController = TextEditingController();
 
   @override
   void initState() {
@@ -68,7 +72,6 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
   void _updateUkony(CreateReservationLogic logika) {
     if (_dropdownValueKadernik != null && _radioValueType != null) {
-      // Metoda nyní vrátí Map<String, KadernickyUkon>
       _ukonStringToObjectMap = logika
           .getKadernickeUkonyByKadernikAndGenderWithPriceMap(
             _dropdownValueKadernik!,
@@ -97,6 +100,11 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
           totalPrice += ukon.cena;
           totalTime += ukon.delkaMinuty;
         }
+        _dropdownOptionsCasyRezervace = logika.findAvailableTimes(
+          _dropdownValueKadernik!,
+          totalTime,
+          selectedDate,
+        );
       }
     } else {
       _ukonStringToObjectMap = {};
@@ -153,8 +161,6 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
-                spacing: 15.h,
-
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
@@ -164,229 +170,372 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Row(
+
+                  SizedBox(height: 20.h),
+
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 20,
+                    mainAxisSize: MainAxisSize.min, // Důležité pro Dialog
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        spacing: 30,
-                        children: [
-                          _captionText("Hair salon:"),
-                          _captionText("Hairdresser:"),
-                          _captionText("Cut type:"),
-                          _captionText("Actions:"),
-
-                          _captionText("Estimated price:"),
-                          _captionText("Estimated length of all actions:"),
-                          _captionText("Select available date:"),
-                          _captionText("Select available time:"),
-                          _captionText("Note:"),
-                        ],
+                      _buildRowItem(
+                        caption: "Hair salon:",
+                        widget: _dropdownButtonLokace(snapshot),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 9,
-                        children: [
-                          DropdownButton(
-                            value: _dropdownValueLokace,
-                            borderRadius: BorderRadius.circular(15.r),
-                            underline: null,
-                            items: [
-                              for (Lokace lokace
-                                  in snapshot.data!.listAllLokace)
-                                DropdownMenuItem<String>(
-                                  value: lokace.id,
-                                  child: Text(
-                                    "${lokace.nazev} - ${lokace.mesto}",
-                                    style: TextStyle(
-                                      fontSize: normalTextFontSize,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _dropdownValueLokace = newValue;
-                                _dropdownOptionsKadernik = snapshot.data!
-                                    .getAllKadernikFromLokace(newValue!);
-                                _dropdownValueKadernik =
-                                    _dropdownOptionsKadernik.first.id;
 
-                                _updateUkony(snapshot.data!);
-                              });
-                            },
-                          ),
-                          DropdownButton(
-                            value: _dropdownValueKadernik,
-                            borderRadius: BorderRadius.circular(15.r),
-                            underline: null,
-                            items: [
-                              for (Kadernik kadernik
-                                  in _dropdownOptionsKadernik)
-                                DropdownMenuItem<String>(
-                                  value: kadernik.id,
-                                  child: Text(
-                                    "${kadernik.jmeno} ${kadernik.prijmeni}",
-                                    style: TextStyle(
-                                      fontSize: normalTextFontSize,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _dropdownValueKadernik = newValue;
-                                _updateUkony(snapshot.data!);
-                              });
-                            },
-                          ),
-                          RadioGroup<String>(
-                            groupValue: _radioValueType,
-                            onChanged: (String? value) {
-                              setState(() {
-                                _radioValueType = value;
-                                _updateUkony(snapshot.data!);
-                              });
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Radio<String>(value: "Male"),
-                                    Text(
-                                      "Male",
-                                      style: TextStyle(
-                                        fontSize: normalTextFontSize,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 20.w),
-                                Row(
-                                  children: [
-                                    Radio<String>(value: "Female"),
-                                    Text(
-                                      "Female",
-                                      style: TextStyle(
-                                        fontSize: normalTextFontSize,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: 300,
-                            height: 70,
-                            child: DropDownMultiSelect<String>(
-                              options: _dropdownOptionsUkony,
-                              onChanged: (List<String> selectedStrings) {
-                                setState(() {
-                                  // Zde převedeme stringy zpět na objekty pomocí mapování
-                                  _selectedUkonyObjects = selectedStrings
-                                      .where(
-                                        (s) => _ukonStringToObjectMap
-                                            .containsKey(s),
-                                      )
-                                      .map((s) => _ukonStringToObjectMap[s]!)
-                                      .toList();
-
-                                  totalPrice = 0;
-
-                                  if (_selectedUkonyObjects.isNotEmpty) {
-                                    for (KadernickyUkon ukon
-                                        in _selectedUkonyObjects) {
-                                      totalPrice += ukon.cena;
-                                    }
-                                  }
-                                });
-                              },
-                              selectedValues: _selectedUkonyStrings,
-                              whenEmpty: "Select actions..",
-                              selectedValuesStyle: TextStyle(fontSize: 0),
-                              separator: "\n",
-                            ),
-                          ),
-                          Text(
-                            "$totalPrice Kč",
-                            style: TextStyle(
-                              fontSize: normalTextFontSize,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            "$totalTime min",
-                            style: TextStyle(
-                              fontSize: normalTextFontSize,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final DateTime today = DateTime.now();
-                              final Kadernik kadernik = snapshot.data!
-                                  .getKadernikById(_dropdownValueKadernik!)!;
-
-                              DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                firstDate: DateTime(
-                                  today.year,
-                                  today.month,
-                                  today.day + 1,
-                                ),
-                                lastDate: DateTime(
-                                  today.year + 1,
-                                  today.month,
-                                  today.day,
-                                ),
-                                initialDatePickerMode: DatePickerMode.day,
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
-                                locale: Locale('cs', ''),
-                                selectableDayPredicate: (DateTime day) {
-                                  //? Kontrola, že si uživatel nevybral nevalidní den
-                                  if (kadernik.pracovniDny.contains(
-                                    day.weekday.toString(),
-                                  )) {
-                                    return true;
-                                  }
-                                  return false;
-                                },
-                              );
-
-                              if (pickedDate == null) {
-                                selectedDate = null;
-                              }
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStatePropertyAll(
-                                Consts.background,
-                              ),
-                              elevation: WidgetStatePropertyAll(4),
-                            ),
-                            child: Text(
-                              selectedDate == null
-                                  ? "Select date"
-                                  : "${selectedDate!.day}.${selectedDate!.month}",
-                              style: TextStyle(
-                                fontSize: normalTextFontSize,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
+                      _buildRowItem(
+                        caption: "Hairdresser:",
+                        widget: _dropdownButtonKadernik(snapshot),
                       ),
+
+                      _buildRowItem(
+                        caption: "Cut type:",
+                        widget: _radioGroupGender(snapshot),
+                      ),
+
+                      _buildRowItem(
+                        caption: "Actions:",
+                        widget: SizedBox(
+                          width: 300,
+                          height: 70,
+                          child: _multiDropdownButtonUkony(),
+                        ),
+                        verticalSpacing: 0, // Nechceme extra mezeru uvnitř Boxu
+                      ),
+
+                      _buildRowItem(
+                        caption: "Estimated price:",
+                        widget: _textTotalPrice(),
+                      ),
+
+                      _buildRowItem(
+                        caption: "Estimated length of all actions:",
+                        widget: _textTotalTime(),
+                      ),
+
+                      _buildRowItem(
+                        caption: "Select available date:",
+                        widget: _elevatedButtonDatum(snapshot, context),
+                      ),
+
+                      _buildRowItem(
+                        caption: "Select available time:",
+                        widget: _dropdownButtonCas(),
+                      ),
+
+                      _buildRowItem(caption: "Note:", widget: _textFieldNote()),
                     ],
                   ),
+
+                  SizedBox(height: 20.h),
+
+                  _elevatedButtonCreate(snapshot.data!),
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  ElevatedButton _elevatedButtonCreate(CreateReservationLogic logika) {
+    return ElevatedButton(
+      onPressed: () async {
+        if ((_dropdownValueLokace != null) &&
+            (_selectedUkonyObjects.isNotEmpty) &&
+            (selectedDate != null) &&
+            (_dropdownValueCasRezervace != null)) {
+          bool uspesneVytvoreni = await logika.createRezervace(
+            _dropdownValueKadernik!,
+            _selectedUkonyObjects,
+            selectedDate!,
+            _dropdownValueCasRezervace!,
+            totalTime,
+            totalPrice,
+            _noteController.text,
+          );
+
+          if (uspesneVytvoreni) {
+            Navigator.of(context).pop();
+          }
+        }
+      },
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(
+          Consts.colorScheme.primaryContainer,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(3.0),
+        child: Text(
+          "Create",
+          style: TextStyle(fontSize: headingFontSize, color: Colors.black),
+        ),
+      ),
+    );
+  }
+
+  Container _textFieldNote() {
+    return Container(
+      width: 220.w,
+      decoration: BoxDecoration(
+        border: BoxBorder.all(width: 1),
+        borderRadius: BorderRadius.circular(15.r),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+      child: TextField(
+        controller: _noteController,
+        maxLines: 1,
+        decoration: InputDecoration.collapsed(hintText: ""),
+        maxLength: 40,
+        style: TextStyle(fontSize: normalTextFontSize),
+      ),
+    );
+  }
+
+  DropdownButton<String> _dropdownButtonCas() {
+    return DropdownButton(
+      value: _dropdownValueCasRezervace,
+      borderRadius: BorderRadius.circular(15.r),
+      underline: null,
+      items: [
+        for (String cas in _dropdownOptionsCasyRezervace)
+          DropdownMenuItem<String>(
+            value: cas,
+            child: Text(cas, style: TextStyle(fontSize: normalTextFontSize)),
+          ),
+      ],
+      onChanged: (String? newValue) {
+        setState(() {
+          _dropdownValueCasRezervace = newValue;
+          //_updateUkony(snapshot.data!);
+        });
+      },
+    );
+  }
+
+  ElevatedButton _elevatedButtonDatum(
+    AsyncSnapshot<CreateReservationLogic> snapshot,
+    BuildContext context,
+  ) {
+    return ElevatedButton(
+      onPressed: () async {
+        final DateTime today = DateTime.now();
+        final Kadernik kadernik = snapshot.data!.getKadernikById(
+          _dropdownValueKadernik!,
+        )!;
+
+        DateTime? pickedDate = await showDatePicker(
+          context: context,
+          firstDate: DateTime(today.year, today.month, today.day + 1),
+          lastDate: DateTime(today.year + 1, today.month, today.day),
+          initialDatePickerMode: DatePickerMode.day,
+          initialEntryMode: DatePickerEntryMode.calendarOnly,
+          locale: Locale('cs', ''),
+          selectableDayPredicate: (DateTime day) {
+            //? Kontrola, že si uživatel nevybral nevalidní den
+            if (kadernik.pracovniDny.contains(day.weekday.toString())) {
+              return true;
+            }
+            return false;
+          },
+        );
+
+        if (pickedDate == null) {
+          selectedDate = null;
+        }
+
+        setState(() {
+          selectedDate = pickedDate;
+        });
+
+        _dropdownOptionsCasyRezervace = snapshot.data!.findAvailableTimes(
+          _dropdownValueKadernik!,
+          totalTime,
+          selectedDate,
+        );
+        print(_dropdownOptionsCasyRezervace);
+      },
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(Consts.background),
+      ),
+      child: Text(
+        selectedDate == null
+            ? "Select date"
+            : "${selectedDate!.day}.${selectedDate!.month}",
+        style: TextStyle(fontSize: normalTextFontSize, color: Colors.black),
+        textAlign: TextAlign.left,
+      ),
+    );
+  }
+
+  Text _textTotalTime() {
+    return Text(
+      "$totalTime min",
+      style: TextStyle(
+        fontSize: normalTextFontSize,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Text _textTotalPrice() {
+    return Text(
+      "$totalPrice Kč",
+      style: TextStyle(
+        fontSize: normalTextFontSize,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  SizedBox _multiDropdownButtonUkony() {
+    return SizedBox(
+      width: 300,
+      height: 60,
+      child: DropDownMultiSelect<String>(
+        options: _dropdownOptionsUkony,
+        onChanged: (List<String> selectedStrings) {
+          setState(() {
+            // Zde převedeme stringy zpět na objekty pomocí mapování
+            _selectedUkonyObjects = selectedStrings
+                .where((s) => _ukonStringToObjectMap.containsKey(s))
+                .map((s) => _ukonStringToObjectMap[s]!)
+                .toList();
+
+            totalPrice = 0;
+            _dropdownValueCasRezervace = null;
+
+            if (_selectedUkonyObjects.isNotEmpty) {
+              for (KadernickyUkon ukon in _selectedUkonyObjects) {
+                totalPrice += ukon.cena;
+              }
+            }
+          });
+        },
+        selectedValues: _selectedUkonyStrings,
+        whenEmpty: "Select actions..",
+        selectedValuesStyle: TextStyle(fontSize: 0),
+        separator: "\n",
+      ),
+    );
+  }
+
+  RadioGroup<String> _radioGroupGender(
+    AsyncSnapshot<CreateReservationLogic> snapshot,
+  ) {
+    return RadioGroup<String>(
+      groupValue: _radioValueType,
+      onChanged: (String? value) {
+        setState(() {
+          _radioValueType = value;
+          _updateUkony(snapshot.data!);
+        });
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Radio<String>(value: "Male"),
+              Text("Male", style: TextStyle(fontSize: normalTextFontSize)),
+            ],
+          ),
+          SizedBox(width: 20.w),
+          Row(
+            children: [
+              Radio<String>(value: "Female"),
+              Text("Female", style: TextStyle(fontSize: normalTextFontSize)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  DropdownButton<String> _dropdownButtonKadernik(
+    AsyncSnapshot<CreateReservationLogic> snapshot,
+  ) {
+    return DropdownButton(
+      value: _dropdownValueKadernik,
+      borderRadius: BorderRadius.circular(15.r),
+      underline: null,
+      items: [
+        for (Kadernik kadernik in _dropdownOptionsKadernik)
+          DropdownMenuItem<String>(
+            value: kadernik.id,
+            child: Text(
+              "${kadernik.jmeno} ${kadernik.prijmeni}",
+              style: TextStyle(fontSize: normalTextFontSize),
+            ),
+          ),
+      ],
+      onChanged: (String? newValue) {
+        setState(() {
+          _dropdownValueKadernik = newValue;
+          _updateUkony(snapshot.data!);
+        });
+      },
+    );
+  }
+
+  DropdownButton<String> _dropdownButtonLokace(
+    AsyncSnapshot<CreateReservationLogic> snapshot,
+  ) {
+    return DropdownButton(
+      value: _dropdownValueLokace,
+      borderRadius: BorderRadius.circular(15.r),
+      underline: null,
+      items: [
+        for (Lokace lokace in snapshot.data!.listAllLokace)
+          DropdownMenuItem<String>(
+            value: lokace.id,
+            child: Text(
+              "${lokace.nazev} - ${lokace.mesto}",
+              style: TextStyle(fontSize: normalTextFontSize),
+            ),
+          ),
+      ],
+      onChanged: (String? newValue) {
+        setState(() {
+          _dropdownValueLokace = newValue;
+          _dropdownOptionsKadernik = snapshot.data!.getAllKadernikFromLokace(
+            newValue!,
+          );
+          _dropdownValueKadernik = _dropdownOptionsKadernik.first.id;
+
+          _updateUkony(snapshot.data!);
+        });
+      },
+    );
+  }
+
+  Widget _buildRowItem({
+    required String caption,
+    required Widget widget,
+    double horizontalSpacing = 10.0, // Mezera mezi popiskem a widgetem
+    double verticalSpacing = 20.0, // Mezera pod celým řádkem
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: verticalSpacing.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 250.w,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: _captionText(caption),
+            ),
+          ),
+
+          SizedBox(width: horizontalSpacing.w),
+          SizedBox(
+            width: 300.w,
+            child: Align(alignment: Alignment.centerLeft, child: widget),
+          ),
+        ],
       ),
     );
   }

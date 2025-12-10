@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
+import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 
 class Rezervace {
@@ -52,6 +54,7 @@ class Rezervace {
     return {
       "ID_rezervace": id,
       "id_kadernika": kadernik.id,
+      "id_uzivatele": AuthService().currentUser!.uid,
       "ids_ukony": getKadernickeUkonyIdsFromListOfKadernickeUkony(),
       "DatumCas_rezervace": datumCasRezervace,
       "DelkaTrvaniMinuty_rezervace": delkaTrvani,

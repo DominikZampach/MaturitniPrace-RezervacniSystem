@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
@@ -170,6 +171,26 @@ class DatabaseService {
   }
 
   //? Tvorba nové rezervace
+  Future<bool> createNewRezervace(Rezervace rezervace) async {
+    DocumentReference newDocRef = firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .doc();
+    String newId = newDocRef.id;
+
+    rezervace.id = newId;
+
+    Map<String, dynamic> json = rezervace.toJson();
+
+    try {
+      newDocRef.set(json);
+      print("Nová rezervace $newId vytvořena.");
+      ToastClass.showToastSnackbar(message: "Rezervace úspěšně vytvořena");
+      return true;
+    } catch (e) {
+      print("Chyba při tvorbě nové rezervace: $e");
+      return false;
+    }
+  }
 
   //? Tvorba nového kadeřníka
 

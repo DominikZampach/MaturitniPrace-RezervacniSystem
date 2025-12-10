@@ -5,7 +5,7 @@ class KadernickyUkon {
   late String popis;
   late String typStrihuPodlePohlavi;
   late List<String> odkazyFotografiiPrikladu;
-  late double cena;
+  late int cena;
 
   KadernickyUkon({
     required this.id,
