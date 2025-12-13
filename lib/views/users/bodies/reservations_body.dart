@@ -9,7 +9,7 @@ import 'package:rezervacni_system_maturita/views/users/create_reservation_dialog
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/reservation_card.dart';
 
-class ReservationsBody extends StatelessWidget {
+class ReservationsBody extends StatefulWidget {
   final double screenHeight;
   final double screenWidth;
   const ReservationsBody({
@@ -18,6 +18,11 @@ class ReservationsBody extends StatelessWidget {
     required this.screenWidth,
   });
 
+  @override
+  State<ReservationsBody> createState() => _ReservationsBodyState();
+}
+
+class _ReservationsBodyState extends State<ReservationsBody> {
   Future<_NactenaData> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
@@ -61,7 +66,7 @@ class ReservationsBody extends StatelessWidget {
 
         return Container(
           color: Colors.white,
-          height: screenHeight,
+          height: widget.screenHeight,
           width: double.infinity,
           child: ListView(
             padding: EdgeInsets.zero,
@@ -88,8 +93,8 @@ class ReservationsBody extends StatelessWidget {
                 (rezervace) => ReservationCard(
                   key: ValueKey(rezervace.id),
                   rezervace: rezervace,
-                  screenWidth: screenWidth,
-                  screenHeight: screenHeight,
+                  screenWidth: widget.screenWidth,
+                  screenHeight: widget.screenHeight,
                   fontSize: reservationCardFontSize,
                 ),
               ),
@@ -111,8 +116,8 @@ class ReservationsBody extends StatelessWidget {
                 (rezervace) => ReservationCard(
                   key: ValueKey(rezervace.id),
                   rezervace: rezervace,
-                  screenWidth: screenWidth,
-                  screenHeight: screenHeight,
+                  screenWidth: widget.screenWidth,
+                  screenHeight: widget.screenHeight,
                   fontSize: reservationCardFontSize,
                 ),
               ),
@@ -158,11 +163,15 @@ class ReservationsBody extends StatelessWidget {
     double fontSize,
   ) {
     return ElevatedButton.icon(
-      onPressed: () {
-        showDialog(
+      onPressed: () async {
+        final dialogResult = await showDialog(
           context: context,
           builder: (BuildContext context) => CreateReservationDialog(),
         );
+        if (dialogResult) {
+          //? Provede se pouze pokud bylo vráceno true - to se děje pouze když uživatel vytvoří novou rezervace
+          setState(() {});
+        }
       },
       label: Text(
         "Create Reservation",

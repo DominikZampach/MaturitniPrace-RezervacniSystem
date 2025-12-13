@@ -256,7 +256,8 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
           );
 
           if (uspesneVytvoreni) {
-            Navigator.of(context).pop();
+            //? Vracím true, abych si pak v kódu mohl zjistit že jsem vytvořil novou rezervaci a je potřeba rebuildnout view
+            Navigator.of(context).pop(true);
           }
         }
       },
