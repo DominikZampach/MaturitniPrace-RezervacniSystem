@@ -28,10 +28,14 @@ class _ReservationsBodyState extends State<ReservationsBody> {
     final List<KadernickyUkon> vsechnyUkony = await dbService
         .getAllKadernickeUkony();
 
-    final List<Rezervace> historicalRezervace = await dbService
-        .getAllPastRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony);
-    final List<Rezervace> futureRezervace = await dbService
-        .getAllFutureRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony);
+    //? Future.wait provádí různé operace najednou! - zkracuje loading na polovinu
+    //TODO: Furt je potřeba ještě optimalizovat načítání!
+    final results = await Future.wait([
+      dbService.getAllPastRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony),
+      dbService.getAllFutureRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony),
+    ]);
+    final List<Rezervace> historicalRezervace = results[0];
+    final List<Rezervace> futureRezervace = results[1];
 
     return _NactenaData(
       historicalRezervace: historicalRezervace,

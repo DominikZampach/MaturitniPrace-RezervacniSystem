@@ -56,11 +56,18 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
   Future<CreateReservationLogic> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
-    final List<Kadernik> listAllKadernik = await dbService.getAllKadernici();
-    final List<KadernickyUkon> listAllKadernickyUkon = await dbService
-        .getAllKadernickeUkony();
-    final List<Rezervace> listAllFutureRezervace = await dbService
-        .getAllFutureRezervace();
+    //? Optimalizace výkonu
+    final results = await Future.wait([
+      dbService.getAllKadernici(),
+      dbService.getAllKadernickeUkony(),
+      dbService.getAllFutureRezervace(),
+    ]);
+
+    final List<Kadernik> listAllKadernik = results[0] as List<Kadernik>;
+    final List<KadernickyUkon> listAllKadernickyUkon =
+        results[1] as List<KadernickyUkon>;
+    final List<Rezervace> listAllFutureRezervace =
+        results[2] as List<Rezervace>;
 
     CreateReservationLogic logika = CreateReservationLogic(
       listAllKadernik: listAllKadernik,

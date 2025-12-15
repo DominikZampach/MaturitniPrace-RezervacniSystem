@@ -32,8 +32,14 @@ class _BrowseBodyState extends State<BrowseBody> {
   Future<_NactenaData> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
-    final List<Kadernik> listAllKadernici = await dbService.getAllKadernici();
-    final List<Hodnoceni> listAllHodnoceni = await dbService.getAllHodnoceni();
+    //? Optimalizace
+    final results = await Future.wait([
+      dbService.getAllKadernici(),
+      dbService.getAllHodnoceni(),
+    ]);
+
+    final List<Kadernik> listAllKadernici = results[0] as List<Kadernik>;
+    final List<Hodnoceni> listAllHodnoceni = results[1] as List<Hodnoceni>;
 
     return _NactenaData(
       listAllHodnoceni: listAllHodnoceni,

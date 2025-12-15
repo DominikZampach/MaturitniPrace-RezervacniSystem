@@ -20,9 +20,14 @@ class DashboardBody extends StatelessWidget {
   Future<_NactenaData> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
-    final Uzivatel uzivatel = await dbService.getUzivatel();
-    final Rezervace? rezervace = await dbService
-        .getNearestRezervaceOfCurrentUser();
+    //? Optimalizace
+    final results = await Future.wait([
+      dbService.getUzivatel(),
+      dbService.getNearestRezervaceOfCurrentUser(),
+    ]);
+
+    final Uzivatel uzivatel = results[0] as Uzivatel;
+    final Rezervace? rezervace = results[1] as Rezervace?;
 
     return _NactenaData(uzivatel: uzivatel, rezervace: rezervace);
   }
