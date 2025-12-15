@@ -69,8 +69,7 @@ class _BrowseBodyState extends State<BrowseBody> {
         //TODO: Tenhle list se bude měnit podle vybraných filtrů, řazení, ...
         List<Kadernik> listKadernikuProZobrazeni = [];
         listKadernikuProZobrazeni.addAll(listAllKadernici);
-        listKadernikuProZobrazeni.addAll(listAllKadernici);
-        listKadernikuProZobrazeni.addAll(listAllKadernici);
+
         listKadernikuProZobrazeni.addAll(listAllKadernici);
         listKadernikuProZobrazeni.addAll(listAllKadernici);
 
@@ -112,7 +111,7 @@ class _BrowseBodyState extends State<BrowseBody> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 20.w,
                       mainAxisSpacing: 20.h,
-                      childAspectRatio: 4.5,
+                      childAspectRatio: 5.5,
                     ),
                     itemCount: listKadernikuProZobrazeni.length,
                     itemBuilder: (BuildContext context, int index) {
