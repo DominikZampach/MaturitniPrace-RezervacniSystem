@@ -49,6 +49,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
   @override
   void initState() {
     super.initState();
+    //? Tohle zajistí, aby se to provedlou pouze 1x, ne při každém setState()
     futureLogika = _nacteniDat();
   }
 

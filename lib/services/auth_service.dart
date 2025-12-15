@@ -57,8 +57,6 @@ class AuthService {
       }
 
       ToastClass.showToastSnackbar(message: message);
-    } catch (e) {
-      ToastClass.showToastSnackbar(message: "An unexpected error occurred: $e");
     }
   }
 

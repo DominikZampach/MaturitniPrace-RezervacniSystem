@@ -336,8 +336,6 @@ class DatabaseService {
     return kadernici;
   }
 
-  //? Získání oblíbených kadeřníků - možná nebude potřeba a budu filtrovat ty všechny co už mám
-
   //? Získání všech Kadeřnických úkonů
   Future<List<KadernickyUkon>> getAllKadernickeUkony() async {
     final query = await firestore
@@ -359,5 +357,26 @@ class DatabaseService {
     }
 
     return ukony;
+  }
+
+  //? Získání všech hodnocení
+  Future<List<Hodnoceni>> getAllHodnoceni() async {
+    final query = await firestore.collection(HODNOCENI_COLLECTION_REF).get();
+
+    if (query.docs.isEmpty) {
+      print("Žádná hodnocení v databázi!");
+      return [];
+    }
+
+    List<Hodnoceni> hodnoceni = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      Hodnoceni ukon = Hodnoceni.fromJson(data);
+      hodnoceni.add(ukon);
+    }
+
+    return hodnoceni;
   }
 }

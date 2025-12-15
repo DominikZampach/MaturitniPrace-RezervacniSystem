@@ -285,11 +285,6 @@ class NextAppointmentLocationColumn extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 12.sp),
                   ),
-                  Text(
-                    nearestRezervace!.kadernik.lokace.mesto,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12.sp),
-                  ),
                 ],
               ),
               Row(

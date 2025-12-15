@@ -33,7 +33,10 @@ class _MainBodyState extends State<MainBody> {
         screenWidth: widget.screenWidth,
       );
     } else if (widget.selectedIndex == 2) {
-      return BrowseBody();
+      return BrowseBody(
+        screenHeight: widget.screenHeight,
+        screenWidth: widget.screenWidth,
+      );
     } else if (widget.selectedIndex == 3) {
       return SettingsBody();
     } else {
