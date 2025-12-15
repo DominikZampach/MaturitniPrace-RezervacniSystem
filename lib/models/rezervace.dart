@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/intl.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
@@ -7,7 +6,6 @@ import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 
 class Rezervace {
-  //? Nepotřebuji ani idUzivatele zapisovat, budu si brát už filtrované rezervace pouze tohoto uživatele!
   late String id;
   late Kadernik kadernik;
   late List<KadernickyUkon> kadernickeUkony;
@@ -27,14 +25,20 @@ class Rezervace {
     required this.celkovaCena,
   });
 
-  static Future<Rezervace> fromJson(Map<String, Object?> json) async {
+  static Future<Rezervace> fromJson(
+    Map<String, Object?> json, {
+    List<KadernickyUkon> vsechnyUkony = const [],
+  }) async {
     //? Řešení s použitím async + await pro získání objektů z databází
     final kadernik = await DatabaseService().getKadernik(
       json["id_kadernika"]! as String,
     );
 
-    final kadernickeUkony = await convertToListOfKadernickeUkony(
+    List<KadernickyUkon> kadernickeUkony;
+
+    kadernickeUkony = await convertToListOfKadernickeUkony(
       (json["ids_ukony"]! as List).cast<String>(),
+      vsechnyUkony,
     );
 
     return Rezervace(
@@ -66,17 +70,30 @@ class Rezervace {
 
   static Future<List<KadernickyUkon>> convertToListOfKadernickeUkony(
     List<String> idsKadernickeUkony,
+    List<KadernickyUkon> vsechnyUkony,
   ) async {
     DatabaseService dbService = DatabaseService();
     KadernickyUkon ukon;
     List<KadernickyUkon> kadernickeUkony = [];
 
-    for (String id in idsKadernickeUkony) {
-      print("ID ukonu: $id");
-      ukon = await dbService.getKadernickyUkon(id);
-      kadernickeUkony.add(ukon);
+    if (vsechnyUkony.isEmpty) {
+      for (String id in idsKadernickeUkony) {
+        ukon = await dbService.getKadernickyUkon(id);
+        print("Proveden požadavek na získání kadeřnického úkonu $id");
+        kadernickeUkony.add(ukon);
+      }
+    } else {
+      //? Tohle se stane když .fromJson dostane list všech Kadeřnických úkonů - snižuje to náročnost na databázi
+      for (String id in idsKadernickeUkony) {
+        for (KadernickyUkon kadernickyUkon in vsechnyUkony) {
+          if (id == kadernickyUkon.id) {
+            kadernickeUkony.add(kadernickyUkon);
+          }
+        }
+      }
     }
 
+    print("Počet kadeřnických úkonů v rezervaci: ${kadernickeUkony.length}");
     return kadernickeUkony;
   }
 

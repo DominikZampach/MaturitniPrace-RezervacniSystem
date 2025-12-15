@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
-import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/users/create_reservation_dialog.dart';
@@ -26,10 +25,13 @@ class _ReservationsBodyState extends State<ReservationsBody> {
   Future<_NactenaData> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
+    final List<KadernickyUkon> vsechnyUkony = await dbService
+        .getAllKadernickeUkony();
+
     final List<Rezervace> historicalRezervace = await dbService
-        .getAllPastRezervaceOfCurrentUser();
+        .getAllPastRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony);
     final List<Rezervace> futureRezervace = await dbService
-        .getAllFutureRezervaceOfCurrentUser();
+        .getAllFutureRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony);
 
     return _NactenaData(
       historicalRezervace: historicalRezervace,

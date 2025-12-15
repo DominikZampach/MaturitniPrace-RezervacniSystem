@@ -80,7 +80,6 @@ class DatabaseService {
 
     if (document.data() != null) {
       final data = document.data() as Map<String, Object?>;
-      print("Data z dokumentu $uid: $data");
       KadernickyUkon ukon = KadernickyUkon.fromJson(data);
       return ukon;
     }
@@ -256,8 +255,9 @@ class DatabaseService {
   }
 
   //? Získání všech historických rezervací současného uživatele
-  Future<List<Rezervace>> getAllPastRezervaceOfCurrentUser() async {
-    // Funguje dobře
+  Future<List<Rezervace>> getAllPastRezervaceOfCurrentUser({
+    List<KadernickyUkon> vsechnyUkony = const [],
+  }) async {
     final DateTime now = DateTime.now();
     final Timestamp nowTimestamp = Timestamp.fromDate(now);
 
@@ -278,15 +278,22 @@ class DatabaseService {
     for (var document in query.docs) {
       final data = document.data();
 
-      Rezervace rezervace = await Rezervace.fromJson(data);
+      Rezervace rezervace = await Rezervace.fromJson(
+        data,
+        vsechnyUkony: vsechnyUkony,
+      );
       rezervaceList.add(rezervace);
     }
 
-    return rezervaceList;
+    print("Počet historických rezervací: ${rezervaceList.length}");
+
+    return rezervaceList.reversed.toList();
   }
 
   //? Získání všech budoucích rezervací uživatele
-  Future<List<Rezervace>> getAllFutureRezervaceOfCurrentUser() async {
+  Future<List<Rezervace>> getAllFutureRezervaceOfCurrentUser({
+    List<KadernickyUkon> vsechnyUkony = const [],
+  }) async {
     // Funguje dobře
     final DateTime now = DateTime.now();
     final Timestamp nowTimestamp = Timestamp.fromDate(now);
@@ -308,10 +315,14 @@ class DatabaseService {
     for (var document in query.docs) {
       final data = document.data();
 
-      Rezervace rezervace = await Rezervace.fromJson(data);
+      Rezervace rezervace = await Rezervace.fromJson(
+        data,
+        vsechnyUkony: vsechnyUkony,
+      );
       rezervaceList.add(rezervace);
     }
 
+    print("Počet budoucích rezervací: ${rezervaceList.length}");
     return rezervaceList;
   }
 

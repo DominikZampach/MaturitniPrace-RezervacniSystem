@@ -33,6 +33,7 @@ class HairdresserCard extends StatelessWidget {
   }
 
   double captionFontSize = 9.sp;
+  double mainNameFontSize = 12.sp;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,53 @@ class HairdresserCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(flex: 2, child: Container(color: Colors.blue)),
+            Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10.h,
+                    horizontal: 10.w,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            kadernik.getFullNameString(),
+                            style: TextStyle(
+                              fontSize: mainNameFontSize,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            kadernik.popisek,
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: captionFontSize,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.location_pin, size: captionFontSize),
+                          Text(
+                            "${kadernik.lokace.nazev}, ${kadernik.lokace.mesto}",
+                            style: TextStyle(fontSize: captionFontSize),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             Expanded(
               flex: 1,
               child: Container(
@@ -61,7 +108,7 @@ class HairdresserCard extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.h),
                       child: SizedBox(
-                        height: 100.h,
+                        height: 80.h,
                         child: ClipOval(
                           child: FittedBox(
                             fit: BoxFit.fitHeight,

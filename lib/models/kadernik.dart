@@ -71,7 +71,7 @@ class Kadernik {
   }
 
   String getFullNameString() {
-    return "$jmeno '$prezdivka' $prijmeni";
+    return "$jmeno \"$prezdivka\" $prijmeni";
   }
 
   Map<String, double> getAllKadernickyUkonAndPrice() {

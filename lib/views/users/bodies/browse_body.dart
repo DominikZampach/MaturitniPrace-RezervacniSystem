@@ -73,11 +73,6 @@ class _BrowseBodyState extends State<BrowseBody> {
         listKadernikuProZobrazeni.addAll(listAllKadernici);
         listKadernikuProZobrazeni.addAll(listAllKadernici);
         listKadernikuProZobrazeni.addAll(listAllKadernici);
-        listKadernikuProZobrazeni.addAll(listAllKadernici);
-        listKadernikuProZobrazeni.addAll(listAllKadernici);
-        listKadernikuProZobrazeni.addAll(listAllKadernici);
-        listKadernikuProZobrazeni.addAll(listAllKadernici);
-        listKadernikuProZobrazeni.addAll(listAllKadernici);
 
         print(
           "Počet kadeřníků v listKadernikuListView: ${listKadernikuProZobrazeni.length}",
@@ -117,7 +112,7 @@ class _BrowseBodyState extends State<BrowseBody> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 20.w,
                       mainAxisSpacing: 20.h,
-                      childAspectRatio: 4.0,
+                      childAspectRatio: 4.5,
                     ),
                     itemCount: listKadernikuProZobrazeni.length,
                     itemBuilder: (BuildContext context, int index) {
