@@ -28,7 +28,7 @@ class _ReservationsBodyState extends State<ReservationsBody> {
     final List<KadernickyUkon> vsechnyUkony = await dbService
         .getAllKadernickeUkony();
 
-    //? Future.wait provádí různé operace najednou! - zkracuje loading na polovinu
+    //? Future.wait provádí různé operace najednou! - zkracuje loading
     //TODO: Furt je potřeba ještě optimalizovat načítání!
     final results = await Future.wait([
       dbService.getAllPastRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony),

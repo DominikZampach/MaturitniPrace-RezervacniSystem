@@ -216,13 +216,16 @@ class DatabaseService {
     }
 
     List<Rezervace> rezervaceList = [];
+    List<Future<Rezervace>> listFutureRezervace = [];
 
     for (var document in query.docs) {
       final data = document.data();
 
-      Rezervace rezervace = await Rezervace.fromJson(data);
-      rezervaceList.add(rezervace);
+      Future<Rezervace> rezervace = Rezervace.fromJson(data);
+      listFutureRezervace.add(rezervace);
     }
+
+    rezervaceList = await Future.wait(listFutureRezervace);
 
     return rezervaceList;
   }
@@ -274,16 +277,19 @@ class DatabaseService {
     }
 
     List<Rezervace> rezervaceList = [];
+    List<Future<Rezervace>> listFutureRezervace = [];
 
     for (var document in query.docs) {
       final data = document.data();
 
-      Rezervace rezervace = await Rezervace.fromJson(
+      Future<Rezervace> futureRezervace = Rezervace.fromJson(
         data,
         vsechnyUkony: vsechnyUkony,
       );
-      rezervaceList.add(rezervace);
+      listFutureRezervace.add(futureRezervace);
     }
+
+    rezervaceList = await Future.wait(listFutureRezervace);
 
     print("Počet historických rezervací: ${rezervaceList.length}");
 
@@ -311,16 +317,19 @@ class DatabaseService {
     }
 
     List<Rezervace> rezervaceList = [];
+    List<Future<Rezervace>> listFutureRezervace = [];
 
     for (var document in query.docs) {
       final data = document.data();
 
-      Rezervace rezervace = await Rezervace.fromJson(
+      Future<Rezervace> futureRezervace = Rezervace.fromJson(
         data,
         vsechnyUkony: vsechnyUkony,
       );
-      rezervaceList.add(rezervace);
+      listFutureRezervace.add(futureRezervace);
     }
+
+    rezervaceList = await Future.wait(listFutureRezervace);
 
     print("Počet budoucích rezervací: ${rezervaceList.length}");
     return rezervaceList;
@@ -336,13 +345,16 @@ class DatabaseService {
     }
 
     List<Kadernik> kadernici = [];
+    List<Future<Kadernik>> listFutureKadernici = [];
 
     for (var document in query.docs) {
       final data = document.data();
 
-      Kadernik kadernik = await Kadernik.fromJson(data);
-      kadernici.add(kadernik);
+      Future<Kadernik> kadernik = Kadernik.fromJson(data);
+      listFutureKadernici.add(kadernik);
     }
+
+    kadernici = await Future.wait(listFutureKadernici);
 
     return kadernici;
   }
