@@ -3,12 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
+import 'package:rezervacni_system_maturita/views/users/inspect%20on%20fullscreen/inspect_kadernik.dart';
 
 class HairdresserCard extends StatelessWidget {
   final Kadernik kadernik;
   final List<Hodnoceni> vsechnaHodnoceni;
   late final List<Hodnoceni> kadernikovaHodnoceni;
   late final double hodnoceniKadernika;
+
   HairdresserCard({
     super.key,
     required this.kadernik,
@@ -38,8 +40,15 @@ class HairdresserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        //TODO
+      onTap: () async {
+        final dialogResult = await showDialog(
+          context: context,
+          builder: (BuildContext context) => InspectKadernik(
+            kadernik: kadernik,
+            hodnoceniKadernika: hodnoceniKadernika,
+            pocetHodnoceniKadernika: kadernikovaHodnoceni.length,
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(

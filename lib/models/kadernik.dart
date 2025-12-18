@@ -20,6 +20,8 @@ class Kadernik {
   late Map<String, int> ukonyCeny;
   late List<String> odkazyFotografiiPrace;
 
+  List<KadernickyUkon> kadernickeUkonySCenami = [];
+
   Kadernik({
     required this.id,
     required this.jmeno,
@@ -74,8 +76,31 @@ class Kadernik {
     return "$jmeno \"$prezdivka\" $prijmeni";
   }
 
-  Map<String, double> getAllKadernickyUkonAndPrice() {
-    //TODO
-    return {};
+  Future<List<KadernickyUkon>> getAllKadernickyUkonAndPrice() async {
+    //? Pokud už tato metoda byla volána, tak nepotřebujeme znova zjišťovat data a prostě si vezmeme ty, co jsou uložené v objektu
+    if (kadernickeUkonySCenami.isNotEmpty) {
+      return kadernickeUkonySCenami;
+    }
+
+    List<Future<KadernickyUkon>> kadernickeUkonyFutures = [];
+    List<KadernickyUkon> kadernickeUkonyList = [];
+    List<KadernickyUkon> kadernickeUkonyListSCenami = [];
+
+    DatabaseService dbService = DatabaseService();
+
+    for (var ukonId in ukonyCeny.keys) {
+      kadernickeUkonyFutures.add(dbService.getKadernickyUkon(ukonId));
+    }
+
+    kadernickeUkonyList = await Future.wait(kadernickeUkonyFutures);
+
+    for (KadernickyUkon ukon in kadernickeUkonyList) {
+      ukon.cena = ukonyCeny[ukon.id]!;
+      kadernickeUkonyListSCenami.add(ukon);
+    }
+
+    kadernickeUkonySCenami = kadernickeUkonyListSCenami;
+
+    return kadernickeUkonyListSCenami;
   }
 }

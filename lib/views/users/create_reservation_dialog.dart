@@ -9,7 +9,6 @@ import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
-import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 
 class CreateReservationDialog extends StatefulWidget {
   const CreateReservationDialog({super.key});
@@ -123,7 +122,6 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Idk jestli to chci Dialog nebo Dialog.fullscreen (ještě se musím rozhodnout)
     return Dialog(
       backgroundColor: Consts.background,
       alignment: Alignment.center,
