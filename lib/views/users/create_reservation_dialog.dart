@@ -19,9 +19,6 @@ class CreateReservationDialog extends StatefulWidget {
 }
 
 class _CreateReservationDialogState extends State<CreateReservationDialog> {
-  final double headingFontSize = 15.sp;
-  final double normalTextFontSize = 11.sp;
-
   late Future<CreateReservationLogic> futureLogika;
 
   String? _dropdownValueLokace;
@@ -122,6 +119,10 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
   @override
   Widget build(BuildContext context) {
+    //! Vždy je potřeba dát tyhle velikosti závislé na obrazovce do buildu, aby se vždy refreshnuli
+    final double headingFontSize = 15.sp;
+    final double normalTextFontSize = 11.sp;
+
     return Dialog(
       backgroundColor: Consts.background,
       alignment: Alignment.center,
@@ -130,7 +131,10 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
         borderRadius: BorderRadiusGeometry.circular(10.r),
       ),
       constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width * 0.6,
+        minHeight: MediaQuery.of(context).size.height * 0.9,
+        minWidth: MediaQuery.of(context).size.width * 0.8,
+        maxWidth: MediaQuery.of(context).size.width * 0.8,
+        maxHeight: MediaQuery.of(context).size.height * 0.9,
       ),
 
       child: FutureBuilder(
@@ -163,79 +167,107 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
           _updateUkony(snapshot.data!);
 
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Create Reservation",
-                    style: TextStyle(
-                      fontSize: headingFontSize,
-                      fontWeight: FontWeight.bold,
+          return SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Create Reservation",
+                      style: TextStyle(
+                        fontSize: headingFontSize,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
 
-                  SizedBox(height: 20.h),
+                    SizedBox(height: 20.h),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min, // Důležité pro Dialog
-                    children: [
-                      _buildRowItem(
-                        caption: "Hair salon:",
-                        widget: _dropdownButtonLokace(snapshot),
-                      ),
-
-                      _buildRowItem(
-                        caption: "Hairdresser:",
-                        widget: _dropdownButtonKadernik(snapshot),
-                      ),
-
-                      _buildRowItem(
-                        caption: "Cut type:",
-                        widget: _radioGroupGender(snapshot),
-                      ),
-
-                      _buildRowItem(
-                        caption: "Actions:",
-                        widget: SizedBox(
-                          width: 300,
-                          height: 70,
-                          child: _multiDropdownButtonUkony(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min, // Důležité pro Dialog
+                      children: [
+                        _buildRowItem(
+                          caption: "Hair salon:",
+                          widget: _dropdownButtonLokace(
+                            snapshot,
+                            normalTextFontSize,
+                          ),
+                          normalTextFontSize: normalTextFontSize,
                         ),
-                        verticalSpacing: 0, // Nechceme extra mezeru uvnitř Boxu
-                      ),
 
-                      _buildRowItem(
-                        caption: "Estimated price:",
-                        widget: _textTotalPrice(),
-                      ),
+                        _buildRowItem(
+                          caption: "Hairdresser:",
+                          widget: _dropdownButtonKadernik(
+                            snapshot,
+                            normalTextFontSize,
+                          ),
+                          normalTextFontSize: normalTextFontSize,
+                        ),
 
-                      _buildRowItem(
-                        caption: "Estimated length of all actions:",
-                        widget: _textTotalTime(),
-                      ),
+                        _buildRowItem(
+                          caption: "Cut type:",
+                          widget: _radioGroupGender(
+                            snapshot,
+                            normalTextFontSize,
+                          ),
+                          normalTextFontSize: normalTextFontSize,
+                        ),
 
-                      _buildRowItem(
-                        caption: "Select available date:",
-                        widget: _elevatedButtonDatum(snapshot, context),
-                      ),
+                        _buildRowItem(
+                          caption: "Actions:",
+                          widget: SizedBox(
+                            width: 300,
+                            height: 70,
+                            child: _multiDropdownButtonUkony(),
+                          ),
+                          verticalSpacing:
+                              0, // Nechceme extra mezeru uvnitř Boxu
+                          normalTextFontSize: normalTextFontSize,
+                        ),
 
-                      _buildRowItem(
-                        caption: "Select available time:",
-                        widget: _dropdownButtonCas(),
-                      ),
+                        _buildRowItem(
+                          caption: "Estimated price:",
+                          widget: _textTotalPrice(normalTextFontSize),
+                          normalTextFontSize: normalTextFontSize,
+                        ),
 
-                      _buildRowItem(caption: "Note:", widget: _textFieldNote()),
-                    ],
-                  ),
+                        _buildRowItem(
+                          caption: "Estimated length of all actions:",
+                          widget: _textTotalTime(normalTextFontSize),
+                          normalTextFontSize: normalTextFontSize,
+                        ),
 
-                  SizedBox(height: 20.h),
+                        _buildRowItem(
+                          caption: "Select available date:",
+                          widget: _elevatedButtonDatum(
+                            snapshot,
+                            context,
+                            normalTextFontSize,
+                          ),
+                          normalTextFontSize: normalTextFontSize,
+                        ),
 
-                  _elevatedButtonCreate(snapshot.data!),
-                ],
+                        _buildRowItem(
+                          caption: "Select available time:",
+                          widget: _dropdownButtonCas(normalTextFontSize),
+                          normalTextFontSize: normalTextFontSize,
+                        ),
+
+                        _buildRowItem(
+                          caption: "Note:",
+                          widget: _textFieldNote(normalTextFontSize),
+                          normalTextFontSize: normalTextFontSize,
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    _elevatedButtonCreate(snapshot.data!, headingFontSize),
+                  ],
+                ),
               ),
             ),
           );
@@ -244,7 +276,10 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
     );
   }
 
-  ElevatedButton _elevatedButtonCreate(CreateReservationLogic logika) {
+  ElevatedButton _elevatedButtonCreate(
+    CreateReservationLogic logika,
+    double headingFontSize,
+  ) {
     return ElevatedButton(
       onPressed: () async {
         if ((_dropdownValueLokace != null) &&
@@ -263,7 +298,9 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
           if (uspesneVytvoreni) {
             //? Vracím true, abych si pak v kódu mohl zjistit že jsem vytvořil novou rezervaci a je potřeba rebuildnout view
-            Navigator.of(context).pop(true);
+            if (mounted) {
+              Navigator.of(context).pop(true);
+            }
           }
         }
       },
@@ -282,7 +319,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
     );
   }
 
-  Container _textFieldNote() {
+  Container _textFieldNote(double normalTextFontSize) {
     return Container(
       width: 220.w,
       decoration: BoxDecoration(
@@ -300,7 +337,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
     );
   }
 
-  DropdownButton<String> _dropdownButtonCas() {
+  DropdownButton<String> _dropdownButtonCas(double normalTextFontSize) {
     return DropdownButton(
       value: _dropdownValueCasRezervace,
       borderRadius: BorderRadius.circular(15.r),
@@ -324,6 +361,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
   ElevatedButton _elevatedButtonDatum(
     AsyncSnapshot<CreateReservationLogic> snapshot,
     BuildContext context,
+    double normalTextFontSize,
   ) {
     return ElevatedButton(
       onPressed: () async {
@@ -376,7 +414,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
     );
   }
 
-  Text _textTotalTime() {
+  Text _textTotalTime(double normalTextFontSize) {
     return Text(
       "$totalTime min",
       style: TextStyle(
@@ -386,7 +424,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
     );
   }
 
-  Text _textTotalPrice() {
+  Text _textTotalPrice(double normalTextFontSize) {
     return Text(
       "$totalPrice Kč",
       style: TextStyle(
@@ -430,6 +468,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
   RadioGroup<String> _radioGroupGender(
     AsyncSnapshot<CreateReservationLogic> snapshot,
+    double normalTextFontSize,
   ) {
     return RadioGroup<String>(
       groupValue: _radioValueType,
@@ -462,6 +501,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
   DropdownButton<String> _dropdownButtonKadernik(
     AsyncSnapshot<CreateReservationLogic> snapshot,
+    double normalTextFontSize,
   ) {
     return DropdownButton(
       value: _dropdownValueKadernik,
@@ -488,6 +528,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
   DropdownButton<String> _dropdownButtonLokace(
     AsyncSnapshot<CreateReservationLogic> snapshot,
+    double normalTextFontSize,
   ) {
     return DropdownButton(
       value: _dropdownValueLokace,
@@ -520,6 +561,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
   Widget _buildRowItem({
     required String caption,
     required Widget widget,
+    required double normalTextFontSize,
     double horizontalSpacing = 10.0, // Mezera mezi popiskem a widgetem
     double verticalSpacing = 20.0, // Mezera pod celým řádkem
   }) {
@@ -533,7 +575,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
             width: 250.w,
             child: Align(
               alignment: Alignment.centerRight,
-              child: _captionText(caption),
+              child: _captionText(caption, normalTextFontSize),
             ),
           ),
 
@@ -547,7 +589,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
     );
   }
 
-  Text _captionText(String text) {
+  Text _captionText(String text, double normalTextFontSize) {
     return Text(
       text,
       style: TextStyle(

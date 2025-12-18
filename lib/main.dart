@@ -23,13 +23,14 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(980, 776), //Velikost testovacího zařízení
       minTextAdapt: true,
-      splitScreenMode: false,
+      splitScreenMode: true,
+      rebuildFactor: (old, data) => old.size != data.size, //RebuildFactors.all
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: true,
           title: "BookMyCut",
           theme: ThemeData(
-            fontFamily: "Noto Sans",
+            //? Font jsem smazal možná dát nový, teď už funkční?
             useMaterial3: true,
             colorScheme: Consts.colorScheme,
           ),

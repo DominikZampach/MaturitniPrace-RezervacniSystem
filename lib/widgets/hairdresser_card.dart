@@ -106,12 +106,11 @@ class HairdresserCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.h),
-                    child: SizedBox(
-                      height: 60.h,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.h),
                       child: ClipRRect(
-                        borderRadius: BorderRadiusGeometry.circular(15.r),
+                        borderRadius: BorderRadiusGeometry.circular(10.r),
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: Image.network(kadernik.odkazFotografie),
@@ -119,9 +118,12 @@ class HairdresserCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(
-                    "Avg. Rating: $hodnoceniKadernika*",
-                    style: TextStyle(fontSize: captionFontSize),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    child: Text(
+                      "Avg. Rating: $hodnoceniKadernika*",
+                      style: TextStyle(fontSize: captionFontSize),
+                    ),
                   ),
                 ],
               ),

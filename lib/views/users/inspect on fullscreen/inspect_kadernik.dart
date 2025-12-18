@@ -21,10 +21,6 @@ class InspectKadernik extends StatefulWidget {
 }
 
 class _InspectKadernikState extends State<InspectKadernik> {
-  final double headingFontSize = 15.sp;
-  final double smallHeadingFontSize = 13.sp;
-  final double normalTextFontSize = 11.sp;
-
   late Future<List<KadernickyUkon>> kadernickeUkonySCenamiFuture;
 
   @override
@@ -36,6 +32,11 @@ class _InspectKadernikState extends State<InspectKadernik> {
 
   @override
   Widget build(BuildContext context) {
+    final double headingFontSize = 15.sp;
+    final double smallHeadingFontSize = 13.sp;
+    final double normalTextFontSize = 11.sp;
+    final double smallerTextFontSize = 10.sp;
+
     return FutureBuilder(
       future: kadernickeUkonySCenamiFuture,
       builder: (context, snapshot) {
@@ -58,104 +59,123 @@ class _InspectKadernikState extends State<InspectKadernik> {
             borderRadius: BorderRadiusGeometry.circular(10.r),
           ),
           constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height * 0.9,
+            minWidth: MediaQuery.of(context).size.width * 0.8,
             maxWidth: MediaQuery.of(context).size.width * 0.8,
+            maxHeight: MediaQuery.of(context).size.height * 0.9,
           ),
 
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _nameDescriptionFavouriteStarStack(),
+          child: SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, //? Možná dát pryč
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    _nameDescriptionFavouriteStarStack(
+                      headingFontSize,
+                      normalTextFontSize,
+                    ),
 
-                  SizedBox(height: 30.h),
+                    SizedBox(height: 30.h),
 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          //color: Colors.red,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _services(snapshot.data!),
-                                  _rating(),
-                                ],
-                              ),
-                            ],
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Container(
+                            //color: Colors.red,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _services(
+                                      snapshot.data!,
+                                      smallHeadingFontSize,
+                                      normalTextFontSize,
+                                      smallerTextFontSize,
+                                    ),
+                                    _rating(
+                                      smallHeadingFontSize,
+                                      normalTextFontSize,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          //color: Colors.blue,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 20.h),
-                              _kaderniksPhoto(),
-                              SizedBox(height: 20.h),
-                              Text(
-                                "Location:",
-                                style: TextStyle(
-                                  fontSize: headingFontSize,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              Text(
-                                widget.kadernik.lokace.nazev,
-                                style: TextStyle(
-                                  fontSize: normalTextFontSize,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              SizedBox(height: 10.h),
-                              Text(
-                                "Address:",
-                                style: TextStyle(
-                                  fontSize: normalTextFontSize,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text(
-                                "${widget.kadernik.lokace.adresa}\n${widget.kadernik.lokace.psc}-${widget.kadernik.lokace.mesto}",
-                                style: TextStyle(fontSize: normalTextFontSize),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: 20.h),
-                              ElevatedButton(
-                                onPressed: () {
-                                  //TODO!
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: WidgetStatePropertyAll(
-                                    Consts.secondary,
-                                  ),
-                                ),
-                                child: Text(
-                                  "Book now",
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            //color: Colors.blue,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 20.h),
+                                _kaderniksPhoto(),
+                                SizedBox(height: 20.h),
+                                Text(
+                                  "Location:",
                                   style: TextStyle(
-                                    fontSize: smallHeadingFontSize,
-                                    color: Colors.black,
+                                    fontSize: headingFontSize,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  widget.kadernik.lokace.nazev,
+                                  style: TextStyle(
+                                    fontSize: normalTextFontSize,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(height: 10.h),
+                                Text(
+                                  "Address:",
+                                  style: TextStyle(
+                                    fontSize: normalTextFontSize,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  "${widget.kadernik.lokace.adresa}\n${widget.kadernik.lokace.psc}-${widget.kadernik.lokace.mesto}",
+                                  style: TextStyle(
+                                    fontSize: normalTextFontSize,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 20.h),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    //TODO!
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStatePropertyAll(
+                                      Consts.secondary,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Book now",
+                                    style: TextStyle(
+                                      fontSize: smallHeadingFontSize,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -164,10 +184,10 @@ class _InspectKadernikState extends State<InspectKadernik> {
     );
   }
 
-  SizedBox _kaderniksPhoto() {
+  Widget _kaderniksPhoto() {
     return SizedBox(
-      width: 160.w,
-      height: 300.h,
+      //width: MediaQuery.of(context).size.width * 0.2,
+      height: MediaQuery.of(context).size.height * 0.3,
       child: ClipRRect(
         borderRadius: BorderRadiusGeometry.circular(10.r),
         child: FittedBox(
@@ -178,39 +198,66 @@ class _InspectKadernikState extends State<InspectKadernik> {
     );
   }
 
-  Expanded _services(List<KadernickyUkon> kadernickeUkonySCenami) {
+  Expanded _services(
+    List<KadernickyUkon> kadernickeUkonySCenami,
+    double smallHeadingFontSize,
+    double normalTextFontSize,
+    double smallerTextFontSize,
+  ) {
+    ScrollController scrollerController = ScrollController();
+
     return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              "Services:",
-              style: TextStyle(
-                fontSize: smallHeadingFontSize,
-                fontWeight: FontWeight.w700,
+            Padding(
+              padding: EdgeInsets.only(left: 10.w),
+              child: Text(
+                "Services:",
+                style: TextStyle(
+                  fontSize: smallHeadingFontSize,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             SizedBox(height: 20.h),
             SizedBox(
-              height: 200.h,
-              child: ListView.builder(
-                itemCount: kadernickeUkonySCenami.length,
-                itemBuilder: (context, index) {
-                  final ukon = kadernickeUkonySCenami[index];
+              height: MediaQuery.of(context).size.height * 0.3,
+              //? Scrollbar by měl zajistit lepší zobrazení toho scrollovacího baru napravo
+              child: Scrollbar(
+                controller: scrollerController,
+                thumbVisibility: true,
+                trackVisibility: false,
+                thickness: 7.w,
+                radius: Radius.circular(10.r),
+                child: ListView.builder(
+                  controller: scrollerController,
+                  itemCount: kadernickeUkonySCenami.length,
+                  itemBuilder: (context, index) {
+                    final ukon = kadernickeUkonySCenami[index];
 
-                  return ListTile(
-                    title: Text(
-                      ukon.nazev,
-                      style: TextStyle(fontSize: normalTextFontSize),
-                    ),
-                    trailing: Text(
-                      "${ukon.cena} Kč",
-                      style: TextStyle(fontSize: normalTextFontSize),
-                    ),
-                  );
-                },
+                    return ListTile(
+                      title: Text(
+                        ukon.nazev,
+                        style: TextStyle(fontSize: normalTextFontSize),
+                      ),
+                      trailing: Text(
+                        "${ukon.cena} Kč",
+                        style: TextStyle(fontSize: normalTextFontSize),
+                      ),
+                      subtitle: Text(
+                        "Typ: ${ukon.getTypStrihu()}",
+                        style: TextStyle(fontSize: smallerTextFontSize),
+                      ),
+                      onTap: () {
+                        //TODO: Otevření Dialogu, kde budou informace a fotky úkonu
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ],
@@ -219,7 +266,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
     );
   }
 
-  Expanded _rating() {
+  Expanded _rating(double smallHeadingFontSize, double normalTextFontSize) {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -234,10 +281,19 @@ class _InspectKadernikState extends State<InspectKadernik> {
               ),
             ),
             SizedBox(height: 20.h),
-            Text(
-              "Average rating: ${widget.hodnoceniKadernika}",
-              style: TextStyle(fontSize: normalTextFontSize),
+            RichText(
+              text: TextSpan(
+                style: TextStyle(fontSize: normalTextFontSize),
+                children: [
+                  TextSpan(text: "Average rating: "),
+                  TextSpan(
+                    text: "${widget.hodnoceniKadernika}*",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
+            SizedBox(height: 10.h),
             Text(
               "Number of reviews: ${widget.pocetHodnoceniKadernika}",
               style: TextStyle(fontSize: normalTextFontSize),
@@ -248,7 +304,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
     );
   }
 
-  Text _description() {
+  Text _description(double normalTextFontSize) {
     return Text(
       widget.kadernik.popisek,
       style: TextStyle(
@@ -258,7 +314,10 @@ class _InspectKadernikState extends State<InspectKadernik> {
     );
   }
 
-  SizedBox _nameDescriptionFavouriteStarStack() {
+  SizedBox _nameDescriptionFavouriteStarStack(
+    double headingFontSize,
+    double normalTextFontSize,
+  ) {
     return SizedBox(
       width: double.infinity,
       child: Stack(
@@ -275,7 +334,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10.h),
-              _description(),
+              _description(normalTextFontSize),
             ],
           ),
 

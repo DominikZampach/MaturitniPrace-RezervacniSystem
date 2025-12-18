@@ -47,4 +47,12 @@ class KadernickyUkon {
   String toString() {
     return "$nazev - $cena Kč";
   }
+
+  String getTypStrihu() {
+    if (typStrihuPodlePohlavi == "male") {
+      return "Pánský";
+    } else {
+      return "Dámský";
+    }
+  }
 }
