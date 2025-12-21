@@ -148,6 +148,31 @@ class DatabaseService {
     return true;
   }
 
+  //? Uložení upraveného uživatele
+  Future<void> updateUzivatel(Uzivatel uzivatel) async {
+    //? Nevím jestli použít .update() nebo .set() - asi nakonecp použiju .set() pro jednoduchost, ikdyž to není nejoptimálnější
+    try {
+      await firestore
+          .collection(USERS_COLLECTION_REF)
+          .doc(uzivatel.userUID)
+          .set(uzivatel.toJson());
+    } catch (e) {
+      print("Chyba při ukládání uživatele pomocí .set(): $e");
+    }
+  }
+
+  //? Uložení upraveného Hodnocení
+  Future<void> updateHodnoceni(Hodnoceni hodnoceni) async {
+    try {
+      await firestore
+          .collection(HODNOCENI_COLLECTION_REF)
+          .doc(hodnoceni.id)
+          .set(hodnoceni.toJson());
+    } catch (e) {
+      print("Chyba při ukládání hodnocení pomocí .set(): $e");
+    }
+  }
+
   //? Tvorba nového uzivatele
   Future<void> createNewUzivatel(
     String jmeno,
@@ -188,6 +213,28 @@ class DatabaseService {
     } catch (e) {
       print("Chyba při tvorbě nové rezervace: $e");
       return false;
+    }
+  }
+
+  //? Tvorba nového hodnocení
+  Future<Hodnoceni?> createNewHodnoceni(Hodnoceni hodnoceni) async {
+    DocumentReference newDocRef = firestore
+        .collection(HODNOCENI_COLLECTION_REF)
+        .doc();
+
+    String newId = newDocRef.id;
+
+    hodnoceni.id = newId;
+
+    Map<String, dynamic> json = hodnoceni.toJson();
+
+    try {
+      newDocRef.set(json);
+      print("Nové hodnocení $newId vytvořena.");
+      return hodnoceni;
+    } catch (e) {
+      print("Chyba při tvorbě nového hodnocení: $e");
+      return null;
     }
   }
 
@@ -399,6 +446,26 @@ class DatabaseService {
       Hodnoceni ukon = Hodnoceni.fromJson(data);
       hodnoceni.add(ukon);
     }
+
+    return hodnoceni;
+  }
+
+  //? Zjištění, pokud existuje nějaký dokument Hodnoceni určitého kadeřníka, kde hodnotitel je uživatel
+  Future<Hodnoceni?> getHodnoceniOfSpecificKadernikByCurrentUzivatel(
+    String kadernikId,
+  ) async {
+    final query = await firestore
+        .collection(HODNOCENI_COLLECTION_REF)
+        .where('id_uzivatele', isEqualTo: instance.currentUser!.uid)
+        .where('id_kadernika', isEqualTo: kadernikId)
+        .get();
+
+    //? Pokud je výsledek empty - znamená to že neexistuje hodnocení tímto uživatelem = return null
+    if (query.docs.isEmpty) {
+      print("Neexistuje dokument Hodnoceni, který by odpovídal uživateli.");
+      return null;
+    }
+    Hodnoceni hodnoceni = Hodnoceni.fromJson(query.docs.first.data());
 
     return hodnoceni;
   }

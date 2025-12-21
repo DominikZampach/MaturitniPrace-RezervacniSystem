@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
+import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/widgets/hairdresser_card.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
@@ -9,10 +10,12 @@ import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 class BrowseBody extends StatefulWidget {
   final double screenWidth;
   final double screenHeight;
+  final Uzivatel uzivatel;
   const BrowseBody({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
+    required this.uzivatel,
   });
 
   @override
@@ -124,6 +127,7 @@ class _BrowseBodyState extends State<BrowseBody> {
                       return HairdresserCard(
                         kadernik: listKadernikuProZobrazeni[index],
                         vsechnaHodnoceni: listAllHodnoceni,
+                        uzivatel: widget.uzivatel,
                       );
                     },
                   ),

@@ -50,6 +50,8 @@ dependencies:
   http: ^1.6.0
   multiselect: ^0.1.1
   syncfusion_flutter_datepicker: ^31.2.18
+  carousel_slider: ^5.1.1
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

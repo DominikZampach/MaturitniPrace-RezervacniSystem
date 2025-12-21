@@ -1,19 +1,32 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
+import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
+import 'package:rezervacni_system_maturita/models/uzivatel.dart';
+import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
+import 'package:rezervacni_system_maturita/widgets/hairdresser_card.dart';
 
 class InspectKadernik extends StatefulWidget {
   final Kadernik kadernik;
-  final double hodnoceniKadernika;
-  final int pocetHodnoceniKadernika;
+  double hodnoceniKadernika;
+  int pocetHodnoceniKadernika;
+  final Uzivatel uzivatel;
+  double hodnoceniKadernikaSoucetVsechnHodnoceni;
+  final Function(double, double, int) onChanged;
 
-  const InspectKadernik({
+  InspectKadernik({
     super.key,
     required this.kadernik,
     required this.hodnoceniKadernika,
     required this.pocetHodnoceniKadernika,
+    required this.uzivatel,
+    required this.hodnoceniKadernikaSoucetVsechnHodnoceni,
+    required this.onChanged,
   });
 
   @override
@@ -21,13 +34,42 @@ class InspectKadernik extends StatefulWidget {
 }
 
 class _InspectKadernikState extends State<InspectKadernik> {
-  late Future<List<KadernickyUkon>> kadernickeUkonySCenamiFuture;
+  late Future<_NactenaData> futureLogika;
+  late bool isKadernikFavourite;
+  late String selectedValueRating;
 
   @override
   void initState() {
     super.initState();
-    kadernickeUkonySCenamiFuture = widget.kadernik
-        .getAllKadernickyUkonAndPrice();
+    futureLogika = _nacteniDat();
+    isKadernikFavourite = widget.uzivatel.isKadernikFavourite(
+      widget.kadernik.id,
+    );
+  }
+
+  Future<_NactenaData> _nacteniDat() async {
+    DatabaseService dbService = DatabaseService();
+
+    final results = await Future.wait([
+      dbService.getHodnoceniOfSpecificKadernikByCurrentUzivatel(
+        widget.kadernik.id,
+      ),
+      widget.kadernik.getAllKadernickyUkonAndPrice(),
+    ]);
+
+    final hodnoceniUzivatelem = results[0] as Hodnoceni?;
+    final kadernickeUkonySCenami = results[1] as List<KadernickyUkon>;
+
+    if (hodnoceniUzivatelem == null) {
+      selectedValueRating = "-";
+    } else {
+      selectedValueRating = hodnoceniUzivatelem.ciselneHodnoceni.toString();
+    }
+
+    return _NactenaData(
+      hodnoceniUzivatelem: hodnoceniUzivatelem,
+      kadernickeUkonySCenami: kadernickeUkonySCenami,
+    );
   }
 
   @override
@@ -38,7 +80,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
     final double smallerTextFontSize = 10.sp;
 
     return FutureBuilder(
-      future: kadernickeUkonySCenamiFuture,
+      future: futureLogika,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -85,91 +127,94 @@ class _InspectKadernikState extends State<InspectKadernik> {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: Container(
-                            //color: Colors.red,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _services(
-                                      snapshot.data!,
-                                      smallHeadingFontSize,
-                                      normalTextFontSize,
-                                      smallerTextFontSize,
-                                    ),
-                                    _rating(
-                                      smallHeadingFontSize,
-                                      normalTextFontSize,
-                                    ),
-                                  ],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _services(
+                                    snapshot.data!.kadernickeUkonySCenami,
+                                    smallHeadingFontSize,
+                                    normalTextFontSize,
+                                    smallerTextFontSize,
+                                  ),
+                                  _rating(
+                                    snapshot.data!.hodnoceniUzivatelem,
+                                    smallHeadingFontSize,
+                                    normalTextFontSize,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20.h),
+                              Text(
+                                "${widget.kadernik.jmeno}'s work:",
+                                style: TextStyle(
+                                  fontSize: smallHeadingFontSize,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(height: 10.h),
+                              _carousel(),
+                            ],
                           ),
                         ),
                         Expanded(
                           flex: 1,
-                          child: Container(
-                            //color: Colors.blue,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(height: 20.h),
-                                _kaderniksPhoto(),
-                                SizedBox(height: 20.h),
-                                Text(
-                                  "Location:",
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 20.h),
+                              _kaderniksPhoto(),
+                              SizedBox(height: 20.h),
+                              Text(
+                                "Location:",
+                                style: TextStyle(
+                                  fontSize: headingFontSize,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                widget.kadernik.lokace.nazev,
+                                style: TextStyle(
+                                  fontSize: normalTextFontSize,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(height: 10.h),
+                              Text(
+                                "Address:",
+                                style: TextStyle(
+                                  fontSize: normalTextFontSize,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                "${widget.kadernik.lokace.adresa}\n${widget.kadernik.lokace.psc}-${widget.kadernik.lokace.mesto}",
+                                style: TextStyle(fontSize: normalTextFontSize),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 20.h),
+                              ElevatedButton(
+                                onPressed: () {
+                                  //TODO!
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStatePropertyAll(
+                                    Consts.secondary,
+                                  ),
+                                ),
+                                child: Text(
+                                  "Book now",
                                   style: TextStyle(
-                                    fontSize: headingFontSize,
-                                    fontWeight: FontWeight.w700,
+                                    fontSize: smallHeadingFontSize,
+                                    color: Colors.black,
                                   ),
                                 ),
-                                Text(
-                                  widget.kadernik.lokace.nazev,
-                                  style: TextStyle(
-                                    fontSize: normalTextFontSize,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(height: 10.h),
-                                Text(
-                                  "Address:",
-                                  style: TextStyle(
-                                    fontSize: normalTextFontSize,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Text(
-                                  "${widget.kadernik.lokace.adresa}\n${widget.kadernik.lokace.psc}-${widget.kadernik.lokace.mesto}",
-                                  style: TextStyle(
-                                    fontSize: normalTextFontSize,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(height: 20.h),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    //TODO!
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: WidgetStatePropertyAll(
-                                      Consts.secondary,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Book now",
-                                    style: TextStyle(
-                                      fontSize: smallHeadingFontSize,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -184,6 +229,28 @@ class _InspectKadernikState extends State<InspectKadernik> {
     );
   }
 
+  CarouselSlider _carousel() {
+    return CarouselSlider.builder(
+      itemCount: widget.kadernik.odkazyFotografiiPrace.length,
+      options: CarouselOptions(
+        height: MediaQuery.of(context).size.height * 0.3,
+        viewportFraction: 0.33,
+        initialPage: 0,
+        autoPlay: true,
+        enableInfiniteScroll: true,
+        autoPlayInterval: Duration(seconds: 5),
+      ),
+      itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
+        String urlPhoto = widget.kadernik.odkazyFotografiiPrace[itemIndex];
+        return CarouselPhoto(
+          url: urlPhoto,
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.25,
+        );
+      },
+    );
+  }
+
   Widget _kaderniksPhoto() {
     return SizedBox(
       //width: MediaQuery.of(context).size.width * 0.2,
@@ -192,7 +259,16 @@ class _InspectKadernikState extends State<InspectKadernik> {
         borderRadius: BorderRadiusGeometry.circular(10.r),
         child: FittedBox(
           fit: BoxFit.contain,
-          child: Image.network(widget.kadernik.odkazFotografie),
+          child: CachedNetworkImage(
+            imageUrl: widget.kadernik.odkazFotografie,
+            httpHeaders: {
+              "Access-Control-Allow-Origin": "*",
+              "User-Agent": "Mozilla/5.0...",
+            },
+            placeholder: (context, url) =>
+                Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => Icon(Icons.error, size: 30.h),
+          ),
         ),
       ),
     );
@@ -225,7 +301,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
             ),
             SizedBox(height: 20.h),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.3,
+              height: MediaQuery.of(context).size.height * 0.2,
               //? Scrollbar by měl zajistit lepší zobrazení toho scrollovacího baru napravo
               child: Scrollbar(
                 controller: scrollerController,
@@ -266,7 +342,31 @@ class _InspectKadernikState extends State<InspectKadernik> {
     );
   }
 
-  Expanded _rating(double smallHeadingFontSize, double normalTextFontSize) {
+  Expanded _rating(
+    Hodnoceni? hodnoceniUzivatelem,
+    double smallHeadingFontSize,
+    double normalTextFontSize,
+  ) {
+    List<DropdownMenuItem> dropdownMenuItems = [
+      DropdownMenuItem(
+        value: "-",
+        child: Text(
+          "-",
+          style: TextStyle(fontSize: normalTextFontSize),
+          textAlign: TextAlign.center,
+        ),
+      ),
+      for (int i = 1; i <= 10; i++)
+        DropdownMenuItem(
+          value: i.toString(),
+          child: Text(
+            i.toString(),
+            style: TextStyle(fontSize: normalTextFontSize),
+            textAlign: TextAlign.center,
+          ),
+        ),
+    ];
+
     return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -297,6 +397,89 @@ class _InspectKadernikState extends State<InspectKadernik> {
             Text(
               "Number of reviews: ${widget.pocetHodnoceniKadernika}",
               style: TextStyle(fontSize: normalTextFontSize),
+            ),
+            Row(
+              children: [
+                Text(
+                  "Your rating:",
+                  style: TextStyle(fontSize: normalTextFontSize),
+                ),
+                DropdownButton(
+                  value: selectedValueRating,
+                  items: dropdownMenuItems,
+                  alignment: AlignmentGeometry.center,
+                  onChanged: (dynamic newValue) async {
+                    //TODO: Přepsat do čitelnější formy, nějak to funguje ale je to mega bordel
+                    DatabaseService dbService = DatabaseService();
+
+                    if (hodnoceniUzivatelem != null) {
+                      //? Dokument existuje - úprava dat v databázi
+                      int oldHodnoceni = hodnoceniUzivatelem!.ciselneHodnoceni;
+                      hodnoceniUzivatelem!.ciselneHodnoceni = int.parse(
+                        newValue,
+                      );
+                      if (newValue == "-") {
+                        if (hodnoceniUzivatelem!.ciselneHodnoceni != 0) {
+                          //? Uživatel jakoby odstranil hodnocení
+                          setState(() {
+                            selectedValueRating = newValue;
+                            widget.pocetHodnoceniKadernika--;
+                            widget.hodnoceniKadernikaSoucetVsechnHodnoceni -=
+                                oldHodnoceni;
+                            widget.hodnoceniKadernika = zaokrouhliHodnoceni(
+                              widget.hodnoceniKadernikaSoucetVsechnHodnoceni /
+                                  widget.pocetHodnoceniKadernika,
+                            );
+                          });
+                        }
+                      } else {
+                        int rozdilMeziStarymANovym =
+                            int.parse(newValue) - oldHodnoceni;
+                        setState(() {
+                          selectedValueRating = newValue;
+                          widget.hodnoceniKadernikaSoucetVsechnHodnoceni +=
+                              rozdilMeziStarymANovym;
+                          widget.hodnoceniKadernika = zaokrouhliHodnoceni(
+                            widget.hodnoceniKadernikaSoucetVsechnHodnoceni /
+                                widget.pocetHodnoceniKadernika,
+                          );
+                        });
+                      }
+
+                      await dbService.updateHodnoceni(hodnoceniUzivatelem!);
+                    } else {
+                      //? Tvorba nového dokumentu v databázi
+                      Hodnoceni noveHodnoceni = Hodnoceni(
+                        id: "",
+                        idUzivatele: widget.uzivatel.userUID,
+                        idKadernika: widget.kadernik.id,
+                        ciselneHodnoceni: int.parse(newValue),
+                      );
+
+                      Hodnoceni? noveHodnoceniWithId = await dbService
+                          .createNewHodnoceni(noveHodnoceni);
+
+                      setState(() {
+                        selectedValueRating = newValue;
+                        hodnoceniUzivatelem = noveHodnoceniWithId;
+                        widget.pocetHodnoceniKadernika++;
+                        widget.hodnoceniKadernikaSoucetVsechnHodnoceni +=
+                            double.parse(newValue);
+                        widget.hodnoceniKadernika = zaokrouhliHodnoceni(
+                          widget.hodnoceniKadernikaSoucetVsechnHodnoceni /
+                              widget.pocetHodnoceniKadernika,
+                        );
+                      });
+                    }
+
+                    widget.onChanged(
+                      widget.hodnoceniKadernika,
+                      widget.hodnoceniKadernikaSoucetVsechnHodnoceni,
+                      widget.pocetHodnoceniKadernika,
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -337,8 +520,6 @@ class _InspectKadernikState extends State<InspectKadernik> {
               _description(normalTextFontSize),
             ],
           ),
-
-          //TODO: Změnit na fungující Favourite button, který bude závislý na tom, pokud uživatel má tohoto kadeřníka ve Favourites!
           //? Widget Positioned umístí child podle určených parametrů (tady right = 0) na pozici ve Stacku
           _favouriteStar(),
         ],
@@ -353,12 +534,25 @@ class _InspectKadernikState extends State<InspectKadernik> {
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
           onTap: () {
-            // TODO: Implementovat logiku pro přidání do oblíbených
-            print("Kliknuto na oblíbené");
+            if (isKadernikFavourite) {
+              //? Toto se provede pokud byl kadeřník favourite - po kliknutí tedy už není
+              widget.uzivatel.oblibeniKadernici.remove(widget.kadernik.id);
+            } else {
+              //? Toto se provede pokud kadeřník nebyl favourite - přidá se do listu favourite kadeřníků
+              widget.uzivatel.oblibeniKadernici.add(widget.kadernik.id);
+            }
+
+            DatabaseService dbService = DatabaseService();
+
+            dbService.updateUzivatel(widget.uzivatel);
+
+            setState(() {
+              isKadernikFavourite = !isKadernikFavourite;
+            });
           },
           child: Icon(
-            Icons
-                .star_border, // Zde pak můžete měnit Icons.star vs Icons.star_border
+            //? Ukáže se správná verze hvězdy
+            isKadernikFavourite ? Icons.star : Icons.star_border,
             color: Colors.amber,
             size: 30.w,
           ),
@@ -366,4 +560,14 @@ class _InspectKadernikState extends State<InspectKadernik> {
       ),
     );
   }
+}
+
+class _NactenaData {
+  final Hodnoceni? hodnoceniUzivatelem;
+  final List<KadernickyUkon> kadernickeUkonySCenami;
+
+  const _NactenaData({
+    required this.hodnoceniUzivatelem,
+    required this.kadernickeUkonySCenami,
+  });
 }

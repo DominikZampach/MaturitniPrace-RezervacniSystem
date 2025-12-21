@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
@@ -11,31 +12,27 @@ import 'package:rezervacni_system_maturita/widgets/minimap_from_adress.dart';
 class DashboardBody extends StatelessWidget {
   final double screenHeight;
   final double screenWidth;
+  final Uzivatel uzivatel;
   const DashboardBody({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
+    required this.uzivatel,
   });
 
-  Future<_NactenaData> _nacteniDat() async {
+  Future<Rezervace?> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
-    //? Optimalizace
-    final results = await Future.wait([
-      dbService.getUzivatel(),
-      dbService.getNearestRezervaceOfCurrentUser(),
-    ]);
+    final Rezervace? nearestRezervace = await dbService
+        .getNearestRezervaceOfCurrentUser();
 
-    final Uzivatel uzivatel = results[0] as Uzivatel;
-    final Rezervace? rezervace = results[1] as Rezervace?;
-
-    return _NactenaData(uzivatel: uzivatel, rezervace: rezervace);
+    return nearestRezervace;
   }
 
   @override
   Widget build(BuildContext context) {
     //? Builder, který zajistí, že se načtou data o uživateli před
-    return FutureBuilder<_NactenaData>(
+    return FutureBuilder(
       future: _nacteniDat(),
       builder: (context, snapshot) {
         print("Snapshot data: ${snapshot.data}");
@@ -50,8 +47,7 @@ class DashboardBody extends StatelessWidget {
           );
         }
 
-        final Uzivatel uzivatel = snapshot.data!.uzivatel;
-        final Rezervace? nearestRezervace = snapshot.data!.rezervace;
+        final Rezervace? nearestRezervace = snapshot.data;
 
         if (nearestRezervace != null) {
           return Expanded(
@@ -225,8 +221,16 @@ class NextAppointmentColumn extends StatelessWidget {
                     borderRadius: BorderRadiusGeometry.circular(10.r),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
-                      child: Image.network(
-                        nearestRezervace!.kadernik.odkazFotografie,
+                      child: CachedNetworkImage(
+                        imageUrl: nearestRezervace!.kadernik.odkazFotografie,
+                        httpHeaders: {
+                          "Access-Control-Allow-Origin": "*",
+                          "User-Agent": "Mozilla/5.0...",
+                        },
+                        placeholder: (context, url) =>
+                            Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.error, size: 30.h),
                       ),
                     ),
                   ),
@@ -362,11 +366,4 @@ class NextAppointmentLocationColumn extends StatelessWidget {
       ),
     );
   }
-}
-
-class _NactenaData {
-  final Uzivatel uzivatel;
-  final Rezervace? rezervace;
-
-  _NactenaData({required this.uzivatel, required this.rezervace});
 }

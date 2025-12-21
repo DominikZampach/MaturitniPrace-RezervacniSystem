@@ -101,6 +101,7 @@ class Kadernik {
 
     kadernickeUkonySCenami = kadernickeUkonyListSCenami;
 
+    print("Kadeřnické ukony list s cenami: $kadernickeUkonyListSCenami");
     return kadernickeUkonyListSCenami;
   }
 }

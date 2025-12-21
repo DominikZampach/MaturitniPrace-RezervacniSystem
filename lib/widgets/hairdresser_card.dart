@@ -1,40 +1,51 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
+import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/views/users/inspect%20on%20fullscreen/inspect_kadernik.dart';
 
-class HairdresserCard extends StatelessWidget {
+class HairdresserCard extends StatefulWidget {
   final Kadernik kadernik;
   final List<Hodnoceni> vsechnaHodnoceni;
   late final List<Hodnoceni> kadernikovaHodnoceni;
-  late final double hodnoceniKadernika;
+  late double hodnoceniKadernika;
+  final Uzivatel uzivatel;
+  int pocetHodnoceniKadernika = 0;
+  double hodnoceniSoucet = 0;
 
   HairdresserCard({
     super.key,
     required this.kadernik,
     required this.vsechnaHodnoceni,
+    required this.uzivatel,
   }) {
-    double hodnoceniMezipocet = 0;
     List<Hodnoceni> kadernikovaHodnoceniMezipromenna = [];
     for (Hodnoceni hodnoceni in vsechnaHodnoceni) {
       if (hodnoceni.idKadernika == kadernik.id) {
         kadernikovaHodnoceniMezipromenna.add(hodnoceni);
-        hodnoceniMezipocet += hodnoceni.ciselneHodnoceni;
+        hodnoceniSoucet += hodnoceni.ciselneHodnoceni;
       }
     }
 
     //? Výpočet průměrného hodnocení
-    hodnoceniMezipocet =
-        hodnoceniMezipocet / kadernikovaHodnoceniMezipromenna.length;
-    hodnoceniKadernika = zaokrouhliHodnoceni(hodnoceniMezipocet);
+    pocetHodnoceniKadernika = kadernikovaHodnoceniMezipromenna.length;
+    double hodnoceniPrumer = hodnoceniSoucet / pocetHodnoceniKadernika;
+    hodnoceniKadernika = zaokrouhliHodnoceni(hodnoceniPrumer);
 
     //? Uložení hodnot do globální proměnné
     kadernikovaHodnoceni = kadernikovaHodnoceniMezipromenna;
   }
 
+  @override
+  State<HairdresserCard> createState() => _HairdresserCardState();
+}
+
+class _HairdresserCardState extends State<HairdresserCard> {
   double captionFontSize = 9.sp;
+
   double mainNameFontSize = 12.sp;
 
   @override
@@ -44,9 +55,23 @@ class HairdresserCard extends StatelessWidget {
         final dialogResult = await showDialog(
           context: context,
           builder: (BuildContext context) => InspectKadernik(
-            kadernik: kadernik,
-            hodnoceniKadernika: hodnoceniKadernika,
-            pocetHodnoceniKadernika: kadernikovaHodnoceni.length,
+            kadernik: widget.kadernik,
+            hodnoceniKadernika: widget.hodnoceniKadernika,
+            pocetHodnoceniKadernika: widget.kadernikovaHodnoceni.length,
+            uzivatel: widget.uzivatel,
+            hodnoceniKadernikaSoucetVsechnHodnoceni: widget.hodnoceniSoucet,
+            onChanged:
+                (
+                  double hodnoceniKadernikaChanged,
+                  double hodnoceniSoucetChanged,
+                  int pocetHodnoceniChanged,
+                ) {
+                  setState(() {
+                    widget.hodnoceniKadernika = hodnoceniKadernikaChanged;
+                    widget.hodnoceniSoucet = hodnoceniSoucetChanged;
+                    widget.pocetHodnoceniKadernika = pocetHodnoceniChanged;
+                  });
+                },
           ),
         );
       },
@@ -72,14 +97,14 @@ class HairdresserCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          kadernik.getFullNameString(),
+                          widget.kadernik.getFullNameString(),
                           style: TextStyle(
                             fontSize: mainNameFontSize,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          kadernik.popisek,
+                          widget.kadernik.popisek,
                           style: TextStyle(
                             fontStyle: FontStyle.italic,
                             fontSize: captionFontSize,
@@ -91,7 +116,7 @@ class HairdresserCard extends StatelessWidget {
                       children: [
                         Icon(Icons.location_pin, size: captionFontSize),
                         Text(
-                          "${kadernik.lokace.nazev}, ${kadernik.lokace.mesto}",
+                          "${widget.kadernik.lokace.nazev}, ${widget.kadernik.lokace.mesto}",
                           style: TextStyle(fontSize: captionFontSize),
                         ),
                       ],
@@ -113,7 +138,17 @@ class HairdresserCard extends StatelessWidget {
                         borderRadius: BorderRadiusGeometry.circular(10.r),
                         child: FittedBox(
                           fit: BoxFit.contain,
-                          child: Image.network(kadernik.odkazFotografie),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.kadernik.odkazFotografie,
+                            httpHeaders: {
+                              "Access-Control-Allow-Origin": "*",
+                              "User-Agent": "Mozilla/5.0...",
+                            },
+                            placeholder: (context, url) =>
+                                Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error, size: 30.h),
+                          ),
                         ),
                       ),
                     ),
@@ -121,7 +156,7 @@ class HairdresserCard extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     child: Text(
-                      "Avg. Rating: $hodnoceniKadernika*",
+                      "Avg. Rating: ${widget.hodnoceniKadernika}*",
                       style: TextStyle(fontSize: captionFontSize),
                     ),
                   ),
@@ -133,14 +168,14 @@ class HairdresserCard extends StatelessWidget {
       ),
     );
   }
+}
 
-  //? Metoda, která zaokrouhlí hodnocení na půlbody (Takže např.: 3,1 zaokrouhlí na 3, ale od 3,25 to zaokrouhlí na 3,5)
-  double zaokrouhliHodnoceni(double hodnoceni) {
-    double dvojnasobek = hodnoceni * 2;
+//? Metoda, která zaokrouhlí hodnocení na půlbody (Takže např.: 3,1 zaokrouhlí na 3, ale od 3,25 to zaokrouhlí na 3,5)
+double zaokrouhliHodnoceni(double hodnoceni) {
+  double dvojnasobek = hodnoceni * 2;
 
-    double zaokrouhlenyDvojnasobek = dvojnasobek.roundToDouble();
-    double zaokrouhleneHodnoceni = zaokrouhlenyDvojnasobek / 2;
+  double zaokrouhlenyDvojnasobek = dvojnasobek.roundToDouble();
+  double zaokrouhleneHodnoceni = zaokrouhlenyDvojnasobek / 2;
 
-    return zaokrouhleneHodnoceni;
-  }
+  return zaokrouhleneHodnoceni;
 }

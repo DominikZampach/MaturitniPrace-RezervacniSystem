@@ -52,6 +52,9 @@ class AuthService {
         case 'invalid-credential':
           message = "Invalid login.";
           break;
+        case 'too-many-requests':
+          message = "Too many requests. Please try it later.";
+          break;
         default:
           message = "An unknown error occurred: ${e.message}";
       }

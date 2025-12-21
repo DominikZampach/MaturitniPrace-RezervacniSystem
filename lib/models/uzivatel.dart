@@ -53,4 +53,11 @@ class Uzivatel {
     }
     return kadernici;
   }
+
+  bool isKadernikFavourite(String kadernikId) {
+    if (oblibeniKadernici.contains(kadernikId)) {
+      return true;
+    }
+    return false;
+  }
 }
