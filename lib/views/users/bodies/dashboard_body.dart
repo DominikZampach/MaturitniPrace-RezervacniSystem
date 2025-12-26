@@ -6,10 +6,12 @@ import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/users/inspect/inspect_rezervace.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
+import 'package:rezervacni_system_maturita/widgets/map_card.dart';
 import 'package:rezervacni_system_maturita/widgets/minimap_from_adress.dart';
 
-class DashboardBody extends StatelessWidget {
+class DashboardBody extends StatefulWidget {
   final double screenHeight;
   final double screenWidth;
   final Uzivatel uzivatel;
@@ -20,6 +22,11 @@ class DashboardBody extends StatelessWidget {
     required this.uzivatel,
   });
 
+  @override
+  State<DashboardBody> createState() => _DashboardBodyState();
+}
+
+class _DashboardBodyState extends State<DashboardBody> {
   Future<Rezervace?> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
@@ -57,18 +64,18 @@ class DashboardBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _welcomeText(uzivatel, true),
+                  _welcomeText(widget.uzivatel, true),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       NextAppointmentColumn(
-                        screenHeight: screenHeight,
-                        screenWidth: screenWidth,
+                        screenHeight: widget.screenHeight,
+                        screenWidth: widget.screenWidth,
                         nearestRezervace: nearestRezervace,
                       ),
                       NextAppointmentLocationColumn(
-                        screenHeight: screenHeight,
-                        screenWidth: screenWidth,
+                        screenHeight: widget.screenHeight,
+                        screenWidth: widget.screenWidth,
                         nearestRezervace: nearestRezervace,
                       ),
                     ],
@@ -93,8 +100,8 @@ class DashboardBody extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _welcomeText(uzivatel, false),
-                      SizedBox(height: screenHeight * 0.5),
+                      _welcomeText(widget.uzivatel, false),
+                      SizedBox(height: widget.screenHeight * 0.5),
                       Text(
                         "You've got no reservations incoming, go book some!",
                         style: TextStyle(
@@ -127,7 +134,7 @@ class DashboardBody extends StatelessWidget {
   }
 }
 
-class NextAppointmentColumn extends StatelessWidget {
+class NextAppointmentColumn extends StatefulWidget {
   const NextAppointmentColumn({
     super.key,
     required this.screenHeight,
@@ -140,19 +147,26 @@ class NextAppointmentColumn extends StatelessWidget {
   final Rezervace? nearestRezervace;
 
   @override
+  State<NextAppointmentColumn> createState() => _NextAppointmentColumnState();
+}
+
+class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: Consts.background.withValues(alpha: 0.6),
-      height: screenHeight * 0.8,
-      width: screenWidth * 0.4,
+      height: widget.screenHeight * 0.8,
+      width: widget.screenWidth * 0.4,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: 10.h),
           Text(
             "Next appointment",
             style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.sp),
           ),
+          SizedBox(height: 20.h),
           Column(
             children: [
               Row(
@@ -160,7 +174,7 @@ class NextAppointmentColumn extends StatelessWidget {
                 children: [
                   Text("Date: ", style: TextStyle(fontSize: 12.sp)),
                   Text(
-                    nearestRezervace!.getDayMonthYearString(),
+                    widget.nearestRezervace!.getDayMonthYearString(),
                     style: TextStyle(fontSize: 12.sp),
                   ),
                 ],
@@ -170,13 +184,14 @@ class NextAppointmentColumn extends StatelessWidget {
                 children: [
                   Text("Time: ", style: TextStyle(fontSize: 12.sp)),
                   Text(
-                    nearestRezervace!.getHourMinuteString(),
+                    widget.nearestRezervace!.getHourMinuteString(),
                     style: TextStyle(fontSize: 12.sp),
                   ),
                 ],
               ),
             ],
           ),
+          SizedBox(height: 10.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -187,23 +202,29 @@ class NextAppointmentColumn extends StatelessWidget {
                     Text(
                       "Hairdresser:",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12.sp),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
-                      nearestRezervace!.kadernik.getFullNameString(),
+                      widget.nearestRezervace!.kadernik.getFullNameString(),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 12.sp),
                     ),
 
-                    SizedBox(height: screenHeight * 0.1),
+                    SizedBox(height: 10.h),
 
                     Text(
                       "Actions:",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12.sp),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     for (KadernickyUkon ukon
-                        in nearestRezervace!.kadernickeUkony)
+                        in widget.nearestRezervace!.kadernickeUkony)
                       Text(
                         ukon.nazev,
                         textAlign: TextAlign.center,
@@ -215,14 +236,15 @@ class NextAppointmentColumn extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(30.h),
                 child: SizedBox(
-                  width: screenWidth * 0.2,
-                  height: screenHeight * 0.4,
+                  width: widget.screenWidth * 0.2,
+                  height: widget.screenHeight * 0.4,
                   child: ClipRRect(
                     borderRadius: BorderRadiusGeometry.circular(10.r),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: CachedNetworkImage(
-                        imageUrl: nearestRezervace!.kadernik.odkazFotografie,
+                        imageUrl:
+                            widget.nearestRezervace!.kadernik.odkazFotografie,
                         httpHeaders: {
                           "Access-Control-Allow-Origin": "*",
                           "User-Agent": "Mozilla/5.0...",
@@ -238,12 +260,30 @@ class NextAppointmentColumn extends StatelessWidget {
               ),
             ],
           ),
-          Text(
-            "Click here to see full reservation...",
-            style: TextStyle(
-              fontWeight: FontWeight.w900,
-              fontSize: 15.sp,
-              decoration: TextDecoration.underline,
+          SizedBox(height: 30.h),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () async {
+                final result = await showDialog(
+                  context: context,
+                  builder: (context) =>
+                      InspectRezervace(rezervace: widget.nearestRezervace!),
+                );
+
+                if (result) {
+                  //? Asi nebude fungovat, bude potřeba aby uživatel reloadnul stránku tady - bylo by to velmi složitý abych donutil reloadnout a znova získat data z dazabáze z tohoto místa
+                  setState(() {});
+                }
+              },
+              child: Text(
+                "Click here to see full reservation...",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 15.sp,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ),
           ),
         ],
@@ -271,14 +311,21 @@ class NextAppointmentLocationColumn extends StatelessWidget {
       height: screenHeight * 0.8,
       width: screenWidth * 0.4,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: 10.h),
           Text(
             "Next appointment location",
             style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.sp),
           ),
-          _mapCard(),
+          SizedBox(height: 10.h),
+          MapCard(
+            lokace: nearestRezervace!.kadernik.lokace,
+            width: screenWidth * 0.35,
+            height: screenWidth * 0.20,
+          ),
+          SizedBox(height: 10.h),
           Column(
             children: [
               Text(
@@ -323,6 +370,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: 10.h),
           Column(
             children: [
               Text(
@@ -343,26 +391,6 @@ class NextAppointmentLocationColumn extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Card _mapCard() {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(10.r),
-      ),
-      elevation: 2,
-      child: SizedBox(
-        width: screenWidth * 0.35,
-        height: screenHeight * 0.45,
-        child: ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(10.r),
-          child: MinimapFromAdress(
-            latitude: nearestRezervace!.kadernik.lokace.latitude,
-            longitude: nearestRezervace!.kadernik.lokace.longitude,
-          ),
-        ),
       ),
     );
   }

@@ -469,4 +469,14 @@ class DatabaseService {
 
     return hodnoceni;
   }
+
+  //? Smazání Rezervace
+  Future<void> deleteRezervace(String rezervaceId) async {
+    final query = await firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .doc(rezervaceId)
+        .delete();
+
+    print("Úspěšně smazána rezervace");
+  }
 }

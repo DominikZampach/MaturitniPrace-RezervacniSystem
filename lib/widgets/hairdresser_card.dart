@@ -5,7 +5,7 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
-import 'package:rezervacni_system_maturita/views/users/inspect%20on%20fullscreen/inspect_kadernik.dart';
+import 'package:rezervacni_system_maturita/views/users/inspect/inspect_kadernik.dart';
 
 class HairdresserCard extends StatefulWidget {
   final Kadernik kadernik;

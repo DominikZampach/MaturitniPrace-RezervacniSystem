@@ -14,7 +14,7 @@ class InspectKadernickyUkon extends StatelessWidget {
     final double headingFontSize = 15.sp;
     final double smallHeadingFontSize = 13.sp;
     final double normalTextFontSize = 11.sp;
-    final double smallerTextFontSize = 10.sp;
+    // final double smallerTextFontSize = 10.sp;
 
     return Dialog(
       backgroundColor: Consts.background,
@@ -81,8 +81,14 @@ class InspectKadernickyUkon extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.3,
                     viewportFraction: 0.66,
                     initialPage: 0,
-                    autoPlay: true,
-                    enableInfiniteScroll: true,
+                    autoPlay:
+                        kadernickyUkon.odkazyFotografiiPrikladu.length != 1
+                        ? true
+                        : false,
+                    enableInfiniteScroll:
+                        kadernickyUkon.odkazyFotografiiPrikladu.length != 1
+                        ? true
+                        : false,
                     autoPlayInterval: Duration(seconds: 5),
                   ),
                   itemBuilder: (context, itemIndex, page) => CarouselPhoto(

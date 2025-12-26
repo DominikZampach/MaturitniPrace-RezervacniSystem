@@ -4,8 +4,9 @@ import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/views/users/create_reservation_dialog.dart';
+import 'package:rezervacni_system_maturita/views/users/inspect/inspect_rezervace.dart';
 
-class ReservationCard extends StatelessWidget {
+class ReservationCard extends StatefulWidget {
   final double screenWidth;
   final double screenHeight;
   final Rezervace rezervace;
@@ -19,9 +20,19 @@ class ReservationCard extends StatelessWidget {
   });
 
   @override
+  State<ReservationCard> createState() => _ReservationCardState();
+}
+
+class _ReservationCardState extends State<ReservationCard> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {}, //TODO: Tady bude Navigator.Push té celostránkové rezervace
+      onTap: () async {
+        final result = await showDialog(
+          context: context,
+          builder: (context) => InspectRezervace(rezervace: widget.rezervace),
+        );
+      },
       child: Card(
         margin: EdgeInsets.only(
           left: 18.w,
@@ -33,52 +44,55 @@ class ReservationCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(10.r),
         ),
-        child: SizedBox(
-          height: screenHeight * 0.10,
-          width: screenWidth * 0.6,
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _getActionsString(),
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.bold,
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: SizedBox(
+            height: widget.screenHeight * 0.10,
+            width: widget.screenWidth * 0.6,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _getActionsString(),
+                        style: TextStyle(
+                          fontSize: widget.fontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      "${rezervace.getDayMonthYearString()} - ${rezervace.getHourMinuteString()}",
-                      style: TextStyle(fontSize: fontSize),
-                      textAlign: TextAlign.right,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${rezervace.kadernik.getFullNameString()} - ${rezervace.kadernik.lokace.nazev}",
-                      style: TextStyle(fontSize: fontSize),
-                    ),
-                    Text(
-                      "${rezervace.celkovaCena} Kč",
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        "${widget.rezervace.getDayMonthYearString()} - ${widget.rezervace.getHourMinuteString()}",
+                        style: TextStyle(fontSize: widget.fontSize),
+                        textAlign: TextAlign.right,
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${widget.rezervace.kadernik.getFullNameString()} - ${widget.rezervace.kadernik.lokace.nazev}",
+                        style: TextStyle(fontSize: widget.fontSize),
+                      ),
+                      Text(
+                        "${widget.rezervace.celkovaCena} Kč",
+                        style: TextStyle(
+                          fontSize: widget.fontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -88,7 +102,7 @@ class ReservationCard extends StatelessWidget {
 
   String _getActionsString() {
     String actions = "";
-    for (KadernickyUkon ukon in rezervace.kadernickeUkony) {
+    for (KadernickyUkon ukon in widget.rezervace.kadernickeUkony) {
       actions += "${ukon.nazev} + ";
     }
     actions = actions.substring(0, actions.length - 3);

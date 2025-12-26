@@ -8,7 +8,7 @@ import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
-import 'package:rezervacni_system_maturita/views/users/inspect%20on%20fullscreen/inspect_kadernicky_ukon.dart';
+import 'package:rezervacni_system_maturita/views/users/inspect/inspect_kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
 import 'package:rezervacni_system_maturita/widgets/hairdresser_card.dart';
 
