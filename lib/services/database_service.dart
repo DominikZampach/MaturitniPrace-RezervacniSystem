@@ -465,6 +465,7 @@ class DatabaseService {
       print("Neexistuje dokument Hodnoceni, který by odpovídal uživateli.");
       return null;
     }
+    print("Hodnocení uživatelem bylo nalezeno!");
     Hodnoceni hodnoceni = Hodnoceni.fromJson(query.docs.first.data());
 
     return hodnoceni;
@@ -478,5 +479,15 @@ class DatabaseService {
         .delete();
 
     print("Úspěšně smazána rezervace");
+  }
+
+  //? Smazání Rezervace
+  Future<void> deleteHodnoceni(String hodnoceniId) async {
+    final query = await firestore
+        .collection(HODNOCENI_COLLECTION_REF)
+        .doc(hodnoceniId)
+        .delete();
+
+    print("Úspěšně smazáné hodnocení");
   }
 }

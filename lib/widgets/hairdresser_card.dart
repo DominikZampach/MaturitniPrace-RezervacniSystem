@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/logic/getAvgRating.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
@@ -11,10 +12,10 @@ class HairdresserCard extends StatefulWidget {
   final Kadernik kadernik;
   final List<Hodnoceni> vsechnaHodnoceni;
   late final List<Hodnoceni> kadernikovaHodnoceni;
-  late double hodnoceniKadernika;
   final Uzivatel uzivatel;
-  int pocetHodnoceniKadernika = 0;
-  double hodnoceniSoucet = 0;
+  late double hodnoceniKadernika;
+  late double hodnoceniSoucet;
+  late int pocetHodnoceniKadernika;
 
   HairdresserCard({
     super.key,
@@ -22,21 +23,12 @@ class HairdresserCard extends StatefulWidget {
     required this.vsechnaHodnoceni,
     required this.uzivatel,
   }) {
-    List<Hodnoceni> kadernikovaHodnoceniMezipromenna = [];
-    for (Hodnoceni hodnoceni in vsechnaHodnoceni) {
-      if (hodnoceni.idKadernika == kadernik.id) {
-        kadernikovaHodnoceniMezipromenna.add(hodnoceni);
-        hodnoceniSoucet += hodnoceni.ciselneHodnoceni;
-      }
-    }
+    final result = getAvgRating(vsechnaHodnoceni, kadernik);
 
-    //? Výpočet průměrného hodnocení
-    pocetHodnoceniKadernika = kadernikovaHodnoceniMezipromenna.length;
-    double hodnoceniPrumer = hodnoceniSoucet / pocetHodnoceniKadernika;
-    hodnoceniKadernika = zaokrouhliHodnoceni(hodnoceniPrumer);
-
-    //? Uložení hodnot do globální proměnné
-    kadernikovaHodnoceni = kadernikovaHodnoceniMezipromenna;
+    hodnoceniKadernika = result[0] as double;
+    hodnoceniSoucet = result[1] as double;
+    pocetHodnoceniKadernika = result[2] as int;
+    kadernikovaHodnoceni = result[3] as List<Hodnoceni>;
   }
 
   @override
@@ -65,11 +57,21 @@ class _HairdresserCardState extends State<HairdresserCard> {
                   double hodnoceniKadernikaChanged,
                   double hodnoceniSoucetChanged,
                   int pocetHodnoceniChanged,
+                  String? idToDelete,
+                  Hodnoceni? hodnoceniToAdd,
                 ) {
                   setState(() {
                     widget.hodnoceniKadernika = hodnoceniKadernikaChanged;
                     widget.hodnoceniSoucet = hodnoceniSoucetChanged;
                     widget.pocetHodnoceniKadernika = pocetHodnoceniChanged;
+                    if (idToDelete != null) {
+                      widget.kadernikovaHodnoceni.removeWhere(
+                        (item) => item.id == idToDelete,
+                      );
+                    }
+                    if (hodnoceniToAdd != null) {
+                      widget.kadernikovaHodnoceni.add(hodnoceniToAdd);
+                    }
                   });
                 },
           ),
@@ -168,14 +170,4 @@ class _HairdresserCardState extends State<HairdresserCard> {
       ),
     );
   }
-}
-
-//? Metoda, která zaokrouhlí hodnocení na půlbody (Takže např.: 3,1 zaokrouhlí na 3, ale od 3,25 to zaokrouhlí na 3,5)
-double zaokrouhliHodnoceni(double hodnoceni) {
-  double dvojnasobek = hodnoceni * 2;
-
-  double zaokrouhlenyDvojnasobek = dvojnasobek.roundToDouble();
-  double zaokrouhleneHodnoceni = zaokrouhlenyDvojnasobek / 2;
-
-  return zaokrouhleneHodnoceni;
 }

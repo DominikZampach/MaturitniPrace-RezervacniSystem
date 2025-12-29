@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/logic/getAvgRating.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
@@ -14,11 +15,11 @@ import 'package:rezervacni_system_maturita/widgets/hairdresser_card.dart';
 
 class InspectKadernik extends StatefulWidget {
   final Kadernik kadernik;
-  double hodnoceniKadernika;
-  int pocetHodnoceniKadernika;
+  late double hodnoceniKadernika;
+  late int pocetHodnoceniKadernika;
   final Uzivatel uzivatel;
-  double hodnoceniKadernikaSoucetVsechnHodnoceni;
-  final Function(double, double, int) onChanged;
+  late double hodnoceniKadernikaSoucetVsechnHodnoceni;
+  final Function(double, double, int, String?, Hodnoceni?) onChanged;
 
   InspectKadernik({
     super.key,
@@ -38,6 +39,8 @@ class _InspectKadernikState extends State<InspectKadernik> {
   late Future<_NactenaData> futureLogika;
   late bool isKadernikFavourite;
   late String selectedValueRating;
+
+  Hodnoceni? _aktualniHodnoceniUzivatele;
 
   @override
   void initState() {
@@ -60,6 +63,8 @@ class _InspectKadernikState extends State<InspectKadernik> {
 
     final hodnoceniUzivatelem = results[0] as Hodnoceni?;
     final kadernickeUkonySCenami = results[1] as List<KadernickyUkon>;
+
+    _aktualniHodnoceniUzivatele = hodnoceniUzivatelem;
 
     if (hodnoceniUzivatelem == null) {
       selectedValueRating = "-";
@@ -142,7 +147,6 @@ class _InspectKadernikState extends State<InspectKadernik> {
                                     smallerTextFontSize,
                                   ),
                                   _rating(
-                                    snapshot.data!.hodnoceniUzivatelem,
                                     smallHeadingFontSize,
                                     normalTextFontSize,
                                   ),
@@ -348,11 +352,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
     );
   }
 
-  Expanded _rating(
-    Hodnoceni? hodnoceniUzivatelem,
-    double smallHeadingFontSize,
-    double normalTextFontSize,
-  ) {
+  Expanded _rating(double smallHeadingFontSize, double normalTextFontSize) {
     List<DropdownMenuItem> dropdownMenuItems = [
       DropdownMenuItem(
         value: "-",
@@ -417,44 +417,64 @@ class _InspectKadernikState extends State<InspectKadernik> {
                   onChanged: (dynamic newValue) async {
                     //TODO: Přepsat do čitelnější formy, nějak to funguje ale je to mega bordel
                     DatabaseService dbService = DatabaseService();
+                    String? idToDelele;
+                    Hodnoceni? hodnoceniToAdd;
 
-                    if (hodnoceniUzivatelem != null) {
+                    if (_aktualniHodnoceniUzivatele != null) {
                       //? Dokument existuje - úprava dat v databázi
-                      int oldHodnoceni = hodnoceniUzivatelem!.ciselneHodnoceni;
-                      hodnoceniUzivatelem!.ciselneHodnoceni = int.parse(
-                        newValue,
-                      );
+                      int oldHodnoceni =
+                          _aktualniHodnoceniUzivatele!.ciselneHodnoceni;
+
                       if (newValue == "-") {
-                        if (hodnoceniUzivatelem!.ciselneHodnoceni != 0) {
-                          //? Uživatel jakoby odstranil hodnocení
-                          setState(() {
-                            selectedValueRating = newValue;
-                            widget.pocetHodnoceniKadernika--;
-                            widget.hodnoceniKadernikaSoucetVsechnHodnoceni -=
-                                oldHodnoceni;
+                        //? Musím to smazat i v Browse Body v listu všech kadeřníkových Hodnocení - proto to posílám ve funkci onChanged
+                        idToDelele = _aktualniHodnoceniUzivatele!.id;
+
+                        setState(() {
+                          selectedValueRating = "-";
+                          widget.pocetHodnoceniKadernika--;
+                          widget.hodnoceniKadernikaSoucetVsechnHodnoceni -=
+                              oldHodnoceni;
+
+                          if (widget.pocetHodnoceniKadernika > 0) {
                             widget.hodnoceniKadernika = zaokrouhliHodnoceni(
                               widget.hodnoceniKadernikaSoucetVsechnHodnoceni /
                                   widget.pocetHodnoceniKadernika,
                             );
-                          });
-                        }
+                          } else {
+                            widget.hodnoceniKadernika = 0.0;
+                            widget.hodnoceniKadernikaSoucetVsechnHodnoceni =
+                                0.0;
+                          }
+
+                          _aktualniHodnoceniUzivatele = null;
+                        });
+
+                        await dbService.deleteHodnoceni(idToDelele);
                       } else {
-                        int rozdilMeziStarymANovym =
-                            int.parse(newValue) - oldHodnoceni;
+                        int novyVysledek = int.parse(newValue);
+                        int rozdil = novyVysledek - oldHodnoceni;
+
+                        _aktualniHodnoceniUzivatele!.ciselneHodnoceni =
+                            novyVysledek;
+
                         setState(() {
                           selectedValueRating = newValue;
                           widget.hodnoceniKadernikaSoucetVsechnHodnoceni +=
-                              rozdilMeziStarymANovym;
+                              rozdil;
                           widget.hodnoceniKadernika = zaokrouhliHodnoceni(
                             widget.hodnoceniKadernikaSoucetVsechnHodnoceni /
                                 widget.pocetHodnoceniKadernika,
                           );
                         });
+                        await dbService.updateHodnoceni(
+                          _aktualniHodnoceniUzivatele!,
+                        );
                       }
-
-                      await dbService.updateHodnoceni(hodnoceniUzivatelem!);
                     } else {
                       //? Tvorba nového dokumentu v databázi
+
+                      if (newValue == "-") return;
+
                       Hodnoceni noveHodnoceni = Hodnoceni(
                         id: "",
                         idUzivatele: widget.uzivatel.userUID,
@@ -465,9 +485,12 @@ class _InspectKadernikState extends State<InspectKadernik> {
                       Hodnoceni? noveHodnoceniWithId = await dbService
                           .createNewHodnoceni(noveHodnoceni);
 
+                      //? Musím to nové hodnocení poslat do listu všech uživatelových Hodnocení zpět do Browse body - dám jej tedy do proměnné hodnoceniToAdd
+                      hodnoceniToAdd = noveHodnoceniWithId;
+
                       setState(() {
                         selectedValueRating = newValue;
-                        hodnoceniUzivatelem = noveHodnoceniWithId;
+                        _aktualniHodnoceniUzivatele = noveHodnoceniWithId;
                         widget.pocetHodnoceniKadernika++;
                         widget.hodnoceniKadernikaSoucetVsechnHodnoceni +=
                             double.parse(newValue);
@@ -482,6 +505,8 @@ class _InspectKadernikState extends State<InspectKadernik> {
                       widget.hodnoceniKadernika,
                       widget.hodnoceniKadernikaSoucetVsechnHodnoceni,
                       widget.pocetHodnoceniKadernika,
+                      idToDelele,
+                      hodnoceniToAdd,
                     );
                   },
                 ),
