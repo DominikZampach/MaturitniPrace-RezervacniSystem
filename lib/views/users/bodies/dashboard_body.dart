@@ -15,6 +15,7 @@ class DashboardBody extends StatefulWidget {
   final double screenHeight;
   final double screenWidth;
   final Uzivatel uzivatel;
+
   const DashboardBody({
     super.key,
     required this.screenHeight,

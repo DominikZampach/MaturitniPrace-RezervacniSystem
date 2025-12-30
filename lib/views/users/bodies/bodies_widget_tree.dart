@@ -48,7 +48,7 @@ class _MainBodyState extends State<MainBody> {
           );
         }
 
-        final Uzivatel soucasnyUzivatel = snapshot.data!;
+        Uzivatel soucasnyUzivatel = snapshot.data!;
 
         if (widget.selectedIndex == 0) {
           return DashboardBody(
@@ -68,7 +68,16 @@ class _MainBodyState extends State<MainBody> {
             uzivatel: soucasnyUzivatel,
           );
         } else if (widget.selectedIndex == 3) {
-          return SettingsBody();
+          return SettingsBody(
+            screenHeight: widget.screenHeight,
+            screenWidth: widget.screenWidth,
+            uzivatel: soucasnyUzivatel,
+            onChanged: (updatedUzivatel) {
+              setState(() {
+                soucasnyUzivatel = updatedUzivatel;
+              });
+            },
+          );
         } else {
           return Text("Error");
         }

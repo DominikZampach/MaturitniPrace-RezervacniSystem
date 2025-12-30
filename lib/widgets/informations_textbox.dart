@@ -8,7 +8,10 @@ class InformationTextbox extends StatelessWidget {
   final String textInFront;
   final TextEditingController controller;
   final double spacingGap;
-  const InformationTextbox({
+  double? fontSize;
+  double? textBoxWidth;
+
+  InformationTextbox({
     super.key,
     required this.context,
     required this.verticalPadding,
@@ -16,7 +19,13 @@ class InformationTextbox extends StatelessWidget {
     required this.textInFront,
     required this.controller,
     required this.spacingGap,
-  });
+    this.fontSize,
+    this.textBoxWidth,
+  }) {
+    //? Nastavení defaultních hodnot pokud uživatel specifická data
+    fontSize ??= 15.sp;
+    textBoxWidth ??= 300.w;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +41,10 @@ class InformationTextbox extends StatelessWidget {
         children: [
           Text(
             textInFront,
-            style: TextStyle(fontSize: 16.sp, fontStyle: FontStyle.normal),
+            style: TextStyle(fontSize: fontSize, fontStyle: FontStyle.normal),
           ),
           SizedBox(
-            width: 300.w,
+            width: textBoxWidth,
             child: TextField(
               controller: controller,
               decoration: InputDecoration(
@@ -49,7 +58,10 @@ class InformationTextbox extends StatelessWidget {
                 ),
               ),
 
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp),
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: fontSize,
+              ),
             ),
           ),
         ],
