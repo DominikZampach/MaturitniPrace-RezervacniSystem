@@ -126,7 +126,7 @@ class AuthService {
   }
   */
 
-  Future<void> signOut(BuildContext context) async {
+  Future<void> logout(BuildContext context) async {
     await _firebaseAuth.signOut();
 
     if (context.mounted) {

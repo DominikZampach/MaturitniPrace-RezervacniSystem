@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
+import 'package:rezervacni_system_maturita/services/auth_service.dart';
+import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 
 class SettingsBody extends StatefulWidget {
@@ -57,7 +61,7 @@ class _SettingsBodyState extends State<SettingsBody> {
               ),
               SizedBox(height: 15.h),
               Text(
-                "Change user informations:",
+                "User informations",
                 style: TextStyle(
                   fontSize: h2FontSize,
                   fontWeight: FontWeight.bold,
@@ -69,7 +73,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                 horizontalPadding: 0,
                 textInFront: "First name:",
                 controller: _firstNameController,
-                spacingGap: 10,
+                spacingGap: 15,
                 fontSize: normalTextFontSize,
                 textBoxWidth: 200.w,
               ),
@@ -79,7 +83,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                 horizontalPadding: 0,
                 textInFront: "Last name:",
                 controller: _lastNameController,
-                spacingGap: 10,
+                spacingGap: 15,
                 fontSize: normalTextFontSize,
                 textBoxWidth: 200.w,
               ),
@@ -89,17 +93,35 @@ class _SettingsBodyState extends State<SettingsBody> {
                 horizontalPadding: 0,
                 textInFront: "       Mobile:",
                 controller: _mobileController,
-                spacingGap: 10,
+                spacingGap: 15,
                 fontSize: normalTextFontSize,
                 textBoxWidth: 200.w,
               ),
               SizedBox(height: 5.h),
               ElevatedButton(
-                onPressed: () {
-                  //TODO
+                onPressed: () async {
+                  if (_firstNameController.text.isNotEmpty &&
+                      _firstNameController.text != widget.uzivatel.jmeno) {
+                    widget.uzivatel.jmeno = _firstNameController.text;
+                  }
+
+                  if (_lastNameController.text.isNotEmpty &&
+                      _lastNameController.text != widget.uzivatel.prijmeni) {
+                    widget.uzivatel.prijmeni = _lastNameController.text;
+                  }
+
+                  if (_mobileController.text.isNotEmpty &&
+                      _mobileController.text != widget.uzivatel.telefon) {
+                    widget.uzivatel.telefon = _mobileController.text;
+                  }
+
+                  ToastClass.showToastSnackbar(message: "Successfully saved.");
+                  widget.onChanged(widget.uzivatel);
+                  await DatabaseService().updateUzivatel(widget.uzivatel);
                 },
                 style: ButtonStyle(
                   fixedSize: WidgetStatePropertyAll(Size(80.w, 40.h)),
+                  backgroundColor: WidgetStatePropertyAll(Consts.secondary),
                 ),
                 child: Text(
                   "Save",
@@ -107,6 +129,65 @@ class _SettingsBodyState extends State<SettingsBody> {
                     fontSize: normalTextFontSize,
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              SizedBox(height: 50.h),
+              Text(
+                "Support",
+                style: TextStyle(
+                  fontSize: h2FontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "If you find any bug or technical problem,\nplease let me know through one of following methods:",
+                style: TextStyle(fontSize: smallerTextFontSize),
+                maxLines: 3,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10.h),
+              SelectableText.rich(
+                style: TextStyle(fontSize: smallerTextFontSize),
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Email: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: "dominik.zampach@seznam.cz"),
+                  ],
+                ),
+              ),
+              SizedBox(height: 5.h),
+              SelectableText.rich(
+                style: TextStyle(fontSize: smallerTextFontSize),
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Phone: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: "+420 732 683 400"),
+                  ],
+                ),
+              ),
+              SizedBox(height: 50.h),
+              ElevatedButton(
+                onPressed: () async {
+                  //? Logout
+                  await AuthService().logout(context);
+                },
+                style: ButtonStyle(
+                  fixedSize: WidgetStatePropertyAll(Size(80.w, 40.h)),
+                  backgroundColor: WidgetStatePropertyAll(Consts.secondary),
+                ),
+                child: Text(
+                  "Logout",
+                  style: TextStyle(
+                    fontSize: normalTextFontSize,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
               ),
