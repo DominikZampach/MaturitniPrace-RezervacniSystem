@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/models/uzivatel.dart';
+import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/users/home.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 
 class AddUserInformationPage extends StatefulWidget {
@@ -94,18 +98,6 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
     );
   }
 
-  /*
-  Widget _gender() {
-    //TODO
-    return;
-  }
-
-  Widget _mobile() {
-    //TODO
-    return;
-  }
-  */
-
   Widget _saveInformationsButton(
     BuildContext context,
     double verticalPadding,
@@ -117,8 +109,32 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
         horizontal: horizontalPadding,
       ),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           //! TODO
+          //? Kontrola zadaných informací
+          if (nameController.text.trim().isEmpty ||
+              surnameController.text.trim().isEmpty ||
+              mobileController.text.trim().isEmpty) {
+            ToastClass.showToastSnackbar(
+              message: "You need to enter all informations!",
+            );
+            return;
+          }
+
+          DatabaseService dbService = DatabaseService();
+          await dbService.createNewUzivatel(
+            nameController.text,
+            surnameController.text,
+            mobileController.text,
+            false,
+            true,
+          );
+          if (mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,

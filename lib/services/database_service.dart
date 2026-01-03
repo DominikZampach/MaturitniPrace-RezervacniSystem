@@ -181,7 +181,10 @@ class DatabaseService {
     bool povoleneNotifikace,
     bool jeMuz,
   ) async {
-    //TODO
+    DocumentReference newDocRef = firestore
+        .collection(USERS_COLLECTION_REF)
+        .doc(instance.currentUser!.uid);
+
     Uzivatel novyUzivatel = Uzivatel(
       userUID: instance.currentUser!.uid,
       jmeno: jmeno,
@@ -192,6 +195,14 @@ class DatabaseService {
       jeMuz: jeMuz,
       oblibeniKadernici: [],
     );
+
+    try {
+      newDocRef.set(novyUzivatel.toJson());
+      print("Nový uživatel ${novyUzivatel.userUID} vytvořen.");
+      ToastClass.showToastSnackbar(message: "Uživatel úspěšně vytvořen");
+    } catch (e) {
+      print("Chyba při tvorbě nové rezervace: $e");
+    }
   }
 
   //? Tvorba nové rezervace
