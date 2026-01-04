@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
@@ -146,6 +147,14 @@ class DatabaseService {
       return false;
     }
     return true;
+  }
+
+  Future<bool> isUserAdmin() async {
+    if ((instance.currentUser!.uid == Consts.ADMIN_UID) &&
+        (instance.currentUser!.email == Consts.ADMIN_EMAIL)) {
+      return true;
+    }
+    return false;
   }
 
   //? Uložení upraveného uživatele

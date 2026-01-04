@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/admin/home_admin.dart';
 import 'package:rezervacni_system_maturita/views/users/add_user_information.dart';
 import 'package:rezervacni_system_maturita/views/users/home.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
@@ -24,8 +25,20 @@ class AuthService {
       );
 
       if (context.mounted) {
-        bool uzivatelExist = await DatabaseService()
-            .doesUzivatelDocumentExist();
+        DatabaseService dbService = DatabaseService();
+        bool isUserAdmin = await dbService.isUserAdmin();
+        if (isUserAdmin) {
+          //? Provede se, pokud uživatel je admin
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => const HomePageAdmin(),
+            ),
+          );
+          return; //? Return aby aplikace nepokračovala a nezobrazila mi AddUserInformationPage
+        }
+
+        bool uzivatelExist = await dbService.doesUzivatelDocumentExist();
         if (uzivatelExist) {
           //? Provede se, pokud dokument uživatele již existuje, není potřeba nic nastavovat
           Navigator.push(

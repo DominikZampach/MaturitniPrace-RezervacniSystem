@@ -15,6 +15,8 @@ class Consts {
     tertiary: info,
     onPrimary: Colors.black,
   );
+  static const String ADMIN_EMAIL = "bookmycut@seznam.cz";
+  static const String ADMIN_UID = "4iUvFGRtE9Zrk6YLUIrRK8n3B0D3";
   /*
   static final ColorScheme colorScheme = ColorScheme.fromSeed(
     seedColor: primary,

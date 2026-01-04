@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:rezervacni_system_maturita/views/users/bodies/bodies_widget_tree.dart';
+import 'package:rezervacni_system_maturita/views/admin/bodies_widget_tree_admin.dart';
 import 'package:rezervacni_system_maturita/widgets/side_navbar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePageAdmin extends StatefulWidget {
+  const HomePageAdmin({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageAdmin> createState() => _HomePageAdminState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageAdminState extends State<HomePageAdmin> {
   int selectedIndex = 0;
-
   void onNavbarItemSelected(int index) {
     //? Callback funkce, kterou pošlu HomePage->Navbar->Navbar_Item, aby se po kliknutí změnil index tady!
     setState(() {
       selectedIndex = index;
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -43,9 +37,10 @@ class _HomePageState extends State<HomePage> {
                 horizontalPadding: horizontalPadding,
                 selectedIndex: selectedIndex,
                 onItemSelect: onNavbarItemSelected,
+                isAdmin: true, //? Informace pro widget, že chci adminskou verzi
               ),
               Expanded(
-                child: MainBody(
+                child: WidgetTreeBodiesAdmin(
                   selectedIndex: selectedIndex,
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,

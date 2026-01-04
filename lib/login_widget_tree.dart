@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/admin/home_admin.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
 import 'package:rezervacni_system_maturita/views/users/add_user_information.dart';
 import 'package:rezervacni_system_maturita/views/users/home.dart';
@@ -18,7 +20,17 @@ class LoginWidgetTree extends StatelessWidget {
           return const LoginPage();
         }
 
-        //? Uživatel je přihlášen -> potřebujeme ověřit, jestli existuje jeho dokument
+        print(
+          "Auth Email: ${snapshot.data!.email}\nAuth UID: ${snapshot.data!.uid}",
+        );
+
+        //? Uživatel je přihlášen -> ověření pokud není admin
+        if ((snapshot.data!.email == Consts.ADMIN_EMAIL) &&
+            (snapshot.data!.uid == Consts.ADMIN_UID)) {
+          return const HomePageAdmin();
+        }
+
+        //? Uživatel je přihlášen a zároveň to není admin -> potřebujeme ověřit, jestli existuje jeho dokument
         return FutureBuilder<bool>(
           future: DatabaseService().doesUzivatelDocumentExist(),
           builder: (context, userInfoSnapshot) {
