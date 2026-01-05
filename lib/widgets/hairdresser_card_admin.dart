@@ -1,64 +1,34 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rezervacni_system_maturita/logic/getAvgRating.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
-import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
+import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
-import 'package:rezervacni_system_maturita/models/uzivatel.dart';
-import 'package:rezervacni_system_maturita/views/users/inspect/inspect_kadernik.dart';
+import 'package:rezervacni_system_maturita/models/lokace.dart';
+import 'package:rezervacni_system_maturita/views/admin/edit/edit_hairdresser.dart';
 
-class HairdresserCard extends StatefulWidget {
+class HairdresserCardAdmin extends StatefulWidget {
   Kadernik kadernik;
-  final List<Hodnoceni> vsechnaHodnoceni;
-  late final List<Hodnoceni> kadernikovaHodnoceni;
-  final Uzivatel? uzivatel;
-  late double hodnoceniKadernika;
-  late double hodnoceniSoucet;
-  late int pocetHodnoceniKadernika;
-
-  HairdresserCard({
+  final List<Lokace> listAllLokace;
+  final List<KadernickyUkon> listAllKadernickeUkony;
+  HairdresserCardAdmin({
     super.key,
     required this.kadernik,
-    required this.vsechnaHodnoceni,
-    this.uzivatel,
-  }) {
-    final result = getAvgRating(vsechnaHodnoceni, kadernik);
-
-    hodnoceniKadernika = result[0] as double;
-    hodnoceniSoucet = result[1] as double;
-    pocetHodnoceniKadernika = result[2] as int;
-    kadernikovaHodnoceni = result[3] as List<Hodnoceni>;
-  }
+    required this.listAllLokace,
+    required this.listAllKadernickeUkony,
+  });
 
   @override
-  State<HairdresserCard> createState() => _HairdresserCardState();
+  State<HairdresserCardAdmin> createState() => _HairdresserCardAdminState();
 }
 
-class _HairdresserCardState extends State<HairdresserCard> {
+class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
   double captionFontSize = 9.sp;
-
   double mainNameFontSize = 12.sp;
 
-  dynamic onChangedUserVersion(
-    double hodnoceniKadernikaChanged,
-    double hodnoceniSoucetChanged,
-    int pocetHodnoceniChanged,
-    String? idToDelete,
-    Hodnoceni? hodnoceniToAdd,
-  ) {
+  dynamic onChangedAdminVersion(Kadernik kadernikChanged) {
     setState(() {
-      widget.hodnoceniKadernika = hodnoceniKadernikaChanged;
-      widget.hodnoceniSoucet = hodnoceniSoucetChanged;
-      widget.pocetHodnoceniKadernika = pocetHodnoceniChanged;
-      if (idToDelete != null) {
-        widget.kadernikovaHodnoceni.removeWhere(
-          (item) => item.id == idToDelete,
-        );
-      }
-      if (hodnoceniToAdd != null) {
-        widget.kadernikovaHodnoceni.add(hodnoceniToAdd);
-      }
+      widget.kadernik = kadernikChanged;
     });
   }
 
@@ -68,13 +38,11 @@ class _HairdresserCardState extends State<HairdresserCard> {
       onTap: () async {
         final dialogResult = await showDialog(
           context: context,
-          builder: (BuildContext context) => InspectKadernik(
+          builder: (BuildContext context) => EditHairdresserDialog(
             kadernik: widget.kadernik,
-            hodnoceniKadernika: widget.hodnoceniKadernika,
-            pocetHodnoceniKadernika: widget.kadernikovaHodnoceni.length,
-            uzivatel: widget.uzivatel!,
-            hodnoceniKadernikaSoucetVsechnHodnoceni: widget.hodnoceniSoucet,
-            onChanged: onChangedUserVersion,
+            listAllLokace: widget.listAllLokace,
+            listAllKadernickeUkony: widget.listAllKadernickeUkony,
+            onChanged: onChangedAdminVersion,
           ),
         );
       },
@@ -154,13 +122,6 @@ class _HairdresserCardState extends State<HairdresserCard> {
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.h),
-                    child: Text(
-                      "Avg. Rating: ${widget.hodnoceniKadernika}*",
-                      style: TextStyle(fontSize: captionFontSize),
                     ),
                   ),
                 ],

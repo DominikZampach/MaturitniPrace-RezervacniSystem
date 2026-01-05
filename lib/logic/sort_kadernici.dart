@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/logic/getAvgRating.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';

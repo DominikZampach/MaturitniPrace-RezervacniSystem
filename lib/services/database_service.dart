@@ -470,6 +470,27 @@ class DatabaseService {
     return hodnoceni;
   }
 
+  //? Získání všech lokací
+  Future<List<Lokace>> getAllLokace() async {
+    final query = await firestore.collection(LOKACE_COLLECTION_REF).get();
+
+    if (query.docs.isEmpty) {
+      print("Žádné lokace v databázi");
+      return [];
+    }
+
+    List<Lokace> lokace = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      Lokace singleLokace = Lokace.fromJson(data);
+      lokace.add(singleLokace);
+    }
+
+    return lokace;
+  }
+
   //? Zjištění, pokud existuje nějaký dokument Hodnoceni určitého kadeřníka, kde hodnotitel je uživatel
   Future<Hodnoceni?> getHodnoceniOfSpecificKadernikByCurrentUzivatel(
     String kadernikId,

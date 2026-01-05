@@ -10,6 +10,8 @@ class InformationTextbox extends StatelessWidget {
   final double spacingGap;
   double? fontSize;
   double? textBoxWidth;
+  bool? leftAlignment;
+  int? maxLines;
 
   InformationTextbox({
     super.key,
@@ -21,10 +23,14 @@ class InformationTextbox extends StatelessWidget {
     required this.spacingGap,
     this.fontSize,
     this.textBoxWidth,
+    this.leftAlignment,
+    this.maxLines,
   }) {
     //? Nastavení defaultních hodnot pokud uživatel specifická data
     fontSize ??= 15.sp;
     textBoxWidth ??= 300.w;
+    leftAlignment ??= false;
+    maxLines ??= 1;
   }
 
   @override
@@ -35,7 +41,9 @@ class InformationTextbox extends StatelessWidget {
         horizontal: horizontalPadding,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: leftAlignment!
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: spacingGap,
         children: [
@@ -62,6 +70,8 @@ class InformationTextbox extends StatelessWidget {
                 fontWeight: FontWeight.normal,
                 fontSize: fontSize,
               ),
+
+              maxLines: maxLines,
             ),
           ),
         ],

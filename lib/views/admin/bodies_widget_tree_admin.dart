@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rezervacni_system_maturita/views/admin/bodies_admin/hairdressers_body_admin.dart';
 
 class WidgetTreeBodiesAdmin extends StatefulWidget {
   final int selectedIndex;
@@ -20,7 +21,10 @@ class _WidgetTreeBodiesAdminState extends State<WidgetTreeBodiesAdmin> {
   @override
   Widget build(BuildContext context) {
     if (widget.selectedIndex == 0) {
-      return Text("Hairdressers");
+      return HairdressersBodyAdmin(
+        screenWidth: widget.screenWidth,
+        screenHeight: widget.screenHeight,
+      );
     } else if (widget.selectedIndex == 1) {
       return Text("Locations");
     } else if (widget.selectedIndex == 2) {
