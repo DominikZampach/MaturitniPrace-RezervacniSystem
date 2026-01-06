@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
@@ -103,5 +104,13 @@ class Kadernik {
 
     print("Kadeřnické ukony list s cenami: $kadernickeUkonyListSCenami");
     return kadernickeUkonyListSCenami;
+  }
+
+  static TimeOfDay getTimeOfDay(String time) {
+    var splitedTime = time.split(':');
+    int hours = int.parse(splitedTime[0]);
+    int minutes = int.parse(splitedTime[1]);
+
+    return TimeOfDay(hour: hours, minute: minutes);
   }
 }

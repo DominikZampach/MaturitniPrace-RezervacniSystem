@@ -12,6 +12,7 @@ class InformationTextbox extends StatelessWidget {
   double? textBoxWidth;
   bool? leftAlignment;
   int? maxLines;
+  final double? labelWidth;
 
   InformationTextbox({
     super.key,
@@ -25,6 +26,7 @@ class InformationTextbox extends StatelessWidget {
     this.textBoxWidth,
     this.leftAlignment,
     this.maxLines,
+    this.labelWidth,
   }) {
     //? Nastavení defaultních hodnot pokud uživatel specifická data
     fontSize ??= 15.sp;
@@ -45,12 +47,16 @@ class InformationTextbox extends StatelessWidget {
             ? MainAxisAlignment.start
             : MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        spacing: spacingGap,
         children: [
-          Text(
-            textInFront,
-            style: TextStyle(fontSize: fontSize, fontStyle: FontStyle.normal),
+          SizedBox(
+            width:
+                labelWidth, //? Tohle zajišťuje aby se text ukazoval vždy stejně daleko od TextFieldu
+            child: Text(
+              textInFront,
+              style: TextStyle(fontSize: fontSize, fontStyle: FontStyle.normal),
+            ),
           ),
+          SizedBox(width: spacingGap),
           SizedBox(
             width: textBoxWidth,
             child: TextField(

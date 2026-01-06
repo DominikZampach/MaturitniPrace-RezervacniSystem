@@ -22,7 +22,7 @@ class CarouselPhoto extends StatelessWidget {
         borderRadius: BorderRadiusGeometry.circular(10.r),
         child: CachedNetworkImage(
           imageUrl: url,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover, //.contain
           httpHeaders: {
             "Access-Control-Allow-Origin": "*",
             "User-Agent": "Mozilla/5.0...",

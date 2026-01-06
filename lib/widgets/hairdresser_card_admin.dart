@@ -108,7 +108,7 @@ class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
                       child: ClipRRect(
                         borderRadius: BorderRadiusGeometry.circular(10.r),
                         child: FittedBox(
-                          fit: BoxFit.contain,
+                          fit: BoxFit.cover,
                           child: CachedNetworkImage(
                             imageUrl: widget.kadernik.odkazFotografie,
                             httpHeaders: {
