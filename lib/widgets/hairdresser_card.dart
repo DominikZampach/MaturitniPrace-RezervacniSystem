@@ -36,10 +36,6 @@ class HairdresserCard extends StatefulWidget {
 }
 
 class _HairdresserCardState extends State<HairdresserCard> {
-  double captionFontSize = 9.sp;
-
-  double mainNameFontSize = 12.sp;
-
   dynamic onChangedUserVersion(
     double hodnoceniKadernikaChanged,
     double hodnoceniSoucetChanged,
@@ -64,6 +60,10 @@ class _HairdresserCardState extends State<HairdresserCard> {
 
   @override
   Widget build(BuildContext context) {
+    double captionFontSize = 9.sp;
+
+    double mainNameFontSize = 12.sp;
+
     return GestureDetector(
       onTap: () async {
         final dialogResult = await showDialog(

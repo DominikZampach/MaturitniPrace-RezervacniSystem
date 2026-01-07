@@ -80,10 +80,8 @@ class SideNavbar extends StatelessWidget {
                   await AuthService().logout(context);
                 },
                 style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(
-                    Consts.error.withValues(alpha: 0.7),
-                  ),
-                  fixedSize: WidgetStatePropertyAll(Size(80.w, 40.h)),
+                  backgroundColor: WidgetStatePropertyAll(Consts.secondary),
+                  fixedSize: WidgetStatePropertyAll(Size(75.w, 35.h)),
                 ),
                 child: Text(
                   "Logout",

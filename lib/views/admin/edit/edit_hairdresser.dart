@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:multiselect/multiselect.dart';
+import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
@@ -55,6 +57,18 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
 
   late TimeOfDay startTime;
   late TimeOfDay endTime;
+  late TimeOfDay lunchTime;
+  late List<String> selectedDays;
+
+  final List<String> multiselectDropdownDayOptions = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
 
   @override
   void initState() {
@@ -76,11 +90,16 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
 
       startTime = Kadernik.getTimeOfDay(widget.kadernik!.zacatekPracovniDoby);
       endTime = Kadernik.getTimeOfDay(widget.kadernik!.konecPracovniDoby);
+      lunchTime = Kadernik.getTimeOfDay(widget.kadernik!.casObedovePrestavky);
+
+      selectedDays = widget.kadernik!.getListOfWorkingDays();
     } else {
       selectedLokace = null;
       ukonySCenami = null;
       startTime = TimeOfDay(hour: 8, minute: 0);
       endTime = TimeOfDay(hour: 16, minute: 0);
+      lunchTime = TimeOfDay(hour: 12, minute: 0);
+      selectedDays = [];
     }
   }
 
@@ -91,9 +110,12 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
     final double normalTextFontSize = 11.sp;
     final double smallerTextFontSize = 10.sp;
 
-    final double _labelWidth = 70.w;
+    final double _labelWidth = 75.w;
     final double _labelWidthRightColumn = 30.w;
     final double _spacingGap = 10.w;
+
+    final double _multiselectWidth = 180.w;
+    final double _multiselectHeight = 40.h;
 
     dropdownLokaceValues = [
       for (var lokace in widget.listAllLokace)
@@ -218,35 +240,10 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                           maxLines: 2,
                           labelWidth: _labelWidth,
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10.h,
-                            horizontal: 5.w,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: _labelWidth,
-                                child: Text(
-                                  "Location:",
-                                  style: TextStyle(
-                                    fontSize: normalTextFontSize,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: _spacingGap),
-                              DropdownButton<Lokace?>(
-                                alignment: AlignmentGeometry.center,
-                                value: selectedLokace,
-                                items: dropdownLokaceValues,
-                                onChanged: (var item) => setState(() {
-                                  selectedLokace = item;
-                                }),
-                              ),
-                            ],
-                          ),
+                        _locationDropdown(
+                          _labelWidth,
+                          normalTextFontSize,
+                          _spacingGap,
                         ),
                         _startTime(
                           _labelWidth,
@@ -261,6 +258,20 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                           _spacingGap,
                           context,
                           smallerTextFontSize,
+                        ),
+                        _lunchTime(
+                          _labelWidth,
+                          normalTextFontSize,
+                          _spacingGap,
+                          context,
+                          smallerTextFontSize,
+                        ),
+                        _workingDays(
+                          _labelWidth,
+                          normalTextFontSize,
+                          _spacingGap,
+                          _multiselectHeight,
+                          _multiselectWidth,
                         ),
                       ],
                     ),
@@ -352,6 +363,141 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
     );
   }
 
+  Padding _workingDays(
+    double _labelWidth,
+    double normalTextFontSize,
+    double _spacingGap,
+    double _multiselectHeight,
+    double _multiselectWidth,
+  ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 5.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: _labelWidth,
+            child: Text(
+              "Working days:",
+              style: TextStyle(fontSize: normalTextFontSize),
+            ),
+          ),
+          SizedBox(width: _spacingGap),
+          SizedBox(
+            height: _multiselectHeight,
+            width: _multiselectWidth,
+            child: DropDownMultiSelect<String>(
+              options: multiselectDropdownDayOptions,
+              selectedValues: selectedDays,
+              onChanged: (List<String> newSelectedDays) {
+                //? Seřazení aby to šlo od Monday do Sunday
+                newSelectedDays.sort(
+                  (a, b) => multiselectDropdownDayOptions
+                      .indexOf(a)
+                      .compareTo(multiselectDropdownDayOptions.indexOf(b)),
+                );
+
+                setState(() {
+                  selectedDays = newSelectedDays;
+                });
+              },
+              whenEmpty: "Select days..",
+              selectedValuesStyle: TextStyle(fontSize: 0),
+              separator: ", ",
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _locationDropdown(
+    double _labelWidth,
+    double normalTextFontSize,
+    double _spacingGap,
+  ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 5.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: _labelWidth,
+            child: Text(
+              "Location:",
+              style: TextStyle(fontSize: normalTextFontSize),
+            ),
+          ),
+          SizedBox(width: _spacingGap),
+          DropdownButton<Lokace?>(
+            alignment: AlignmentGeometry.center,
+            value: selectedLokace,
+            items: dropdownLokaceValues,
+            onChanged: (var item) => setState(() {
+              selectedLokace = item;
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _lunchTime(
+    double _labelWidth,
+    double normalTextFontSize,
+    double _spacingGap,
+    BuildContext context,
+    double smallerTextFontSize,
+  ) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 5.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: _labelWidth,
+            child: Text(
+              "Lunch Break:",
+              style: TextStyle(fontSize: normalTextFontSize),
+            ),
+          ),
+          SizedBox(width: _spacingGap),
+          ElevatedButton(
+            onPressed: () async {
+              TimeOfDay? resultTime = await showTimePicker(
+                context: context,
+                initialTime: lunchTime,
+              );
+
+              if ((resultTime != null) &&
+                  (resultTime.isAfter(startTime)) &&
+                  (resultTime.isBefore(endTime))) {
+                setState(() {
+                  lunchTime = resultTime;
+                });
+              } else {
+                ToastClass.showToastSnackbar(message: "Invalid time");
+              }
+            },
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(Consts.secondary),
+            ),
+            child: Text(
+              "${lunchTime.hour}:${lunchTime.minute.toString().padLeft(2, '0')}",
+              style: TextStyle(
+                fontSize: smallerTextFontSize,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Padding _endTime(
     double _labelWidth,
     double normalTextFontSize,
@@ -380,10 +526,14 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                 initialTime: endTime,
               );
 
-              if ((resultTime != null) && (resultTime.isAfter(startTime))) {
+              if ((resultTime != null) &&
+                  (resultTime.isAfter(startTime)) &&
+                  (resultTime.isAfter(lunchTime))) {
                 setState(() {
                   endTime = resultTime;
                 });
+              } else {
+                ToastClass.showToastSnackbar(message: "Invalid time");
               }
             },
             style: ButtonStyle(
@@ -430,10 +580,14 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                 initialTime: startTime ?? TimeOfDay(hour: 8, minute: 0),
               );
 
-              if (resultTime != null) {
+              if ((resultTime != null) &&
+                  (resultTime.isBefore(endTime)) &&
+                  (resultTime.isBefore(lunchTime))) {
                 setState(() {
                   startTime = resultTime;
                 });
+              } else {
+                ToastClass.showToastSnackbar(message: "Invalid time");
               }
             },
             style: ButtonStyle(

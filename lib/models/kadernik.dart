@@ -106,6 +106,52 @@ class Kadernik {
     return kadernickeUkonyListSCenami;
   }
 
+  //? Konvertuje na normální list s celými názvy, jako je Monday, Tuesday, ...
+  List<String> getListOfWorkingDays() {
+    const Map<String, String> dny = {
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday",
+      "7": "Sunday",
+    };
+
+    List<String> pracovniDnySplit = pracovniDny.split(',');
+
+    List<String> listPracovnichDnuCeleNazvy = [];
+    for (var den in pracovniDnySplit) {
+      if (dny.containsKey(den)) {
+        listPracovnichDnuCeleNazvy.add(dny[den]!);
+      }
+    }
+
+    return listPracovnichDnuCeleNazvy;
+  }
+
+  //? Konvertuje zpět na string s čísly a uloží jej do proměnné tady
+  void saveNewWorkingDays(List<String> newPracovniDny) {
+    const Map<String, String> dny = {
+      "Monday": "1",
+      "Tuesday": "2",
+      "Wednesday": "3",
+      "Thursday": "4",
+      "Friday": "5",
+      "Saturday": "6",
+      "Sunday": "7",
+    };
+
+    String newPracovniDnyString = "";
+    for (var den in newPracovniDny) {
+      newPracovniDnyString += "${dny[den]},";
+    }
+
+    newPracovniDnyString.substring(0, newPracovniDnyString.length - 1);
+    print(newPracovniDnyString);
+    pracovniDny = newPracovniDnyString;
+  }
+
   static TimeOfDay getTimeOfDay(String time) {
     var splitedTime = time.split(':');
     int hours = int.parse(splitedTime[0]);

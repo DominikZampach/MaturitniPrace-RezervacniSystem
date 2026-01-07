@@ -23,9 +23,6 @@ class HairdresserCardAdmin extends StatefulWidget {
 }
 
 class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
-  double captionFontSize = 9.sp;
-  double mainNameFontSize = 12.sp;
-
   dynamic onChangedAdminVersion(Kadernik kadernikChanged) {
     setState(() {
       widget.kadernik = kadernikChanged;
@@ -34,6 +31,9 @@ class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    double captionFontSize = 9.sp;
+    double mainNameFontSize = 12.sp;
+
     return GestureDetector(
       onTap: () async {
         final dialogResult = await showDialog(
