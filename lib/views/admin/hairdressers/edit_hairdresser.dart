@@ -6,7 +6,7 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
-import 'package:rezervacni_system_maturita/views/admin/edit/select_actions_dialog.dart';
+import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_actions_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 
@@ -53,7 +53,7 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
   late Lokace? selectedLokace;
   late List<DropdownMenuItem<Lokace>> dropdownLokaceValues;
 
-  late Map<String, dynamic>? ukonySCenami;
+  late Map<String, dynamic> ukonySCenami;
 
   late TimeOfDay startTime;
   late TimeOfDay endTime;
@@ -94,8 +94,9 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
 
       selectedDays = widget.kadernik!.getListOfWorkingDays();
     } else {
+      //? Nastavení hodnot když se jedná o create nového kadeřníka
       selectedLokace = null;
-      ukonySCenami = null;
+      ukonySCenami = {};
       startTime = TimeOfDay(hour: 8, minute: 0);
       endTime = TimeOfDay(hour: 16, minute: 0);
       lunchTime = TimeOfDay(hour: 12, minute: 0);
@@ -336,7 +337,14 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                   ],
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    //TODO: Zatím jen test, ale vypadá to slibně
+                    if (widget.kadernik != null) {
+                      widget.kadernik!.jmeno = firstNameController.text;
+
+                      widget.onChanged(widget.kadernik!);
+                    }
+                  },
                   label: Text(
                     "Save data",
                     style: TextStyle(

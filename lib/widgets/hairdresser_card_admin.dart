@@ -5,17 +5,19 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
-import 'package:rezervacni_system_maturita/views/admin/edit/edit_hairdresser.dart';
+import 'package:rezervacni_system_maturita/views/admin/hairdressers/edit_hairdresser.dart';
 
 class HairdresserCardAdmin extends StatefulWidget {
   Kadernik kadernik;
   final List<Lokace> listAllLokace;
   final List<KadernickyUkon> listAllKadernickeUkony;
+  final Function(Kadernik) onChangedKadernik;
   HairdresserCardAdmin({
     super.key,
     required this.kadernik,
     required this.listAllLokace,
     required this.listAllKadernickeUkony,
+    required this.onChangedKadernik,
   });
 
   @override
@@ -27,6 +29,9 @@ class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
     setState(() {
       widget.kadernik = kadernikChanged;
     });
+    widget.onChangedKadernik(
+      kadernikChanged,
+    ); //? Vyvolám změnu i v samotném listu na Homepage - Hairdressers
   }
 
   @override

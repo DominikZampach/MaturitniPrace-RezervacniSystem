@@ -81,6 +81,14 @@ class _HairdressersBodyAdminState extends State<HairdressersBodyAdmin> {
         final List<KadernickyUkon> listAllKadernickeUkony =
             snapshot.data!.listAllKadernickeUkony;
 
+        dynamic onChangedKadernik(Kadernik updatedKadernik) {
+          int kadernikIndex = listAllKadernici.indexWhere(
+            (item) => item.id == updatedKadernik.id,
+          );
+
+          listAllKadernici[kadernikIndex] = updatedKadernik;
+        }
+
         return Container(
           color: Colors.white,
           height: widget.screenHeight,
@@ -119,6 +127,7 @@ class _HairdressersBodyAdminState extends State<HairdressersBodyAdmin> {
                         kadernik: listAllKadernici[index],
                         listAllKadernickeUkony: listAllKadernickeUkony,
                         listAllLokace: listAllLokace,
+                        onChangedKadernik: onChangedKadernik,
                       );
                       return card;
                     },
