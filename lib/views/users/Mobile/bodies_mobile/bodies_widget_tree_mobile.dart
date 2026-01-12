@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
-import 'package:rezervacni_system_maturita/views/users/bodies/browse_body.dart';
-import 'package:rezervacni_system_maturita/views/users/bodies/dashboard_body.dart';
-import 'package:rezervacni_system_maturita/views/users/bodies/reservations_body.dart';
-import 'package:rezervacni_system_maturita/views/users/bodies/settings_body.dart';
+import 'package:rezervacni_system_maturita/views/users/Mobile/bodies_mobile/dashboard_body_mobile.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 
-class MainBody extends StatefulWidget {
+class BodiesWidgetTreeMobile extends StatefulWidget {
   final int selectedIndex;
   final double screenWidth;
   final double screenHeight;
-  const MainBody({
+  const BodiesWidgetTreeMobile({
     super.key,
     required this.selectedIndex,
     required this.screenWidth,
@@ -19,10 +16,10 @@ class MainBody extends StatefulWidget {
   });
 
   @override
-  State<MainBody> createState() => _MainBodyState();
+  State<BodiesWidgetTreeMobile> createState() => _BodiesWidgetTreeMobileState();
 }
 
-class _MainBodyState extends State<MainBody> {
+class _BodiesWidgetTreeMobileState extends State<BodiesWidgetTreeMobile> {
   Future<Uzivatel> _nacteniDat() async {
     DatabaseService dbService = DatabaseService();
 
@@ -51,23 +48,18 @@ class _MainBodyState extends State<MainBody> {
         Uzivatel soucasnyUzivatel = snapshot.data!;
 
         if (widget.selectedIndex == 0) {
-          return DashboardBody(
+          return DashboardBodyMobile(
             screenHeight: widget.screenHeight,
             screenWidth: widget.screenWidth,
             uzivatel: soucasnyUzivatel,
           );
         } else if (widget.selectedIndex == 1) {
-          return ReservationsBody(
-            screenHeight: widget.screenHeight,
-            screenWidth: widget.screenWidth,
-          );
+          return Text("Reservations");
         } else if (widget.selectedIndex == 2) {
-          return BrowseBody(
-            screenHeight: widget.screenHeight,
-            screenWidth: widget.screenWidth,
-            uzivatel: soucasnyUzivatel,
-          );
+          return Text("Browse");
         } else if (widget.selectedIndex == 3) {
+          return Text("Settings");
+          /*
           return SettingsBody(
             screenHeight: widget.screenHeight,
             screenWidth: widget.screenWidth,
@@ -78,6 +70,7 @@ class _MainBodyState extends State<MainBody> {
               });
             },
           );
+          */
         } else {
           return Text("Error");
         }

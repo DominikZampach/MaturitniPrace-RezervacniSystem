@@ -17,7 +17,7 @@ class LoginWidgetTree extends StatelessWidget {
       builder: (context, snapshot) {
         //? Uživatel není přihlášen -> ukaž login
         if (!snapshot.hasData) {
-          return const LoginPage();
+          return const Login();
         }
 
         print(

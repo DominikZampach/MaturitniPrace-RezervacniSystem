@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
-import 'package:rezervacni_system_maturita/views/users/inspect/inspect_kadernicky_ukon.dart';
+import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
 
 class InspectRezervace extends StatelessWidget {

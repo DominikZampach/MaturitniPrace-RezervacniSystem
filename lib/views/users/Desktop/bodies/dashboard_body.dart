@@ -6,7 +6,7 @@ import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
-import 'package:rezervacni_system_maturita/views/users/inspect/inspect_rezervace.dart';
+import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_rezervace.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
 import 'package:rezervacni_system_maturita/widgets/minimap_from_adress.dart';
@@ -58,14 +58,19 @@ class _DashboardBodyState extends State<DashboardBody> {
         final Rezervace? nearestRezervace = snapshot.data;
 
         if (nearestRezervace != null) {
-          return Expanded(
-            child: Container(
-              color: Colors.white,
+          return Container(
+            color: Colors.white,
+            width: double.infinity,
+            height: double.infinity,
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
                 children: [
+                  SizedBox(height: 20.h),
                   _welcomeText(widget.uzivatel, true),
+                  SizedBox(height: 25.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -125,7 +130,7 @@ class _DashboardBodyState extends State<DashboardBody> {
   Padding _welcomeText(Uzivatel uzivatel, bool wantPadding) {
     return Padding(
       padding: wantPadding
-          ? EdgeInsets.only(left: 20.w)
+          ? EdgeInsets.only(left: 25.w)
           : EdgeInsetsGeometry.all(0),
       child: Text(
         "Welcome, ${uzivatel.jmeno} ${uzivatel.prijmeni}",
@@ -156,8 +161,8 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
   Widget build(BuildContext context) {
     return Container(
       color: Consts.background.withValues(alpha: 0.6),
-      height: widget.screenHeight * 0.8,
       width: widget.screenWidth * 0.4,
+      constraints: BoxConstraints(minHeight: widget.screenHeight * 0.8),
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -309,13 +314,13 @@ class NextAppointmentLocationColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Consts.background.withValues(alpha: 0.6),
-      height: screenHeight * 0.8,
+      constraints: BoxConstraints(minHeight: screenHeight * 0.8),
       width: screenWidth * 0.4,
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 10.h),
+          SizedBox(height: 40.h),
           Text(
             "Next appointment location",
             style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.sp),
@@ -324,7 +329,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
           MapCard(
             lokace: nearestRezervace!.kadernik.lokace,
             width: screenWidth * 0.35,
-            height: screenWidth * 0.20,
+            height: screenHeight * 0.40,
           ),
           SizedBox(height: 10.h),
           Column(

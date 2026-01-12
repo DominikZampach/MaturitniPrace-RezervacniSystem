@@ -6,14 +6,18 @@ class NavbarItem extends StatelessWidget {
   final String text;
   final bool isSelected;
   final VoidCallback onClick;
+  double? fontSize;
 
-  const NavbarItem({
+  NavbarItem({
     super.key,
     required this.verticalPadding,
     required this.text,
     required this.isSelected,
     required this.onClick,
-  });
+    this.fontSize,
+  }) {
+    fontSize ??= 13.sp;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class NavbarItem extends StatelessWidget {
             text,
             style: TextStyle(
               fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-              fontSize: 13.sp,
+              fontSize: fontSize,
             ),
           ),
         ),

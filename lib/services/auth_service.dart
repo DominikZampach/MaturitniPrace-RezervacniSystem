@@ -144,7 +144,7 @@ class AuthService {
 
     if (context.mounted) {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => Login()),
         (Route<dynamic> route) => false,
       );
     }
