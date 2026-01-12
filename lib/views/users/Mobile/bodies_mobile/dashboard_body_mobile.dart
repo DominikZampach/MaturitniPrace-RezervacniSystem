@@ -15,11 +15,20 @@ class DashboardBodyMobile extends StatefulWidget {
   final double screenWidth;
   final Uzivatel uzivatel;
 
+  final double mobileFontSize;
+  final double mobileSmallerFontSize;
+  final double mobileHeadingsFontSize;
+  final double mobileSmallerHeadingFontSize;
+
   const DashboardBodyMobile({
     super.key,
     required this.screenHeight,
     required this.screenWidth,
     required this.uzivatel,
+    required this.mobileFontSize,
+    required this.mobileSmallerFontSize,
+    required this.mobileHeadingsFontSize,
+    required this.mobileSmallerHeadingFontSize,
   });
 
   @override
@@ -39,9 +48,6 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
   @override
   Widget build(BuildContext context) {
     //? Builder, který zajistí, že se načtou data o uživateli před
-    final double mobileFontSize = 40.sp;
-    final double mobileHeadingsFontSize = 55.sp;
-    final double mobileSmallerHeadingFontSize = 50.sp;
 
     return FutureBuilder(
       future: _nacteniDat(),
@@ -68,22 +74,24 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _welcomeText(widget.uzivatel, mobileHeadingsFontSize),
+                  _welcomeText(widget.uzivatel, widget.mobileHeadingsFontSize),
                   Column(
                     children: [
                       NextAppointmentColumnMobile(
                         screenHeight: widget.screenHeight,
                         screenWidth: widget.screenWidth,
                         nearestRezervace: nearestRezervace,
-                        mobileFontSize: mobileFontSize,
-                        mobileSmallerHeadingSize: mobileSmallerHeadingFontSize,
+                        mobileFontSize: widget.mobileFontSize,
+                        mobileSmallerHeadingSize:
+                            widget.mobileSmallerHeadingFontSize,
                       ),
                       NextAppointmentLocationColumnMobile(
                         screenHeight: widget.screenHeight,
                         screenWidth: widget.screenWidth,
                         nearestRezervace: nearestRezervace,
-                        mobileFontSize: mobileFontSize,
-                        mobileSmallerHeadingSize: mobileSmallerHeadingFontSize,
+                        mobileFontSize: widget.mobileFontSize,
+                        mobileSmallerHeadingSize:
+                            widget.mobileSmallerHeadingFontSize,
                       ),
                     ],
                   ),
@@ -107,12 +115,15 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _welcomeText(widget.uzivatel, mobileHeadingsFontSize),
+                      _welcomeText(
+                        widget.uzivatel,
+                        widget.mobileHeadingsFontSize,
+                      ),
                       SizedBox(height: widget.screenHeight * 0.5),
                       Text(
                         "You've got no reservations incoming, go book some!",
                         style: TextStyle(
-                          fontSize: mobileHeadingsFontSize,
+                          fontSize: widget.mobileHeadingsFontSize,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -386,6 +397,7 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(height: 20.h),
       ],
     );
   }
