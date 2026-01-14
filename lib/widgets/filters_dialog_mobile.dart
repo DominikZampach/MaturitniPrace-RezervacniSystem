@@ -2,29 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
+import 'package:rezervacni_system_maturita/widgets/filters_dialog_desktop.dart';
 
-class FiltersDialog extends StatefulWidget {
+class FiltersDialogMobile extends StatefulWidget {
   Filters filters;
   List<Lokace> allLokace;
-  FiltersDialog({super.key, required this.filters, required this.allLokace});
+
+  double? headingFontSize;
+  double? smallHeadingFontSize;
+  double? normalTextFontSize;
+
+  FiltersDialogMobile({
+    super.key,
+    required this.filters,
+    required this.allLokace,
+    this.headingFontSize,
+    this.smallHeadingFontSize,
+    this.normalTextFontSize,
+  });
 
   @override
-  State<FiltersDialog> createState() => _FiltersDialogState();
+  State<FiltersDialogMobile> createState() => _FiltersDialogMobileState();
 }
 
-class _FiltersDialogState extends State<FiltersDialog> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _FiltersDialogMobileState extends State<FiltersDialogMobile> {
   @override
   Widget build(BuildContext context) {
-    final double headingFontSize = 15.sp;
-    final double smallHeadingFontSize = 13.sp;
-    final double normalTextFontSize = 11.sp;
-    final double smallerTextFontSize = 10.sp;
-
     final List<DropdownMenuItem<double>> _dropdownMenuRatingItems = [
       for (double i = 0; i <= 10; i++)
         DropdownMenuItem(
@@ -32,7 +35,7 @@ class _FiltersDialogState extends State<FiltersDialog> {
           value: i,
           child: Text(
             i.toString(),
-            style: TextStyle(fontSize: normalTextFontSize),
+            style: TextStyle(fontSize: widget.normalTextFontSize),
             textAlign: TextAlign.center,
           ),
         ),
@@ -44,7 +47,7 @@ class _FiltersDialogState extends State<FiltersDialog> {
         value: null,
         child: Text(
           "No preference",
-          style: TextStyle(fontSize: normalTextFontSize),
+          style: TextStyle(fontSize: widget.normalTextFontSize),
           textAlign: TextAlign.center,
         ),
       ),
@@ -54,7 +57,7 @@ class _FiltersDialogState extends State<FiltersDialog> {
           value: lokace.id,
           child: Text(
             lokace.nazev,
-            style: TextStyle(fontSize: normalTextFontSize),
+            style: TextStyle(fontSize: widget.normalTextFontSize),
             textAlign: TextAlign.center,
           ),
         ),
@@ -69,9 +72,9 @@ class _FiltersDialogState extends State<FiltersDialog> {
       ),
       constraints: BoxConstraints(
         minHeight: MediaQuery.of(context).size.height * 0.4,
-        minWidth: MediaQuery.of(context).size.width * 0.3,
-        maxWidth: MediaQuery.of(context).size.width * 0.3,
-        maxHeight: MediaQuery.of(context).size.height * 0.4,
+        minWidth: MediaQuery.of(context).size.width * 0.8,
+        maxWidth: MediaQuery.of(context).size.width * 0.8,
+        maxHeight: MediaQuery.of(context).size.height * 0.6,
       ),
 
       child: SingleChildScrollView(
@@ -82,24 +85,27 @@ class _FiltersDialogState extends State<FiltersDialog> {
               Text(
                 "Filters:",
                 style: TextStyle(
-                  fontSize: headingFontSize,
+                  fontSize: widget.headingFontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(height: 15.h),
-              _favourite(smallHeadingFontSize),
+              _favourite(widget.smallHeadingFontSize!),
+              SizedBox(height: 10.h),
               _minimalRating(
-                smallHeadingFontSize,
-                normalTextFontSize,
+                widget.smallHeadingFontSize!,
+                widget.normalTextFontSize!,
                 _dropdownMenuRatingItems,
               ),
+              SizedBox(height: 10.h),
               _location(
-                smallHeadingFontSize,
-                normalTextFontSize,
+                widget.smallHeadingFontSize!,
+                widget.normalTextFontSize!,
                 _dropdownMenuLokaceItems,
               ),
               SizedBox(height: 15.h),
-              _saveButton(normalTextFontSize, widget.filters),
+              _saveButton(widget.normalTextFontSize!, widget.filters),
+              SizedBox(height: 10.h),
             ],
           ),
         ),
@@ -111,29 +117,32 @@ class _FiltersDialogState extends State<FiltersDialog> {
     return ElevatedButton(
       style: ButtonStyle(
         backgroundColor: WidgetStatePropertyAll(Consts.secondary),
-        fixedSize: WidgetStatePropertyAll(Size(120.w, 40.h)),
+        //fixedSize: WidgetStatePropertyAll(Size(400.w, 60.h)),
       ),
       onPressed: () {
         //? Vrátí aktualizovaný dokument s filtry
         Navigator.of(context).pop(filters);
       },
-      child: Text(
-        "Save filters",
-        style: TextStyle(
-          fontSize: normalTextFontSize,
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
+        child: Text(
+          "Save filters",
+          style: TextStyle(
+            fontSize: normalTextFontSize,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
   }
 
-  Row _location(
+  Column _location(
     double smallHeadingFontSize,
     double normalTextFontSize,
     List<DropdownMenuItem<String>> _dropdownMenuLokaceItems,
   ) {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -156,12 +165,12 @@ class _FiltersDialogState extends State<FiltersDialog> {
     );
   }
 
-  Row _minimalRating(
+  Column _minimalRating(
     double smallHeadingFontSize,
     double normalTextFontSize,
     List<DropdownMenuItem<double>> dropdownMenuRatingItems,
   ) {
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -205,16 +214,4 @@ class _FiltersDialogState extends State<FiltersDialog> {
       ],
     );
   }
-}
-
-class Filters {
-  bool showOnlyFavourite;
-  double minimalRating;
-  String? lokaceId;
-
-  Filters({
-    required this.showOnlyFavourite,
-    required this.minimalRating,
-    required this.lokaceId,
-  });
 }

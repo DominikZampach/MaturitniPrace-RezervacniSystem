@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/users/Mobile/bodies_mobile/browse_body_mobile.dart';
 import 'package:rezervacni_system_maturita/views/users/Mobile/bodies_mobile/dashboard_body_mobile.dart';
 import 'package:rezervacni_system_maturita/views/users/Mobile/bodies_mobile/reservations_body_mobile.dart';
+import 'package:rezervacni_system_maturita/views/users/Mobile/bodies_mobile/settings_body_mobile.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 
 class BodiesWidgetTreeMobile extends StatefulWidget {
@@ -74,21 +76,30 @@ class _BodiesWidgetTreeMobileState extends State<BodiesWidgetTreeMobile> {
             mobileSmallerHeadingFontSize: mobileSmallerHeadingFontSize,
           );
         } else if (widget.selectedIndex == 2) {
-          return Text("Browse");
-        } else if (widget.selectedIndex == 3) {
-          return Text("Settings");
-          /*
-          return SettingsBody(
-            screenHeight: widget.screenHeight,
+          return BrowseBodyMobile(
             screenWidth: widget.screenWidth,
+            screenHeight: widget.screenHeight,
             uzivatel: soucasnyUzivatel,
+            mobileFontSize: mobileFontSize,
+            mobileSmallerFontSize: mobileSmallerFontSize,
+            mobileHeadingsFontSize: mobileHeadingsFontSize,
+            mobileSmallerHeadingFontSize: mobileSmallerHeadingFontSize,
+          );
+        } else if (widget.selectedIndex == 3) {
+          return SettingsBodyMobile(
+            uzivatel: soucasnyUzivatel,
+            screenWidth: widget.screenWidth,
+            screenHeight: widget.screenHeight,
+            mobileFontSize: mobileFontSize,
+            mobileSmallerFontSize: mobileSmallerFontSize,
+            mobileHeadingsFontSize: mobileHeadingsFontSize,
+            mobileSmallerHeadingFontSize: mobileSmallerHeadingFontSize,
             onChanged: (updatedUzivatel) {
               setState(() {
                 soucasnyUzivatel = updatedUzivatel;
               });
             },
           );
-          */
         } else {
           return Text("Error");
         }

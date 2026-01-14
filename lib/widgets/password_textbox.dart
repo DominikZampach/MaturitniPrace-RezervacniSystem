@@ -7,15 +7,19 @@ class PasswordTextbox extends StatelessWidget {
   final double horizontalPadding;
   final String hintText;
   final TextEditingController passwordController;
+  double? fontSize;
 
-  const PasswordTextbox({
+  PasswordTextbox({
     super.key,
     required this.context,
     required this.verticalPadding,
     required this.horizontalPadding,
     required this.hintText,
     required this.passwordController,
-  });
+    this.fontSize,
+  }) {
+    fontSize ??= 15.sp;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class PasswordTextbox extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(
             fontWeight: FontWeight.w200,
-            fontSize: 15.sp,
+            fontSize: fontSize,
             color: Colors.black.withValues(alpha: 0.5),
           ),
           fillColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
@@ -42,7 +46,7 @@ class PasswordTextbox extends StatelessWidget {
         ),
         obscureText: true,
         obscuringCharacter: "*",
-        style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp),
+        style: TextStyle(fontWeight: FontWeight.normal, fontSize: fontSize),
       ),
     );
   }

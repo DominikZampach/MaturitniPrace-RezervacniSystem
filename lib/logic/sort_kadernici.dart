@@ -2,7 +2,7 @@ import 'package:rezervacni_system_maturita/logic/getAvgRating.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
-import 'package:rezervacni_system_maturita/widgets/filters_dialog.dart';
+import 'package:rezervacni_system_maturita/widgets/filters_dialog_desktop.dart';
 
 class SortKadernici {
   //? Řázení abecedně podle jména vzestupně (a-z):

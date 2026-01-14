@@ -6,14 +6,18 @@ class EmailTextbox extends StatelessWidget {
   final double verticalPadding;
   final double horizontalPadding;
   final TextEditingController emailController;
+  double? fontSize;
 
-  const EmailTextbox({
+  EmailTextbox({
     super.key,
     required this.context,
     required this.verticalPadding,
     required this.horizontalPadding,
     required this.emailController,
-  });
+    this.fontSize,
+  }) {
+    fontSize ??= 15.sp;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class EmailTextbox extends StatelessWidget {
           hintText: 'example@gmail.com',
           hintStyle: TextStyle(
             fontWeight: FontWeight.w200,
-            fontSize: 15.sp,
+            fontSize: fontSize,
             color: Colors.black.withValues(alpha: 0.5),
           ),
           fillColor: Theme.of(context).primaryColor.withValues(alpha: 0.2),
@@ -38,7 +42,7 @@ class EmailTextbox extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
           ),
         ),
-        style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp),
+        style: TextStyle(fontWeight: FontWeight.normal, fontSize: fontSize),
       ),
     );
   }

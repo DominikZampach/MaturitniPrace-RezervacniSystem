@@ -2,31 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
-import 'package:rezervacni_system_maturita/views/signup.dart';
+import 'package:rezervacni_system_maturita/views/login.dart';
 import 'package:rezervacni_system_maturita/widgets/email_textbox.dart';
 import 'package:rezervacni_system_maturita/widgets/password_textbox.dart';
 
-class LoginDesktop extends StatefulWidget {
-  const LoginDesktop({super.key});
+class SignupDesktop extends StatefulWidget {
+  const SignupDesktop({super.key});
 
   @override
-  State<LoginDesktop> createState() => _LoginDesktopState();
+  State<SignupDesktop> createState() => _SignupDesktopState();
 }
 
-class _LoginDesktopState extends State<LoginDesktop> {
+class _SignupDesktopState extends State<SignupDesktop> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final double verticalPadding = 10;
-    final double horizontalPadding = 30;
+    final double verticalPadding = 10.h;
+    final double horizontalPadding = 10.w;
 
     return Center(
       //? SingleChildScroolView zajišťuje, že nikdy nebude něco přetékat přes okraj při zmenšování
       child: SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.4,
+          width: 375.0.w,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20.r),
@@ -43,7 +45,7 @@ class _LoginDesktopState extends State<LoginDesktop> {
             child: Column(
               children: [
                 Text(
-                  "Login",
+                  "Register now",
                   style: TextStyle(
                     fontSize: 25.sp,
                     fontWeight: FontWeight.bold,
@@ -67,8 +69,15 @@ class _LoginDesktopState extends State<LoginDesktop> {
                   hintText: "password",
                   passwordController: _passwordController,
                 ),
-                _loginButton(context, verticalPadding, horizontalPadding),
-                _signUpRedirect(context, verticalPadding, horizontalPadding),
+                PasswordTextbox(
+                  context: context,
+                  verticalPadding: verticalPadding,
+                  horizontalPadding: horizontalPadding,
+                  hintText: "repeat password",
+                  passwordController: _repeatPasswordController,
+                ),
+                _signupButton(context, verticalPadding, horizontalPadding),
+                _loginRedirect(context, verticalPadding, horizontalPadding),
               ],
             ),
           ),
@@ -77,7 +86,7 @@ class _LoginDesktopState extends State<LoginDesktop> {
     );
   }
 
-  Widget _loginButton(
+  Widget _signupButton(
     BuildContext context,
     double verticalPadding,
     double horizontalPadding,
@@ -88,7 +97,7 @@ class _LoginDesktopState extends State<LoginDesktop> {
         horizontal: horizontalPadding,
       ),
       child: ElevatedButton(
-        onPressed: _login,
+        onPressed: _register,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           padding: EdgeInsets.symmetric(
@@ -97,7 +106,7 @@ class _LoginDesktopState extends State<LoginDesktop> {
           ),
         ),
         child: Text(
-          "Log in",
+          "Sign up",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20.sp,
@@ -108,7 +117,7 @@ class _LoginDesktopState extends State<LoginDesktop> {
     );
   }
 
-  void _login() async {
+  void _register() async {
     if (_emailController.text.isEmpty) {
       ToastClass.showToastSnackbar(message: "You need to write your email");
       return;
@@ -119,14 +128,28 @@ class _LoginDesktopState extends State<LoginDesktop> {
       return;
     }
 
-    await AuthService().loginEmailPassword(
+    if (_passwordController.text.length < 6) {
+      ToastClass.showToastSnackbar(
+        message: "Password should be at least 6 characters",
+      );
+      return;
+    }
+
+    if (_repeatPasswordController.text != _passwordController.text) {
+      ToastClass.showToastSnackbar(
+        message: "The password must be same in both textboxes",
+      );
+      return;
+    }
+
+    await AuthService().registerEmailPassword(
       email: _emailController.text,
       password: _passwordController.text,
       context: context,
     );
   }
 
-  Widget _signUpRedirect(
+  Widget _loginRedirect(
     BuildContext context,
     double verticalPadding,
     double horizontalPadding,
@@ -139,16 +162,16 @@ class _LoginDesktopState extends State<LoginDesktop> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Are you new here? ", style: TextStyle(fontSize: 10.sp)),
+          Text("Already have an account? ", style: TextStyle(fontSize: 10.sp)),
           GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Signup()),
+                MaterialPageRoute(builder: (context) => Login()),
               );
             },
             child: Text(
-              "Create an account",
+              "Login",
               style: TextStyle(
                 fontSize: 10.sp,
                 color: Theme.of(context).colorScheme.primary,

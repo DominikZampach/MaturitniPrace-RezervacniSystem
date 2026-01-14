@@ -6,7 +6,7 @@ import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
-import 'package:rezervacni_system_maturita/widgets/filters_dialog.dart';
+import 'package:rezervacni_system_maturita/widgets/filters_dialog_desktop.dart';
 import 'package:rezervacni_system_maturita/widgets/hairdresser_card.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 
@@ -204,10 +204,11 @@ class _BrowseBodyState extends State<BrowseBody> {
                                   final Filters updatedFilters =
                                       await showDialog(
                                         context: context,
-                                        builder: (context) => FiltersDialog(
-                                          filters: currentFilters,
-                                          allLokace: allLokace,
-                                        ),
+                                        builder: (context) =>
+                                            FiltersDialogDesktop(
+                                              filters: currentFilters,
+                                              allLokace: allLokace,
+                                            ),
                                       );
 
                                   setState(() {

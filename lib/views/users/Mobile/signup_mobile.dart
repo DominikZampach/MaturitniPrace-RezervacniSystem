@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
-import 'package:rezervacni_system_maturita/views/signup.dart';
+import 'package:rezervacni_system_maturita/views/login.dart';
 import 'package:rezervacni_system_maturita/widgets/bookmycut_logo.dart';
 import 'package:rezervacni_system_maturita/widgets/email_textbox.dart';
 import 'package:rezervacni_system_maturita/widgets/password_textbox.dart';
 
-class LoginMobile extends StatefulWidget {
-  const LoginMobile({super.key});
+class SignupMobile extends StatefulWidget {
+  const SignupMobile({super.key});
 
   @override
-  State<LoginMobile> createState() => _LoginMobileState();
+  State<SignupMobile> createState() => _SignupMobileState();
 }
 
-class _LoginMobileState extends State<LoginMobile> {
+class _SignupMobileState extends State<SignupMobile> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +32,13 @@ class _LoginMobileState extends State<LoginMobile> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(10.h),
+        padding: EdgeInsetsGeometry.all(10.h),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             BookMyCutLogo(size: 100.h),
             SizedBox(height: 30.h),
             Text(
-              "Login",
+              "Register now",
               style: TextStyle(
                 fontSize: mobileHeadingsFontSize,
                 fontWeight: FontWeight.bold,
@@ -63,13 +64,21 @@ class _LoginMobileState extends State<LoginMobile> {
               passwordController: _passwordController,
               fontSize: mobileFontSize,
             ),
-            _loginButton(
+            PasswordTextbox(
+              context: context,
+              verticalPadding: verticalPadding,
+              horizontalPadding: horizontalPadding,
+              hintText: "repeat password",
+              passwordController: _repeatPasswordController,
+              fontSize: mobileFontSize,
+            ),
+            _signupButton(
               context,
               verticalPadding,
               horizontalPadding,
               mobileFontSize,
             ),
-            _signUpRedirect(
+            _loginRedirect(
               context,
               verticalPadding,
               horizontalPadding,
@@ -81,7 +90,7 @@ class _LoginMobileState extends State<LoginMobile> {
     );
   }
 
-  Widget _loginButton(
+  Widget _signupButton(
     BuildContext context,
     double verticalPadding,
     double horizontalPadding,
@@ -93,12 +102,16 @@ class _LoginMobileState extends State<LoginMobile> {
         horizontal: horizontalPadding,
       ),
       child: ElevatedButton(
-        onPressed: _login,
+        onPressed: _register,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
+          padding: EdgeInsets.symmetric(
+            vertical: verticalPadding,
+            horizontal: 40.h,
+          ),
         ),
         child: Text(
-          "Log in",
+          "Sign up",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: normalFontSize,
@@ -109,7 +122,7 @@ class _LoginMobileState extends State<LoginMobile> {
     );
   }
 
-  void _login() async {
+  void _register() async {
     if (_emailController.text.isEmpty) {
       ToastClass.showToastSnackbar(message: "You need to write your email");
       return;
@@ -120,14 +133,28 @@ class _LoginMobileState extends State<LoginMobile> {
       return;
     }
 
-    await AuthService().loginEmailPassword(
+    if (_passwordController.text.length < 6) {
+      ToastClass.showToastSnackbar(
+        message: "Password should be at least 6 characters",
+      );
+      return;
+    }
+
+    if (_repeatPasswordController.text != _passwordController.text) {
+      ToastClass.showToastSnackbar(
+        message: "The password must be same in both textboxes",
+      );
+      return;
+    }
+
+    await AuthService().registerEmailPassword(
       email: _emailController.text,
       password: _passwordController.text,
       context: context,
     );
   }
 
-  Widget _signUpRedirect(
+  Widget _loginRedirect(
     BuildContext context,
     double verticalPadding,
     double horizontalPadding,
@@ -142,20 +169,18 @@ class _LoginMobileState extends State<LoginMobile> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Are you new here? ",
+            "Already have an account? ",
             style: TextStyle(fontSize: smallerFontSize),
           ),
           GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => Signup(),
-                ), //TODO: Musím v SignUpPage udělat to stejné co s Login (odkazovat na toto a tam až vybrat podle šířky obrazovky vhodný přístup pomocí LayoutBuilderu)
+                MaterialPageRoute(builder: (context) => Login()),
               );
             },
             child: Text(
-              "Create an account",
+              "Login",
               style: TextStyle(
                 fontSize: smallerFontSize,
                 color: Theme.of(context).colorScheme.primary,

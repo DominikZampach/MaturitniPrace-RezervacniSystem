@@ -4,9 +4,11 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
-import 'package:rezervacni_system_maturita/views/users/create_reservation_dialog.dart';
+import 'package:rezervacni_system_maturita/views/users/Desktop/create_reservation_dialog.dart';
+import 'package:rezervacni_system_maturita/views/users/Mobile/create_reservation_dialog_mobile.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/reservation_card.dart';
+import 'package:rezervacni_system_maturita/widgets/reservation_card_mobile.dart';
 
 class ReservationsBodyMobile extends StatefulWidget {
   final double screenHeight;
@@ -92,16 +94,15 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                /*
-                child: _headingAndButtonRow(
-                  context,
-                  h1FontSize,
-                  buttonFontSize,
-                ),
-                */
               ),
               SizedBox(height: 10.h),
-              _createReservationButton(context, widget.mobileFontSize),
+              _createReservationButton(
+                context,
+                widget.mobileFontSize,
+                widget.mobileSmallerFontSize,
+                widget.mobileHeadingsFontSize,
+                widget.mobileSmallerHeadingFontSize,
+              ),
               SizedBox(height: 10.h),
               Padding(
                 padding: EdgeInsets.only(left: leftPaddingH2, bottom: 10.h),
@@ -111,10 +112,11 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
                     fontSize: widget.mobileSmallerHeadingFontSize,
                     fontWeight: FontWeight.w700,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               ...futureRezervace.map(
-                (rezervace) => ReservationCard(
+                (rezervace) => ReservationCardMobile(
                   key: ValueKey(rezervace.id),
                   rezervace: rezervace,
                   screenWidth: widget.screenWidth,
@@ -134,10 +136,11 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
                     fontSize: widget.mobileSmallerHeadingFontSize,
                     fontWeight: FontWeight.w700,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               ...historicalRezervace.map(
-                (rezervace) => ReservationCard(
+                (rezervace) => ReservationCardMobile(
                   key: ValueKey(rezervace.id),
                   rezervace: rezervace,
                   screenWidth: widget.screenWidth,
@@ -152,33 +155,43 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
     );
   }
 
-  ElevatedButton _createReservationButton(
+  Padding _createReservationButton(
     BuildContext context,
-    double fontSize,
+    double mobileFontSize,
+    double mobileSmallerFontSize,
+    double mobileHeadingsFontSize,
+    double mobileSmallerHeadingsFontSize,
   ) {
-    return ElevatedButton.icon(
-      onPressed: () async {
-        final dialogResult = await showDialog(
-          context: context,
-          builder: (BuildContext context) =>
-              CreateReservationDialog(), //TODO: Mobilní verze!
-        );
-        if (dialogResult) {
-          //? Provede se pouze pokud bylo vráceno true - to se děje pouze když uživatel vytvoří novou rezervace
-          setState(() {});
-        }
-      },
-      label: Text(
-        "Create Reservation",
-        style: TextStyle(
-          fontSize: fontSize,
-          color: Colors.black,
-          fontWeight: FontWeight.w600,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+      child: ElevatedButton.icon(
+        onPressed: () async {
+          final dialogResult = await showDialog(
+            context: context,
+            builder: (BuildContext context) => CreateReservationDialogMobile(
+              mobileFontSize: mobileFontSize,
+              mobileHeadingsFontSize: mobileHeadingsFontSize,
+              mobileSmallerFontSize: mobileSmallerFontSize,
+              mobileSmallerHeadingFontSize: mobileSmallerHeadingsFontSize,
+            ),
+          );
+          if (dialogResult) {
+            //? Provede se pouze pokud bylo vráceno true - to se děje pouze když uživatel vytvoří novou rezervace
+            setState(() {});
+          }
+        },
+        label: Text(
+          "Create Reservation",
+          style: TextStyle(
+            fontSize: mobileFontSize,
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-      ),
-      icon: Icon(Icons.add, color: Colors.black),
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Consts.secondary),
+        icon: Icon(Icons.add, color: Colors.black),
+        style: ButtonStyle(
+          backgroundColor: WidgetStatePropertyAll(Consts.secondary),
+        ),
       ),
     );
   }

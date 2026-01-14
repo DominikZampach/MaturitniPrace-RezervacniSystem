@@ -1,63 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class InformationTextbox extends StatelessWidget {
+class InformationTextboxLabelUp extends StatelessWidget {
   final BuildContext context;
   final double verticalPadding;
-  final double horizontalPadding;
-  final String textInFront;
+  final String textUp;
   final TextEditingController controller;
   final double spacingGap;
+  final bool alignOnLeft;
 
   double? fontSize;
+  double? smallerFontSize;
   double? textBoxWidth;
-  bool? leftAlignment;
   int? maxLines;
-  final double? labelWidth;
 
-  InformationTextbox({
+  InformationTextboxLabelUp({
     super.key,
     required this.context,
     required this.verticalPadding,
-    required this.horizontalPadding,
-    required this.textInFront,
+    required this.textUp,
     required this.controller,
     required this.spacingGap,
+    this.smallerFontSize,
     this.fontSize,
     this.textBoxWidth,
-    this.leftAlignment,
-    this.maxLines,
-    this.labelWidth,
+    this.alignOnLeft = false,
   }) {
-    //? Nastavení defaultních hodnot pokud uživatel specifická data
     fontSize ??= 15.sp;
     textBoxWidth ??= 300.w;
-    leftAlignment ??= false;
     maxLines ??= 1;
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsGeometry.symmetric(
-        vertical: verticalPadding,
-        horizontal: horizontalPadding,
-      ),
-      child: Row(
-        mainAxisAlignment: leftAlignment!
-            ? MainAxisAlignment.start
-            : MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      padding: EdgeInsetsGeometry.symmetric(vertical: verticalPadding),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: alignOnLeft
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            width:
-                labelWidth, //? Tohle zajišťuje aby se text ukazoval vždy stejně daleko od TextFieldu
-            child: Text(
-              textInFront,
-              style: TextStyle(fontSize: fontSize, fontStyle: FontStyle.normal),
+          Text(
+            textUp,
+            style: TextStyle(
+              fontSize: smallerFontSize,
+              fontStyle: FontStyle.normal,
             ),
           ),
-          SizedBox(width: spacingGap),
+          SizedBox(height: spacingGap),
           SizedBox(
             width: textBoxWidth,
             child: TextField(
@@ -77,7 +68,6 @@ class InformationTextbox extends StatelessWidget {
                 fontWeight: FontWeight.normal,
                 fontSize: fontSize,
               ),
-
               maxLines: maxLines,
             ),
           ),

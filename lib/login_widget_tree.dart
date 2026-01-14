@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/add_user_information.dart';
 import 'package:rezervacni_system_maturita/views/admin/home_admin.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
-import 'package:rezervacni_system_maturita/views/users/add_user_information.dart';
 import 'package:rezervacni_system_maturita/views/users/home.dart';
 
 class LoginWidgetTree extends StatelessWidget {

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
-import 'package:rezervacni_system_maturita/views/users/create_reservation_dialog.dart';
 import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_rezervace.dart';
 
 class ReservationCard extends StatefulWidget {
