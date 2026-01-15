@@ -121,7 +121,11 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
                   rezervace: rezervace,
                   screenWidth: widget.screenWidth,
                   screenHeight: widget.screenHeight,
-                  fontSize: widget.mobileSmallerFontSize,
+                  mobileSmallerFontSize: widget.mobileSmallerFontSize,
+                  mobileFontSize: widget.mobileFontSize,
+                  mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
+                  mobileSmallerHeadingsFontSize:
+                      widget.mobileSmallerHeadingFontSize,
                 ),
               ),
               Padding(
@@ -145,7 +149,11 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
                   rezervace: rezervace,
                   screenWidth: widget.screenWidth,
                   screenHeight: widget.screenHeight,
-                  fontSize: widget.mobileSmallerFontSize,
+                  mobileSmallerFontSize: widget.mobileSmallerFontSize,
+                  mobileFontSize: widget.mobileFontSize,
+                  mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
+                  mobileSmallerHeadingsFontSize:
+                      widget.mobileSmallerHeadingFontSize,
                 ),
               ),
             ],

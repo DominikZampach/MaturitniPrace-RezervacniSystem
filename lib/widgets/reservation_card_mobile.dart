@@ -3,19 +3,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_rezervace.dart';
+import 'package:rezervacni_system_maturita/views/users/Mobile/inspect_mobile/inspect_rezervace_mobile.dart';
 
 class ReservationCardMobile extends StatefulWidget {
   final double screenWidth;
   final double screenHeight;
   final Rezervace rezervace;
-  final double fontSize;
+
+  final double mobileFontSize;
+  final double mobileSmallerFontSize;
+  final double mobileHeadingsFontSize;
+  final double mobileSmallerHeadingsFontSize;
 
   const ReservationCardMobile({
     super.key,
     required this.screenWidth,
     required this.screenHeight,
     required this.rezervace,
-    required this.fontSize,
+    required this.mobileSmallerFontSize,
+    required this.mobileFontSize,
+    required this.mobileHeadingsFontSize,
+    required this.mobileSmallerHeadingsFontSize,
   });
 
   @override
@@ -29,9 +37,13 @@ class _ReservationCardMobileState extends State<ReservationCardMobile> {
       onTap: () async {
         final result = await showDialog(
           context: context,
-          builder: (context) => InspectRezervace(
+          builder: (context) => InspectRezervaceMobile(
             rezervace: widget.rezervace,
-          ), //TODO: Změnit na mobilní
+            mobileFontSize: widget.mobileFontSize,
+            mobileSmallerFontSize: widget.mobileSmallerFontSize,
+            mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
+            mobileSmallerHeadingsFontSize: widget.mobileSmallerHeadingsFontSize,
+          ),
         );
       },
       child: Card(
@@ -65,7 +77,7 @@ class _ReservationCardMobileState extends State<ReservationCardMobile> {
                         child: Text(
                           _getActionsString(),
                           style: TextStyle(
-                            fontSize: widget.fontSize,
+                            fontSize: widget.mobileSmallerFontSize,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.left,
@@ -78,7 +90,9 @@ class _ReservationCardMobileState extends State<ReservationCardMobile> {
                         width: widget.screenWidth * 0.4,
                         child: Text(
                           "${widget.rezervace.getDayMonthYearString()} - ${widget.rezervace.getHourMinuteString()}",
-                          style: TextStyle(fontSize: widget.fontSize),
+                          style: TextStyle(
+                            fontSize: widget.mobileSmallerFontSize,
+                          ),
                           textAlign: TextAlign.right,
                         ),
                       ),
@@ -90,7 +104,9 @@ class _ReservationCardMobileState extends State<ReservationCardMobile> {
                     children: [
                       Text(
                         "${widget.rezervace.kadernik.getFullNameString()} - ${widget.rezervace.kadernik.lokace.nazev}",
-                        style: TextStyle(fontSize: widget.fontSize),
+                        style: TextStyle(
+                          fontSize: widget.mobileSmallerFontSize,
+                        ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         softWrap: false,
@@ -98,7 +114,7 @@ class _ReservationCardMobileState extends State<ReservationCardMobile> {
                       Text(
                         "${widget.rezervace.celkovaCena} Kč",
                         style: TextStyle(
-                          fontSize: widget.fontSize,
+                          fontSize: widget.mobileSmallerFontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

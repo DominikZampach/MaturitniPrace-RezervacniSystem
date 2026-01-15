@@ -7,6 +7,7 @@ import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_rezervace.dart';
+import 'package:rezervacni_system_maturita/views/users/Mobile/inspect_mobile/inspect_rezervace_mobile.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
 
@@ -90,6 +91,8 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
                         screenWidth: widget.screenWidth,
                         nearestRezervace: nearestRezervace,
                         mobileFontSize: widget.mobileFontSize,
+                        mobileSmallerFontSize: widget.mobileSmallerFontSize,
+                        mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
                         mobileSmallerHeadingSize:
                             widget.mobileSmallerHeadingFontSize,
                       ),
@@ -277,12 +280,16 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
     required this.nearestRezervace,
     required this.mobileFontSize,
     required this.mobileSmallerHeadingSize,
+    required this.mobileSmallerFontSize,
+    required this.mobileHeadingsFontSize,
   });
 
   final double screenHeight;
   final double screenWidth;
   final Rezervace? nearestRezervace;
   final double mobileFontSize;
+  final double mobileSmallerFontSize;
+  final double mobileHeadingsFontSize;
   final double mobileSmallerHeadingSize;
 
   @override
@@ -382,9 +389,13 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
             onTap: () async {
               final result = await showDialog(
                 context: context,
-                builder: (context) => InspectRezervace(
+                builder: (context) => InspectRezervaceMobile(
                   rezervace: nearestRezervace!,
-                ), //TODO: Change to InspectRezervaceMobile
+                  mobileFontSize: mobileFontSize,
+                  mobileSmallerFontSize: mobileSmallerFontSize,
+                  mobileHeadingsFontSize: mobileHeadingsFontSize,
+                  mobileSmallerHeadingsFontSize: mobileSmallerHeadingSize,
+                ),
               );
             },
             child: Text(
