@@ -182,6 +182,18 @@ class DatabaseService {
     }
   }
 
+  //? Uložení upraveného Kadeřníka
+  Future<void> updateKadernik(Kadernik kadernik) async {
+    try {
+      await firestore
+          .collection(KADERNICI_COLLECTION_REF)
+          .doc(kadernik.id)
+          .set(kadernik.toJson());
+    } catch (e) {
+      print("Chyba při ukládání kadeřníka pomocí .set(): $e");
+    }
+  }
+
   //? Tvorba nového uzivatele
   Future<void> createNewUzivatel(
     String jmeno,

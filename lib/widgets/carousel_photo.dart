@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 
 class CarouselPhoto extends StatelessWidget {
   final String url;
@@ -23,10 +24,7 @@ class CarouselPhoto extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: url,
           fit: BoxFit.contain, //.contain
-          httpHeaders: {
-            "Access-Control-Allow-Origin": "*",
-            "User-Agent": "Mozilla/5.0...",
-          },
+          httpHeaders: Consts.httpHeaders,
           placeholder: (context, url) =>
               Center(child: CircularProgressIndicator()),
           errorWidget: (context, url, error) => Icon(Icons.error, size: 30.h),

@@ -73,6 +73,27 @@ class Kadernik {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "ID_kadernika": id,
+      "Jmeno_kadernika": jmeno,
+      "Prezdivka_kadernika": prezdivka,
+      "Prijmeni_kadernika": prijmeni,
+      "OdkazFotografie_kadernika": odkazFotografie,
+      "Popisek_kadernika": popisek,
+      "Telefon_kadernika": telefon,
+      "Email_kadernika": email,
+      "PracovniDny_kadernika": pracovniDny,
+      "ZacatekPracovniDoby_kadernika": zacatekPracovniDoby,
+      "KonecPracovniDoby_kadernika": konecPracovniDoby,
+      "CasObedovePrestavky_kadernika": casObedovePrestavky,
+      "DelkaObedovePrestavkyMinuty_kadernika": delkaObedovePrestavky,
+      "id_lokace": lokace.id,
+      "Map_IdsUkonyCena": ukonyCeny,
+      "OdkazyFotografiiPrace_kadernika": odkazyFotografiiPrace,
+    };
+  }
+
   String getFullNameString() {
     return "$jmeno \"$prezdivka\" $prijmeni";
   }
@@ -147,7 +168,13 @@ class Kadernik {
       newPracovniDnyString += "${dny[den]},";
     }
 
-    newPracovniDnyString.substring(0, newPracovniDnyString.length - 1);
+    if (newPracovniDnyString.isNotEmpty) {
+      newPracovniDnyString = newPracovniDnyString.substring(
+        0,
+        newPracovniDnyString.length - 1,
+      );
+    }
+
     print(newPracovniDnyString);
     pracovniDny = newPracovniDnyString;
   }
@@ -158,5 +185,12 @@ class Kadernik {
     int minutes = int.parse(splitedTime[1]);
 
     return TimeOfDay(hour: hours, minute: minutes);
+  }
+
+  static String getStringFromTimeOfDay(TimeOfDay time) {
+    String formattedTime =
+        "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+
+    return formattedTime;
   }
 }

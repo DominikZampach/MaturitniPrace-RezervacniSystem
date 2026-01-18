@@ -17,10 +17,11 @@ class Consts {
   );
   static const String ADMIN_EMAIL = "bookmycut@seznam.cz";
   static const String ADMIN_UID = "4iUvFGRtE9Zrk6YLUIrRK8n3B0D3";
-  /*
-  static final ColorScheme colorScheme = ColorScheme.fromSeed(
-    seedColor: primary,
-    brightness: Brightness.light,
-  );
-  */
+
+  static const httpHeaders = {
+    "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept":
+        "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+  };
 }

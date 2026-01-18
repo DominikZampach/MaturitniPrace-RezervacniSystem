@@ -115,6 +115,7 @@ class _SelectActionsDialogState extends State<SelectActionsDialog> {
                 ),
               ),
               SizedBox(height: 10.h),
+              _listViewUkony(widget.listAllFemaleKadernickeUkony),
             ],
           ),
         ),

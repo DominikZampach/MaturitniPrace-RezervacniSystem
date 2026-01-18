@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InformationTextbox extends StatelessWidget {
@@ -8,6 +9,7 @@ class InformationTextbox extends StatelessWidget {
   final String textInFront;
   final TextEditingController controller;
   final double spacingGap;
+  final bool onlyNumbers;
 
   double? fontSize;
   double? textBoxWidth;
@@ -23,6 +25,7 @@ class InformationTextbox extends StatelessWidget {
     required this.textInFront,
     required this.controller,
     required this.spacingGap,
+    this.onlyNumbers = false,
     this.fontSize,
     this.textBoxWidth,
     this.leftAlignment,
@@ -62,6 +65,9 @@ class InformationTextbox extends StatelessWidget {
             width: textBoxWidth,
             child: TextField(
               controller: controller,
+              inputFormatters: onlyNumbers
+                  ? [FilteringTextInputFormatter.digitsOnly]
+                  : [],
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Theme.of(

@@ -5,6 +5,7 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
+import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/edit_hairdresser.dart';
 
 class HairdresserCardAdmin extends StatefulWidget {
@@ -26,6 +27,8 @@ class HairdresserCardAdmin extends StatefulWidget {
 
 class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
   dynamic onChangedAdminVersion(Kadernik kadernikChanged) {
+    DatabaseService dbService = DatabaseService();
+    dbService.updateKadernik(kadernikChanged);
     setState(() {
       widget.kadernik = kadernikChanged;
     });

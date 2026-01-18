@@ -7,6 +7,7 @@ import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_actions_dialog.dart';
+import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_photos_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 
@@ -49,6 +50,8 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
   final TextEditingController popisekController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
+  final TextEditingController delkaObedovePauzyController =
+      TextEditingController();
 
   late Lokace? selectedLokace;
   late List<DropdownMenuItem<Lokace>> dropdownLokaceValues;
@@ -82,6 +85,8 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
       popisekController.text = widget.kadernik!.popisek;
       emailController.text = widget.kadernik!.email;
       mobileController.text = widget.kadernik!.telefon;
+      delkaObedovePauzyController.text = widget.kadernik!.delkaObedovePrestavky
+          .toString();
 
       selectedLokace = widget.listAllLokace
           .where((item) => item.id == widget.kadernik!.lokace.id)
@@ -267,13 +272,6 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                           context,
                           smallerTextFontSize,
                         ),
-                        _workingDays(
-                          _labelWidth,
-                          normalTextFontSize,
-                          _spacingGap,
-                          _multiselectHeight,
-                          _multiselectWidth,
-                        ),
                       ],
                     ),
                     Column(
@@ -301,50 +299,94 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                         ),
                         _testPhotoAndSavePhotoButtons(smallerTextFontSize),
                         SizedBox(height: 15.h),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                final result = await showDialog(
-                                  context: context,
-                                  builder: (context) => SelectActionsDialog(
-                                    listAllKadernickeUkony:
-                                        widget.listAllKadernickeUkony,
-                                    ukonyCenyKadernika: ukonySCenami,
-                                  ),
-                                );
-                              },
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                  Consts.secondary,
-                                ),
-                                fixedSize: WidgetStatePropertyAll(
-                                  Size(120.w, 40.h),
-                                ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final result = await showDialog(
+                              context: context,
+                              builder: (context) => SelectActionsDialog(
+                                listAllKadernickeUkony:
+                                    widget.listAllKadernickeUkony,
+                                ukonyCenyKadernika: ukonySCenami,
                               ),
-                              child: Text(
-                                "Select actions:",
-                                style: TextStyle(
-                                  fontSize: normalTextFontSize,
-                                  color: Colors.black,
-                                ),
-                              ),
+                            );
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(
+                              Consts.secondary,
                             ),
-                          ],
+                            fixedSize: WidgetStatePropertyAll(
+                              Size(120.w, 40.h),
+                            ),
+                          ),
+                          child: Text(
+                            "Select actions:",
+                            style: TextStyle(
+                              fontSize: normalTextFontSize,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final result = await showDialog(
+                              context: context,
+                              builder: (context) => SelectPhotosDialog(
+                                photosUrls:
+                                    widget.kadernik!.odkazyFotografiiPrace,
+                                updateCallback: (photosUrls) => setState(() {
+                                  widget.kadernik!.odkazyFotografiiPrace =
+                                      photosUrls;
+                                }),
+                              ),
+                            );
+                            if (result != null) {
+                              widget.kadernik!.odkazyFotografiiPrace = result;
+                            }
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(
+                              Consts.secondary,
+                            ),
+                            fixedSize: WidgetStatePropertyAll(
+                              Size(120.w, 40.h),
+                            ),
+                          ),
+                          child: Text(
+                            "Work Photos:",
+                            style: TextStyle(
+                              fontSize: normalTextFontSize,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        InformationTextbox(
+                          context: context,
+                          verticalPadding: 10.h,
+                          horizontalPadding: 5.w,
+                          textInFront: "Lunch break length (min):",
+                          controller: delkaObedovePauzyController,
+                          spacingGap: _spacingGap,
+                          fontSize: normalTextFontSize,
+                          textBoxWidth: 100.w,
+                          leftAlignment: true,
+                          maxLines: 1,
+                          labelWidth: _labelWidth,
+                          onlyNumbers: true,
+                        ),
+                        _workingDays(
+                          _labelWidth,
+                          normalTextFontSize,
+                          _spacingGap,
+                          _multiselectHeight,
+                          _multiselectWidth,
                         ),
                       ],
                     ),
                   ],
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {
-                    //TODO: Zatím jen test, ale vypadá to slibně
-                    if (widget.kadernik != null) {
-                      widget.kadernik!.jmeno = firstNameController.text;
-
-                      widget.onChanged(widget.kadernik!);
-                    }
-                  },
+                  onPressed: () => _updateKadernik(),
                   label: Text(
                     "Save data",
                     style: TextStyle(
@@ -369,6 +411,49 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
         ),
       ),
     );
+  }
+
+  void _updateKadernik() {
+    if (widget.kadernik != null) {
+      widget.kadernik!.jmeno = firstNameController.text;
+      widget.kadernik!.prezdivka = prezdivkaNameController.text;
+      widget.kadernik!.prijmeni = lastNameController.text;
+      widget.kadernik!.email = emailController.text;
+      widget.kadernik!.telefon = mobileController.text;
+      widget.kadernik!.popisek = popisekController.text;
+
+      if (selectedLokace != null) {
+        widget.kadernik!.lokace = selectedLokace!;
+      } else {
+        ToastClass.showToastSnackbar(message: "You must select valid Location");
+        return;
+      }
+
+      widget.kadernik!.zacatekPracovniDoby = Kadernik.getStringFromTimeOfDay(
+        startTime,
+      );
+      widget.kadernik!.konecPracovniDoby = Kadernik.getStringFromTimeOfDay(
+        endTime,
+      );
+      widget.kadernik!.casObedovePrestavky = Kadernik.getStringFromTimeOfDay(
+        lunchTime,
+      );
+      widget.kadernik!.delkaObedovePrestavky = int.parse(
+        delkaObedovePauzyController.text,
+      );
+
+      widget.kadernik!.odkazFotografie = odkazFotografieController.text;
+
+      widget.kadernik!.ukonyCeny = ukonySCenami as Map<String, int>;
+
+      //? Fotografie prací se propisují automaticky
+
+      widget.kadernik!.saveNewWorkingDays(selectedDays);
+
+      widget.onChanged(widget.kadernik!);
+
+      Navigator.of(context).pop();
+    }
   }
 
   Padding _workingDays(
