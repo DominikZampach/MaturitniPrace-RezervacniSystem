@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rezervacni_system_maturita/models/kadernik.dart';
 
 class Consts {
   static final Color primary = const Color.fromRGBO(72, 209, 77, 1.0);

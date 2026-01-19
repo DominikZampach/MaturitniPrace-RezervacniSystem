@@ -194,6 +194,18 @@ class DatabaseService {
     }
   }
 
+  //? Uložení upravené Lokace
+  Future<void> updateLokace(Lokace lokace) async {
+    try {
+      await firestore
+          .collection(LOKACE_COLLECTION_REF)
+          .doc(lokace.id)
+          .set(lokace.toJson());
+    } catch (e) {
+      print("Chyba při ukládání lokace pomocí .set(): $e");
+    }
+  }
+
   //? Tvorba nového uzivatele
   Future<void> createNewUzivatel(
     String jmeno,
@@ -271,6 +283,26 @@ class DatabaseService {
   }
 
   //? Tvorba nového kadeřníka
+  Future<Kadernik?> createNewKadernik(Kadernik kadernik) async {
+    DocumentReference newDocRef = firestore
+        .collection(KADERNICI_COLLECTION_REF)
+        .doc();
+
+    String newId = newDocRef.id;
+
+    kadernik.id = newId;
+
+    Map<String, dynamic> json = kadernik.toJson();
+
+    try {
+      newDocRef.set(json);
+      print("Nový kadeřník $newId vytvořen.");
+      return kadernik;
+    } catch (e) {
+      print("Chyba při tvorbě nového kadeřníka: $e");
+      return null;
+    }
+  }
 
   //? Tvorba nového úkonu
 
@@ -542,5 +574,39 @@ class DatabaseService {
         .delete();
 
     print("Úspěšně smazáné hodnocení");
+  }
+
+  //? Smazání Kadeřníka
+  Future<void> deleteKadernik(String kadernikId) async {
+    //? Takové "Otevření" firestore operací - dobré když jich budu dělat více
+    WriteBatch batch = firestore.batch();
+    final kadernikDocRef = firestore
+        .collection(KADERNICI_COLLECTION_REF)
+        .doc(kadernikId);
+    batch.delete(kadernikDocRef);
+
+    //? Smazání všech Hodnocení kadeřníka
+    var hodnoceniQuery = await firestore
+        .collection(HODNOCENI_COLLECTION_REF)
+        .where('id_kadernika', isEqualTo: kadernikId)
+        .get();
+
+    for (var doc in hodnoceniQuery.docs) {
+      batch.delete(doc.reference);
+    }
+
+    //? Smazání všech rezervací spojených s Kadeřníkem
+    var rezervaceQuery = await firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .where('id_kadernika', isEqualTo: kadernikId)
+        .get();
+
+    for (var doc in rezervaceQuery.docs) {
+      batch.delete(doc.reference);
+    }
+
+    await batch.commit(); //? Všechny úkony se provedou asynchronně
+
+    print("Kadeřník a všechna jeho data byla úspěšně smazána.");
   }
 }

@@ -12,13 +12,15 @@ class HairdresserCardAdmin extends StatefulWidget {
   Kadernik kadernik;
   final List<Lokace> listAllLokace;
   final List<KadernickyUkon> listAllKadernickeUkony;
-  final Function(Kadernik) onChangedKadernik;
+  final Function(Kadernik) saveKadernik;
+  final Function(String) deleteKadernik;
   HairdresserCardAdmin({
     super.key,
     required this.kadernik,
     required this.listAllLokace,
     required this.listAllKadernickeUkony,
-    required this.onChangedKadernik,
+    required this.saveKadernik,
+    required this.deleteKadernik,
   });
 
   @override
@@ -26,17 +28,6 @@ class HairdresserCardAdmin extends StatefulWidget {
 }
 
 class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
-  dynamic onChangedAdminVersion(Kadernik kadernikChanged) {
-    DatabaseService dbService = DatabaseService();
-    dbService.updateKadernik(kadernikChanged);
-    setState(() {
-      widget.kadernik = kadernikChanged;
-    });
-    widget.onChangedKadernik(
-      kadernikChanged,
-    ); //? Vyvolám změnu i v samotném listu na Homepage - Hairdressers
-  }
-
   @override
   Widget build(BuildContext context) {
     double captionFontSize = 9.sp;
@@ -50,7 +41,8 @@ class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
             kadernik: widget.kadernik,
             listAllLokace: widget.listAllLokace,
             listAllKadernickeUkony: widget.listAllKadernickeUkony,
-            onChanged: onChangedAdminVersion,
+            saveKadernik: widget.saveKadernik,
+            deleteKadernik: widget.deleteKadernik,
           ),
         );
       },

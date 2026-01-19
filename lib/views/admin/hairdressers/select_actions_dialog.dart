@@ -7,7 +7,7 @@ import 'package:rezervacni_system_maturita/views/admin/hairdressers/action_card.
 
 class SelectActionsDialog extends StatefulWidget {
   final List<KadernickyUkon> listAllKadernickeUkony;
-  final Map<String, dynamic> ukonyCenyKadernika;
+  final Map<String, int> ukonyCenyKadernika;
 
   late List<KadernickyUkon> listAllMaleKadernickeUkony;
   late List<KadernickyUkon> listAllFemaleKadernickeUkony;

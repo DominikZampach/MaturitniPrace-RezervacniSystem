@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/views/admin/bodies_admin/hairdressers_body_admin.dart';
+import 'package:rezervacni_system_maturita/views/admin/bodies_admin/locations_body_admin.dart';
 
 class WidgetTreeBodiesAdmin extends StatefulWidget {
   final int selectedIndex;
@@ -26,7 +27,10 @@ class _WidgetTreeBodiesAdminState extends State<WidgetTreeBodiesAdmin> {
         screenHeight: widget.screenHeight,
       );
     } else if (widget.selectedIndex == 1) {
-      return Text("Locations");
+      return LocationsBodyAdmin(
+        screenWidth: widget.screenWidth,
+        screenHeight: widget.screenHeight,
+      );
     } else if (widget.selectedIndex == 2) {
       return Text("Actions");
     } else if (widget.selectedIndex == 3) {

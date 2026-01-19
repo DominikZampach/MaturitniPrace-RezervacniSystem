@@ -6,6 +6,7 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
+import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_actions_dialog.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_photos_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
@@ -15,7 +16,8 @@ class EditHairdresserDialog extends StatefulWidget {
   final Kadernik? kadernik;
   final List<Lokace> listAllLokace;
   final List<KadernickyUkon> listAllKadernickeUkony;
-  final Function(Kadernik) onChanged;
+  final Function(Kadernik) saveKadernik;
+  final Function(String) deleteKadernik;
   late List<KadernickyUkon> listKadernickeUkonySCenami;
 
   EditHairdresserDialog({
@@ -23,17 +25,16 @@ class EditHairdresserDialog extends StatefulWidget {
     this.kadernik,
     required this.listAllLokace,
     required this.listAllKadernickeUkony,
-    required this.onChanged,
+    required this.saveKadernik,
+    required this.deleteKadernik,
   }) {
-    if (kadernik != null) {
-      listKadernickeUkonySCenami = [];
-      for (String id in kadernik!.ukonyCeny.keys) {
-        KadernickyUkon ukon = listAllKadernickeUkony
-            .where((item) => item.id == id)
-            .first;
-        ukon.cena = kadernik!.ukonyCeny[id]!;
-        listKadernickeUkonySCenami.add(ukon);
-      }
+    listKadernickeUkonySCenami = [];
+    for (String id in kadernik!.ukonyCeny.keys) {
+      KadernickyUkon ukon = listAllKadernickeUkony
+          .where((item) => item.id == id)
+          .first;
+      ukon.cena = kadernik!.ukonyCeny[id]!;
+      listKadernickeUkonySCenami.add(ukon);
     }
   }
 
@@ -56,7 +57,7 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
   late Lokace? selectedLokace;
   late List<DropdownMenuItem<Lokace>> dropdownLokaceValues;
 
-  late Map<String, dynamic> ukonySCenami;
+  late Map<String, int> ukonySCenami;
 
   late TimeOfDay startTime;
   late TimeOfDay endTime;
@@ -76,37 +77,41 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
   @override
   void initState() {
     super.initState();
-    if (widget.kadernik != null) {
-      //? Pokud se jedná o edit, ne o create
-      firstNameController.text = widget.kadernik!.jmeno;
-      lastNameController.text = widget.kadernik!.prijmeni;
-      prezdivkaNameController.text = widget.kadernik!.prezdivka;
-      odkazFotografieController.text = widget.kadernik!.odkazFotografie;
-      popisekController.text = widget.kadernik!.popisek;
-      emailController.text = widget.kadernik!.email;
-      mobileController.text = widget.kadernik!.telefon;
-      delkaObedovePauzyController.text = widget.kadernik!.delkaObedovePrestavky
-          .toString();
 
-      selectedLokace = widget.listAllLokace
-          .where((item) => item.id == widget.kadernik!.lokace.id)
-          .first;
-      ukonySCenami = widget.kadernik!.ukonyCeny;
+    firstNameController.text = widget.kadernik!.jmeno;
+    lastNameController.text = widget.kadernik!.prijmeni;
+    prezdivkaNameController.text = widget.kadernik!.prezdivka;
+    odkazFotografieController.text = widget.kadernik!.odkazFotografie;
+    popisekController.text = widget.kadernik!.popisek;
+    emailController.text = widget.kadernik!.email;
+    mobileController.text = widget.kadernik!.telefon;
+    delkaObedovePauzyController.text = widget.kadernik!.delkaObedovePrestavky
+        .toString();
 
-      startTime = Kadernik.getTimeOfDay(widget.kadernik!.zacatekPracovniDoby);
-      endTime = Kadernik.getTimeOfDay(widget.kadernik!.konecPracovniDoby);
-      lunchTime = Kadernik.getTimeOfDay(widget.kadernik!.casObedovePrestavky);
+    selectedLokace = widget.listAllLokace
+        .where((item) => item.id == widget.kadernik!.lokace.id)
+        .first;
+    ukonySCenami = widget.kadernik!.ukonyCeny;
 
-      selectedDays = widget.kadernik!.getListOfWorkingDays();
-    } else {
-      //? Nastavení hodnot když se jedná o create nového kadeřníka
-      selectedLokace = null;
-      ukonySCenami = {};
-      startTime = TimeOfDay(hour: 8, minute: 0);
-      endTime = TimeOfDay(hour: 16, minute: 0);
-      lunchTime = TimeOfDay(hour: 12, minute: 0);
-      selectedDays = [];
-    }
+    startTime = Kadernik.getTimeOfDay(widget.kadernik!.zacatekPracovniDoby);
+    endTime = Kadernik.getTimeOfDay(widget.kadernik!.konecPracovniDoby);
+    lunchTime = Kadernik.getTimeOfDay(widget.kadernik!.casObedovePrestavky);
+
+    selectedDays = widget.kadernik!.getListOfWorkingDays();
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    prezdivkaNameController.dispose();
+    odkazFotografieController.dispose();
+    popisekController.dispose();
+    emailController.dispose();
+    mobileController.dispose();
+    delkaObedovePauzyController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -157,11 +162,30 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "Edit this hairdresser:",
-                  style: TextStyle(
-                    fontSize: headingFontSize,
-                    fontWeight: FontWeight.bold,
+                SizedBox(
+                  width: double.infinity,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Text(
+                        "Edit this hairdresser:",
+                        style: TextStyle(
+                          fontSize: headingFontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Positioned(
+                        right: 10,
+                        child: GestureDetector(
+                          child: Icon(
+                            Icons.delete,
+                            size: 20.w,
+                            color: Colors.red,
+                          ),
+                          onTap: () => _deleteKadernik(),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 30.h),
@@ -442,15 +466,21 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
         delkaObedovePauzyController.text,
       );
 
+      if (odkazFotografieController.text.isEmpty) {
+        ToastClass.showToastSnackbar(
+          message: "You must select enter Url address of photo.",
+        );
+        return;
+      }
       widget.kadernik!.odkazFotografie = odkazFotografieController.text;
 
-      widget.kadernik!.ukonyCeny = ukonySCenami as Map<String, int>;
+      widget.kadernik!.ukonyCeny = ukonySCenami;
 
       //? Fotografie prací se propisují automaticky
 
       widget.kadernik!.saveNewWorkingDays(selectedDays);
 
-      widget.onChanged(widget.kadernik!);
+      widget.saveKadernik(widget.kadernik!);
 
       Navigator.of(context).pop();
     }
@@ -722,7 +752,7 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
         ElevatedButton(
           onPressed: () {
             if (odkazFotografieController.text.isNotEmpty) {
-              //TODO
+              widget.kadernik!.odkazFotografie = odkazFotografieController.text;
             }
           },
           style: ButtonStyle(
@@ -739,5 +769,12 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
         ),
       ],
     );
+  }
+
+  void _deleteKadernik() async {
+    await widget.deleteKadernik(widget.kadernik!.id);
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 }

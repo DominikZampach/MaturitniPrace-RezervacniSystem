@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/admin/hairdressers/create_hairdresser.dart';
 import 'package:rezervacni_system_maturita/widgets/hairdresser_card.dart';
 import 'package:rezervacni_system_maturita/widgets/hairdresser_card_admin.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
@@ -81,12 +83,28 @@ class _HairdressersBodyAdminState extends State<HairdressersBodyAdmin> {
         final List<KadernickyUkon> listAllKadernickeUkony =
             snapshot.data!.listAllKadernickeUkony;
 
-        dynamic onChangedKadernik(Kadernik updatedKadernik) {
+        dynamic saveKadernik(Kadernik updatedKadernik) async {
+          DatabaseService dbService = DatabaseService();
+          await dbService.updateKadernik(updatedKadernik);
+
           int kadernikIndex = listAllKadernici.indexWhere(
             (item) => item.id == updatedKadernik.id,
           );
 
-          listAllKadernici[kadernikIndex] = updatedKadernik;
+          setState(() {
+            listAllKadernici[kadernikIndex] = updatedKadernik;
+          });
+        }
+
+        dynamic deleteKadernik(String id) async {
+          DatabaseService dbService = DatabaseService();
+          int kadernikIndex = listAllKadernici.indexWhere(
+            (item) => item.id == id,
+          );
+          await dbService.deleteKadernik(id);
+          setState(() {
+            listAllKadernici.removeAt(kadernikIndex);
+          });
         }
 
         return Container(
@@ -104,6 +122,33 @@ class _HairdressersBodyAdminState extends State<HairdressersBodyAdmin> {
                   style: TextStyle(
                     fontSize: h1FontSize,
                     fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    final dialogResult = await showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          CreateHairdresserDialog(
+                            listAllLokace: listAllLokace,
+                            listAllKadernickeUkony: listAllKadernickeUkony,
+                            onCreated: (newKadernik) => setState(() {
+                              listAllKadernici.add(newKadernik);
+                            }),
+                          ),
+                    );
+                  },
+                  label: Text(
+                    "Add Hairdresser",
+                    style: TextStyle(
+                      fontSize: buttonFontSize,
+                      color: Colors.black,
+                    ),
+                  ),
+                  icon: Icon(Icons.add, color: Colors.black),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Consts.secondary),
                   ),
                 ),
                 SizedBox(height: 10.h),
@@ -127,7 +172,8 @@ class _HairdressersBodyAdminState extends State<HairdressersBodyAdmin> {
                         kadernik: listAllKadernici[index],
                         listAllKadernickeUkony: listAllKadernickeUkony,
                         listAllLokace: listAllLokace,
-                        onChangedKadernik: onChangedKadernik,
+                        saveKadernik: saveKadernik,
+                        deleteKadernik: deleteKadernik,
                       );
                       return card;
                     },
