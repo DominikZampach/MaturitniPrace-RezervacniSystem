@@ -4,6 +4,7 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
+import 'package:rezervacni_system_maturita/widgets/location_card_admin.dart';
 
 class LocationsBodyAdmin extends StatefulWidget {
   final double screenWidth;
@@ -145,8 +146,12 @@ class _LocationsBodyAdminState extends State<LocationsBodyAdmin> {
                     ),
                     itemCount: listAllLokace.length,
                     itemBuilder: (BuildContext context, int index) {
-                      //TODO!
-                      return Placeholder();
+                      LocationCardAdmin card = LocationCardAdmin(
+                        lokace: listAllLokace[index],
+                        saveLokace: saveLokace,
+                        deleteLokace: deleteLokace,
+                      );
+                      return card;
                     },
                   ),
                 ),

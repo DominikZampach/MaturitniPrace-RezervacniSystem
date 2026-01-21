@@ -7,11 +7,13 @@ class MapCard extends StatelessWidget {
   final Lokace lokace;
   final double width;
   final double height;
+  final double initialZoom;
   const MapCard({
     super.key,
     required this.lokace,
     required this.width,
     required this.height,
+    this.initialZoom = 16,
   });
 
   @override
@@ -29,6 +31,7 @@ class MapCard extends StatelessWidget {
           child: MinimapFromAdress(
             latitude: lokace.latitude,
             longitude: lokace.longitude,
+            initialZoom: initialZoom,
           ),
         ),
       ),

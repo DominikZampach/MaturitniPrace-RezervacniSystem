@@ -5,10 +5,12 @@ import 'package:latlong2/latlong.dart';
 class MinimapFromAdress extends StatefulWidget {
   final double latitude;
   final double longitude;
+  final double initialZoom;
   const MinimapFromAdress({
     super.key,
     required this.latitude,
     required this.longitude,
+    this.initialZoom = 16.0,
   });
 
   @override
@@ -31,7 +33,7 @@ class _MinimapFromAdressState extends State<MinimapFromAdress> {
     return FlutterMap(
       options: MapOptions(
         initialCenter: point!,
-        initialZoom: 16,
+        initialZoom: widget.initialZoom,
         //TODO - pohrát si s nastavením
       ),
       children: [
