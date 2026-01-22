@@ -176,13 +176,16 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                       ),
                       Positioned(
                         right: 10,
-                        child: GestureDetector(
-                          child: Icon(
-                            Icons.delete,
-                            size: 20.w,
-                            color: Colors.red,
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            child: Icon(
+                              Icons.delete,
+                              size: 20.w,
+                              color: Colors.red,
+                            ),
+                            onTap: () => _deleteKadernik(),
                           ),
-                          onTap: () => _deleteKadernik(),
                         ),
                       ),
                     ],
@@ -412,7 +415,7 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                 ElevatedButton.icon(
                   onPressed: () => _updateKadernik(),
                   label: Text(
-                    "Save data",
+                    "Save",
                     style: TextStyle(
                       fontSize: normalTextFontSize,
                       fontWeight: FontWeight.bold,

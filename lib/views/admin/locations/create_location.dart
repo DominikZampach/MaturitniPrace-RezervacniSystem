@@ -8,39 +8,21 @@ import 'package:rezervacni_system_maturita/services/map_service.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
 
-class EditLocationDialog extends StatefulWidget {
-  final Lokace lokace;
-  final Function(Lokace) saveLokace;
-  final Function(String) deleteLokace;
-  const EditLocationDialog({
-    super.key,
-    required this.lokace,
-    required this.saveLokace,
-    required this.deleteLokace,
-  });
+class CreateLocationDialog extends StatefulWidget {
+  final Function(Lokace) addLokace;
+  const CreateLocationDialog({super.key, required this.addLokace});
 
   @override
-  State<EditLocationDialog> createState() => _EditLocationDialogState();
+  State<CreateLocationDialog> createState() => _CreateLocationDialogState();
 }
 
-class _EditLocationDialogState extends State<EditLocationDialog> {
+class _CreateLocationDialogState extends State<CreateLocationDialog> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController pscController = TextEditingController();
-  late double latitudeMap;
-  late double longitudeMap;
-
-  @override
-  void initState() {
-    super.initState();
-    nameController.text = widget.lokace.nazev;
-    addressController.text = widget.lokace.adresa;
-    cityController.text = widget.lokace.mesto;
-    pscController.text = widget.lokace.psc;
-    latitudeMap = widget.lokace.latitude;
-    longitudeMap = widget.lokace.longitude;
-  }
+  late double latitudeMap = 0;
+  late double longitudeMap = 0;
 
   @override
   void dispose() {
@@ -93,33 +75,11 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Text(
-                        "Edit this location:",
-                        style: TextStyle(
-                          fontSize: headingFontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Positioned(
-                        right: 10,
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                            child: Icon(
-                              Icons.delete,
-                              size: 20.w,
-                              color: Colors.red,
-                            ),
-                            onTap: () => _deleteLokace(),
-                          ),
-                        ),
-                      ),
-                    ],
+                Text(
+                  "Create new location:",
+                  style: TextStyle(
+                    fontSize: headingFontSize,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(height: 30.h),
@@ -232,9 +192,9 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                 ),
                 SizedBox(height: 20.h),
                 ElevatedButton.icon(
-                  onPressed: () => _updateLokace(),
+                  onPressed: () => createLokace(),
                   label: Text(
-                    "Save",
+                    "Create location",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: normalTextFontSize,
@@ -248,7 +208,6 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                   ),
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Consts.secondary),
-                    fixedSize: WidgetStatePropertyAll(Size(100.w, 40.h)),
                   ),
                 ),
               ],
@@ -259,45 +218,32 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
     );
   }
 
-  void _deleteLokace() async {
-    DatabaseService dbService = DatabaseService();
-    bool isLokaceStillUsed = await dbService.isLokaceUsedByAnyKadernik(
-      widget.lokace.id,
-    );
-    if (isLokaceStillUsed) {
-      ToastClass.showToastSnackbar(
-        message: "Location is still used by hairdresser, you cannot delete it",
-      );
-      return;
-    }
-
-    if (mounted) {
-      //TODO: Možná přidat nějaký potvrzovací AlertDialog?
-      await widget.deleteLokace(widget.lokace.id);
-      ToastClass.showToastSnackbar(message: "Location deleted");
-      Navigator.of(context).pop();
-    }
-  }
-
-  void _updateLokace() async {
+  void createLokace() async {
     if (nameController.text.isNotEmpty &&
         addressController.text.isNotEmpty &&
         cityController.text.isNotEmpty &&
-        pscController.text.isNotEmpty) {
-      widget.lokace.nazev = nameController.text;
-      widget.lokace.adresa = addressController.text;
-      widget.lokace.mesto = cityController.text;
-      widget.lokace.psc = pscController.text;
-      widget.lokace.latitude = latitudeMap;
-      widget.lokace.longitude = longitudeMap;
+        pscController.text.isNotEmpty &&
+        latitudeMap != 0 &&
+        longitudeMap != 0) {
+      Lokace newLokaceWithoutId = Lokace(
+        id: "",
+        nazev: nameController.text,
+        adresa: addressController.text,
+        mesto: cityController.text,
+        psc: pscController.text,
+        latitude: latitudeMap,
+        longitude: longitudeMap,
+      );
 
-      widget.saveLokace(widget.lokace);
-
+      await widget.addLokace(newLokaceWithoutId);
+      ToastClass.showToastSnackbar(message: "New location created");
       if (mounted) {
         Navigator.of(context).pop();
       }
     } else {
-      ToastClass.showToastSnackbar(message: "You must enter all information");
+      ToastClass.showToastSnackbar(
+        message: "You must enter all information and test map!",
+      );
     }
   }
 

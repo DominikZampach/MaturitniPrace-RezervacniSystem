@@ -111,6 +111,9 @@ class _LocationCardAdminState extends State<LocationCardAdmin> {
                           child: FittedBox(
                             fit: BoxFit.cover,
                             child: MapCard(
+                              key: ValueKey(
+                                "${widget.lokace.latitude}_${widget.lokace.longitude}",
+                              ),
                               lokace: widget.lokace,
                               width: 60.w,
                               height: 60.h,

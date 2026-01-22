@@ -230,7 +230,7 @@ class DatabaseService {
     );
 
     try {
-      newDocRef.set(novyUzivatel.toJson());
+      await newDocRef.set(novyUzivatel.toJson());
       print("Nový uživatel ${novyUzivatel.userUID} vytvořen.");
       ToastClass.showToastSnackbar(message: "Uživatel úspěšně vytvořen");
     } catch (e) {
@@ -250,7 +250,7 @@ class DatabaseService {
     Map<String, dynamic> json = rezervace.toJson();
 
     try {
-      newDocRef.set(json);
+      await newDocRef.set(json);
       print("Nová rezervace $newId vytvořena.");
       ToastClass.showToastSnackbar(message: "Rezervace úspěšně vytvořena");
       return true;
@@ -273,7 +273,7 @@ class DatabaseService {
     Map<String, dynamic> json = hodnoceni.toJson();
 
     try {
-      newDocRef.set(json);
+      await newDocRef.set(json);
       print("Nové hodnocení $newId vytvořena.");
       return hodnoceni;
     } catch (e) {
@@ -295,7 +295,7 @@ class DatabaseService {
     Map<String, dynamic> json = kadernik.toJson();
 
     try {
-      newDocRef.set(json);
+      await newDocRef.set(json);
       print("Nový kadeřník $newId vytvořen.");
       return kadernik;
     } catch (e) {
@@ -307,6 +307,26 @@ class DatabaseService {
   //? Tvorba nového úkonu
 
   //? Tvorba nové lokace
+  Future<Lokace?> createNewLokace(Lokace lokace) async {
+    DocumentReference newDocRef = firestore
+        .collection(LOKACE_COLLECTION_REF)
+        .doc();
+
+    String newId = newDocRef.id;
+
+    lokace.id = newId;
+
+    Map<String, dynamic> json = lokace.toJson();
+
+    try {
+      await newDocRef.set(json);
+      print("Nová lokace $newId vytvořena.");
+      return lokace;
+    } catch (e) {
+      print("Chyba při tvorbě nové lokace: $e");
+      return null;
+    }
+  }
 
   //? Získání všech rezervací uživatele
 
@@ -608,5 +628,32 @@ class DatabaseService {
     await batch.commit(); //? Všechny úkony se provedou asynchronně
 
     print("Kadeřník a všechna jeho data byla úspěšně smazána.");
+  }
+
+  //? Smazání lokace
+  Future<void> deleteLokace(String lokaceId) async {
+    final query = await firestore
+        .collection(LOKACE_COLLECTION_REF)
+        .doc(lokaceId)
+        .delete();
+
+    print("Úspěšně smazána lokace $lokaceId");
+  }
+
+  Future<bool> isLokaceUsedByAnyKadernik(String lokaceId) async {
+    try {
+      final querySnapshot = await firestore
+          .collection(KADERNICI_COLLECTION_REF)
+          .where('id_lokace', isEqualTo: lokaceId)
+          .limit(1) //? Stačí najít jediného, to nám vlastně stačí
+          .get();
+
+      //? Pokud querySnapshot.docs není prázný => Lokace je nastavena u nějakého kadeřníka
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print("Chyba při kontrole využití lokace: $e");
+      //? V případě chyby raději vrátíme true (že je použita),
+      return true;
+    }
   }
 }

@@ -10,6 +10,7 @@ import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_kadernicky_ukon.dart';
+import 'package:rezervacni_system_maturita/views/users/Mobile/create_reservation_dialog_mobile.dart';
 import 'package:rezervacni_system_maturita/views/users/Mobile/inspect_mobile/inspect_kadernicky_ukon_mobile.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
 
@@ -174,8 +175,20 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
                   ),
                   SizedBox(height: 20.h),
                   ElevatedButton(
-                    onPressed: () {
-                      //TODO!
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      await showDialog(
+                        context: context,
+                        builder: (context) => CreateReservationDialogMobile(
+                          mobileFontSize: widget.mobileFontSize,
+                          mobileSmallerFontSize: widget.mobileSmallerFontSize,
+                          mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
+                          mobileSmallerHeadingFontSize:
+                              widget.mobileSmallerHeadingsFontSize,
+                          defaultKadernikId: widget.kadernik.id,
+                          defaultLokaceId: widget.kadernik.lokace.id,
+                        ),
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(Consts.secondary),

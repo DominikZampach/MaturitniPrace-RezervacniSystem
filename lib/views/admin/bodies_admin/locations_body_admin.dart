@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/admin/locations/create_location.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/location_card_admin.dart';
 
@@ -81,14 +82,24 @@ class _LocationsBodyAdminState extends State<LocationsBodyAdmin> {
 
         dynamic deleteLokace(String lokaceId) async {
           DatabaseService dbService = DatabaseService();
-          int kadernikIndex = listAllLokace.indexWhere(
+          int lokaceIndex = listAllLokace.indexWhere(
             (item) => item.id == lokaceId,
           );
-          await dbService.deleteKadernik(lokaceId);
+          await dbService.deleteLokace(lokaceId);
 
           setState(() {
-            listAllLokace.removeAt(kadernikIndex);
+            listAllLokace.removeAt(lokaceIndex);
           });
+        }
+
+        dynamic addLokace(Lokace lokaceBezId) async {
+          DatabaseService dbService = DatabaseService();
+          Lokace? lokaceWithId = await dbService.createNewLokace(lokaceBezId);
+          if (lokaceWithId != null) {
+            setState(() {
+              listAllLokace.add(lokaceWithId);
+            });
+          }
         }
 
         return Container(
@@ -113,8 +124,8 @@ class _LocationsBodyAdminState extends State<LocationsBodyAdmin> {
                   onPressed: () async {
                     final dialogResult = await showDialog(
                       context: context,
-                      builder: (BuildContext context) => Placeholder(),
-                      //TODO! - změnit na dialogové okno s tvorbou nové lokace
+                      builder: (BuildContext context) =>
+                          CreateLocationDialog(addLokace: addLokace),
                     );
                   },
                   label: Text(

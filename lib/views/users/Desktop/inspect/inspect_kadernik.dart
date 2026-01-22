@@ -9,6 +9,7 @@ import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/views/users/Desktop/create_reservation_dialog.dart';
 import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
 import 'package:rezervacni_system_maturita/widgets/hairdresser_card.dart';
@@ -203,8 +204,17 @@ class _InspectKadernikState extends State<InspectKadernik> {
                               ),
                               SizedBox(height: 20.h),
                               ElevatedButton(
-                                onPressed: () {
-                                  //TODO!
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  await showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        CreateReservationDialog(
+                                          defaultKadernikId: widget.kadernik.id,
+                                          defaultLokaceId:
+                                              widget.kadernik.lokace.id,
+                                        ),
+                                  );
                                 },
                                 style: ButtonStyle(
                                   backgroundColor: WidgetStatePropertyAll(

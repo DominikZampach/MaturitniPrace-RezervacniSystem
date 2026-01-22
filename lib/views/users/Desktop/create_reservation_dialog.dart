@@ -11,7 +11,14 @@ import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 
 class CreateReservationDialog extends StatefulWidget {
-  const CreateReservationDialog({super.key});
+  //? Default hodnoty pro Book Now
+  final String? defaultKadernikId;
+  final String? defaultLokaceId;
+  const CreateReservationDialog({
+    super.key,
+    this.defaultKadernikId,
+    this.defaultLokaceId,
+  });
 
   @override
   State<CreateReservationDialog> createState() =>
@@ -154,13 +161,21 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
           if (_dropdownValueLokace == null &&
               snapshot.data != null &&
               snapshot.data!.listAllLokace.isNotEmpty) {
-            //? Použijeme hodnotu prvního prvku jako výchozí
-            Lokace prvniLokace = snapshot.data!.listAllLokace.first;
-            _dropdownValueLokace = prvniLokace.id;
-            _dropdownOptionsKadernik = snapshot.data!.getAllKadernikFromLokace(
-              prvniLokace.id,
-            );
-            _dropdownValueKadernik = _dropdownOptionsKadernik.first.id;
+            if (widget.defaultKadernikId != null &&
+                widget.defaultLokaceId != null) {
+              //? Jedná se o Book Now = nastavíme default hodnoty na tohoto kadeřníka + lokaci
+              _dropdownValueLokace = widget.defaultLokaceId!;
+              _dropdownOptionsKadernik = snapshot.data!
+                  .getAllKadernikFromLokace(widget.defaultLokaceId!);
+              _dropdownValueKadernik = widget.defaultKadernikId;
+            } else {
+              //? Použijeme hodnotu prvního prvku jako výchozí
+              Lokace prvniLokace = snapshot.data!.listAllLokace.first;
+              _dropdownValueLokace = prvniLokace.id;
+              _dropdownOptionsKadernik = snapshot.data!
+                  .getAllKadernikFromLokace(prvniLokace.id);
+              _dropdownValueKadernik = _dropdownOptionsKadernik.first.id;
+            }
           }
 
           _radioValueType ??= "Male";
