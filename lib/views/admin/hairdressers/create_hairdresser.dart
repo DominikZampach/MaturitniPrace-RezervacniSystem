@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:multiselect/multiselect.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
@@ -11,6 +10,7 @@ import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_actio
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_photos_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
+import 'package:rezervacni_system_maturita/widgets/my_multiselect.dart';
 
 class CreateHairdresserDialog extends StatefulWidget {
   final List<Lokace> listAllLokace;

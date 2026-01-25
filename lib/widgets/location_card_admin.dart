@@ -36,7 +36,7 @@ class _LocationCardAdminState extends State<LocationCardAdmin> {
             deleteLokace: widget.deleteLokace,
           ),
         );
-      }, //TODO
+      },
       child: Card(
         elevation: 4,
         child: Container(

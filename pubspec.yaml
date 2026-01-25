@@ -48,11 +48,11 @@ dependencies:
   flutter_map: ^8.2.2
   latlong2: ^0.9.1
   http: ^1.6.0
-  multiselect: ^0.1.1
   syncfusion_flutter_datepicker: ^31.2.18
   carousel_slider: ^5.1.1
   cached_network_image: ^3.4.1
   flutter_dotenv: ^6.0.0
+  states_rebuilder: ^6.4.0
 
 dev_dependencies:
   flutter_test:

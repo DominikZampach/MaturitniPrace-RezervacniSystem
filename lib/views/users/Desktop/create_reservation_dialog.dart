@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:multiselect/multiselect.dart';
 import 'package:rezervacni_system_maturita/logic/createReservation.dart';
-import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
+import 'package:rezervacni_system_maturita/widgets/my_multiselect.dart';
 
 class CreateReservationDialog extends StatefulWidget {
   //? Default hodnoty pro Book Now
@@ -235,7 +234,9 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                           widget: SizedBox(
                             width: 300,
                             height: 70,
-                            child: _multiDropdownButtonUkony(),
+                            child: _multiDropdownButtonUkony(
+                              normalTextFontSize,
+                            ),
                           ),
                           verticalSpacing:
                               0, // Nechceme extra mezeru uvnitř Boxu
@@ -449,9 +450,9 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
     );
   }
 
-  SizedBox _multiDropdownButtonUkony() {
+  Widget _multiDropdownButtonUkony(double normalTextFontSize) {
     return SizedBox(
-      width: 300,
+      width: 1000,
       height: 60,
       child: DropDownMultiSelect<String>(
         options: _dropdownOptionsUkony,
@@ -474,9 +475,24 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
           });
         },
         selectedValues: _selectedUkonyStrings,
-        whenEmpty: "Select actions..",
-        selectedValuesStyle: TextStyle(fontSize: 0),
-        separator: "\n",
+        childBuilder: (selectedValues) {
+          String text;
+          if (selectedValues.isNotEmpty) {
+            text = "Selected ${selectedValues.length} actions";
+          } else {
+            text = "Select actions...";
+          }
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 10.w),
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: normalTextFontSize,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

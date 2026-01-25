@@ -206,6 +206,18 @@ class DatabaseService {
     }
   }
 
+  //? Uložení upraveného Kadeřnického úkonu
+  Future<void> updateUkon(KadernickyUkon ukon) async {
+    try {
+      await firestore
+          .collection(KADERNICKEUKONY_COLLECTION_REF)
+          .doc(ukon.id)
+          .set(ukon.toJson());
+    } catch (e) {
+      print("Chyba při ukládání Úkonu pomocí .set: $e");
+    }
+  }
+
   //? Tvorba nového uzivatele
   Future<void> createNewUzivatel(
     String jmeno,
@@ -324,6 +336,28 @@ class DatabaseService {
       return lokace;
     } catch (e) {
       print("Chyba při tvorbě nové lokace: $e");
+      return null;
+    }
+  }
+
+  //? Tvorba nového Kadeřnického úkonu
+  Future<KadernickyUkon?> createNewKadernickyUkon(KadernickyUkon ukon) async {
+    DocumentReference newDocRef = firestore
+        .collection(KADERNICKEUKONY_COLLECTION_REF)
+        .doc();
+
+    String newId = newDocRef.id;
+
+    ukon.id = newId;
+
+    Map<String, dynamic> json = ukon.toJson();
+
+    try {
+      await newDocRef.set(json);
+      print("Nový úkon $newId vytvořen");
+      return ukon;
+    } catch (e) {
+      print("Chyba při tvorbě nového úkonu: $e");
       return null;
     }
   }
@@ -654,6 +688,58 @@ class DatabaseService {
       print("Chyba při kontrole využití lokace: $e");
       //? V případě chyby raději vrátíme true (že je použita),
       return true;
+    }
+  }
+
+  //? Smazání kadeřnického úkonu společně se všemi Rezervacemi, které obsahují tento úkon + všechny zmíňky v dokumentech Kadeřníků, kde by mohli mít tento úkon jako jeden z nabízených
+  Future<void> deleteKadernickyUkon(String ukonId) async {
+    try {
+      WriteBatch batch = firestore.batch();
+
+      //? Smazání samotného Úkonu
+      final ukonDocRef = firestore
+          .collection(KADERNICKEUKONY_COLLECTION_REF)
+          .doc(ukonId);
+
+      batch.delete(ukonDocRef);
+
+      //? Smazání všech Rezervací obsahujících tento úkon (je jedno že obsahuje dalších 5, nedává to smysl držet tuto rezervaci při životě)
+      var rezervaceQuery = await firestore
+          .collection(REZERVACE_COLLECTION_REF)
+          .where('ids_ukony', arrayContains: ukonId)
+          .get();
+
+      for (var doc in rezervaceQuery.docs) {
+        batch.delete(doc.reference);
+      }
+
+      //? Odstranění úkonu z nabídek všech Kadeřníků
+      var kaderniciQuery = await firestore
+          .collection(KADERNICI_COLLECTION_REF)
+          .get();
+
+      for (var doc in kaderniciQuery.docs) {
+        Map<String, dynamic> data = doc.data();
+
+        if (data.containsKey('Map_IdsUkonyCena') &&
+            data['Map_IdsUkonyCena'] is Map &&
+            (data['Map_IdsUkonyCena'] as Map).containsKey(ukonId)) {
+          //? Smažeme jen konkrétní klíč v Map (zrychlení programu)
+          batch.update(doc.reference, {
+            'Map_IdsUkonyCena.$ukonId': FieldValue.delete(),
+          });
+        }
+      }
+
+      //? Odeslání všech změn
+      await batch.commit();
+
+      print(
+        "Úkon, související rezervace a zmínky u kadeřníků byly úspěšně smazány.",
+      );
+    } catch (e) {
+      print("Chyba při mazání kadeřnického úkonu: $e");
+      throw e;
     }
   }
 }

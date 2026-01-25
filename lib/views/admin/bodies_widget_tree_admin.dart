@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rezervacni_system_maturita/views/admin/bodies_admin/actions_body_admin.dart';
 import 'package:rezervacni_system_maturita/views/admin/bodies_admin/hairdressers_body_admin.dart';
 import 'package:rezervacni_system_maturita/views/admin/bodies_admin/locations_body_admin.dart';
 
@@ -32,7 +33,10 @@ class _WidgetTreeBodiesAdminState extends State<WidgetTreeBodiesAdmin> {
         screenHeight: widget.screenHeight,
       );
     } else if (widget.selectedIndex == 2) {
-      return Text("Actions");
+      return ActionsBodyAdmin(
+        screenWidth: widget.screenWidth,
+        screenHeight: widget.screenHeight,
+      );
     } else if (widget.selectedIndex == 3) {
       return Text("Reservations");
     } else {

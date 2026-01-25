@@ -53,7 +53,7 @@ class _SelectPhotosDialogState extends State<SelectPhotosDialog> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Edit photos of work",
+                "Edit photos",
                 style: TextStyle(
                   fontSize: headingFontSize,
                   fontWeight: FontWeight.bold,

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:multiselect/multiselect.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
-import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_actions_dialog.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_photos_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
+import 'package:rezervacni_system_maturita/widgets/my_multiselect.dart';
 
 class EditHairdresserDialog extends StatefulWidget {
   final Kadernik? kadernik;
