@@ -9,6 +9,7 @@ class ReservationCardMobile extends StatefulWidget {
   final double screenWidth;
   final double screenHeight;
   final Rezervace rezervace;
+  final Function(String) deleteRezervace;
 
   final double mobileFontSize;
   final double mobileSmallerFontSize;
@@ -24,6 +25,7 @@ class ReservationCardMobile extends StatefulWidget {
     required this.mobileFontSize,
     required this.mobileHeadingsFontSize,
     required this.mobileSmallerHeadingsFontSize,
+    required this.deleteRezervace,
   });
 
   @override
@@ -43,6 +45,7 @@ class _ReservationCardMobileState extends State<ReservationCardMobile> {
             mobileSmallerFontSize: widget.mobileSmallerFontSize,
             mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
             mobileSmallerHeadingsFontSize: widget.mobileSmallerHeadingsFontSize,
+            deleteRezervace: widget.deleteRezervace,
           ),
         );
       },

@@ -10,12 +10,14 @@ class ReservationCard extends StatefulWidget {
   final double screenHeight;
   final Rezervace rezervace;
   final double fontSize;
+  final Function(String) deleteRezervace;
   const ReservationCard({
     super.key,
     required this.rezervace,
     required this.screenWidth,
     required this.screenHeight,
     required this.fontSize,
+    required this.deleteRezervace,
   });
 
   @override
@@ -29,7 +31,10 @@ class _ReservationCardState extends State<ReservationCard> {
       onTap: () async {
         final result = await showDialog(
           context: context,
-          builder: (context) => InspectRezervace(rezervace: widget.rezervace),
+          builder: (context) => InspectRezervace(
+            rezervace: widget.rezervace,
+            deleteRezervace: widget.deleteRezervace,
+          ),
         );
       },
       child: Card(

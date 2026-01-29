@@ -41,7 +41,6 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
         .getAllKadernickeUkony();
 
     //? Future.wait provádí různé operace najednou! - zkracuje loading
-    //TODO: Furt je potřeba ještě optimalizovat načítání!
     final results = await Future.wait([
       dbService.getAllPastRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony),
       dbService.getAllFutureRezervaceOfCurrentUser(vsechnyUkony: vsechnyUkony),
@@ -76,6 +75,28 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
         final List<Rezervace> futureRezervace = snapshot.data!.futureRezervace;
         final List<Rezervace> historicalRezervace =
             snapshot.data!.historicalRezervace;
+
+        dynamic deleteRezervace(String rezervaceId) async {
+          DatabaseService dbService = DatabaseService();
+          int rezervaceIndex = futureRezervace.indexWhere(
+            (item) => item.id == rezervaceId,
+          );
+          await dbService.deleteRezervace(rezervaceId);
+
+          if (rezervaceIndex == -1) {
+            //? To znamená že to není v ve futureListu, ale v historical
+            rezervaceIndex = historicalRezervace.indexWhere(
+              (item) => item.id == rezervaceId,
+            );
+            setState(() {
+              historicalRezervace.removeAt(rezervaceIndex);
+            });
+          } else {
+            setState(() {
+              futureRezervace.removeAt(rezervaceIndex);
+            });
+          }
+        }
 
         return Container(
           color: Colors.white,
@@ -126,6 +147,7 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
                   mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
                   mobileSmallerHeadingsFontSize:
                       widget.mobileSmallerHeadingFontSize,
+                  deleteRezervace: deleteRezervace,
                 ),
               ),
               Padding(
@@ -154,6 +176,7 @@ class _ReservationsBodyMobileState extends State<ReservationsBodyMobile> {
                   mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
                   mobileSmallerHeadingsFontSize:
                       widget.mobileSmallerHeadingFontSize,
+                  deleteRezervace: deleteRezervace,
                 ),
               ),
             ],

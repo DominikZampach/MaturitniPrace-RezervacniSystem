@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
+import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_rezervace.dart';
 import 'package:rezervacni_system_maturita/widgets/delete_alert_dialog.dart';
 
 class ReservationCardAdmin extends StatefulWidget {
@@ -26,15 +27,13 @@ class _ReservationCardAdminState extends State<ReservationCardAdmin> {
 
     return InkWell(
       onTap: () async {
-        /*
         final dialogResult = await showDialog(
           context: context,
-          builder: (BuildContext context) => EditActionDialog(
+          builder: (BuildContext context) => InspectRezervace(
             rezervace: widget.rezervace,
             deleteRezervace: widget.deleteRezervace,
           ),
         );
-        */
       },
       child: Card(
         elevation: 4,

@@ -60,7 +60,6 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
     final double smallerTextFontSize = 10.sp;
 
     final double _labelWidth = 75.w;
-    final double _labelWidthRightColumn = 30.w;
     final double _spacingGap = 10.w;
 
     final double verticalPadding = 10.h;
@@ -285,7 +284,6 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
     }
 
     if (mounted) {
-      //TODO: Možná přidat nějaký potvrzovací AlertDialog?
       await widget.deleteLokace(widget.lokace.id);
       ToastClass.showToastSnackbar(message: "Location deleted");
       Navigator.of(context).pop();

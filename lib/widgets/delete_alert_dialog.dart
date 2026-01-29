@@ -5,18 +5,29 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 
 class DeleteAlertDialog extends StatefulWidget {
   final String alertText;
-  const DeleteAlertDialog({super.key, required this.alertText});
+  final double? normalTextFontSize;
+  final double? h2FontSize;
+  const DeleteAlertDialog({
+    super.key,
+    required this.alertText,
+    this.normalTextFontSize,
+    this.h2FontSize,
+  });
 
   @override
   State<DeleteAlertDialog> createState() => _DeleteAlertDialogState();
 }
 
 class _DeleteAlertDialogState extends State<DeleteAlertDialog> {
-  final double normalTextFontSize = 12.sp;
-  final double h2FontSize = 15.sp;
-
   @override
   Widget build(BuildContext context) {
+    double normalTextFontSize = widget.normalTextFontSize == null
+        ? 12.sp
+        : widget.normalTextFontSize!;
+    final double h2FontSize = widget.h2FontSize == null
+        ? 15.sp
+        : widget.h2FontSize!;
+
     return AlertDialog(
       title: Text(
         "Delete confirmation",

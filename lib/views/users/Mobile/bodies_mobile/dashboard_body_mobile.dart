@@ -67,6 +67,13 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
 
         final Rezervace? nearestRezervace = snapshot.data;
 
+        dynamic deleteRezervace(String rezervaceId) async {
+          DatabaseService dbService = DatabaseService();
+
+          await dbService.deleteRezervace(rezervaceId);
+          setState(() {});
+        }
+
         if (nearestRezervace != null) {
           return SingleChildScrollView(
             child: Container(
@@ -154,7 +161,7 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
   }
 }
 
-class NextAppointmentColumnMobile extends StatelessWidget {
+class NextAppointmentColumnMobile extends StatefulWidget {
   const NextAppointmentColumnMobile({
     super.key,
     required this.screenHeight,
@@ -171,6 +178,13 @@ class NextAppointmentColumnMobile extends StatelessWidget {
   final double mobileSmallerHeadingSize;
 
   @override
+  State<NextAppointmentColumnMobile> createState() =>
+      _NextAppointmentColumnMobileState();
+}
+
+class _NextAppointmentColumnMobileState
+    extends State<NextAppointmentColumnMobile> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,7 +194,7 @@ class NextAppointmentColumnMobile extends StatelessWidget {
           "Next appointment",
           style: TextStyle(
             fontWeight: FontWeight.w800,
-            fontSize: mobileSmallerHeadingSize,
+            fontSize: widget.mobileSmallerHeadingSize,
           ),
         ),
         SizedBox(height: 10.h),
@@ -189,20 +203,26 @@ class NextAppointmentColumnMobile extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Date: ", style: TextStyle(fontSize: mobileFontSize)),
                 Text(
-                  nearestRezervace!.getDayMonthYearString(),
-                  style: TextStyle(fontSize: mobileFontSize),
+                  "Date: ",
+                  style: TextStyle(fontSize: widget.mobileFontSize),
+                ),
+                Text(
+                  widget.nearestRezervace!.getDayMonthYearString(),
+                  style: TextStyle(fontSize: widget.mobileFontSize),
                 ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Time: ", style: TextStyle(fontSize: mobileFontSize)),
                 Text(
-                  nearestRezervace!.getHourMinuteString(),
-                  style: TextStyle(fontSize: mobileFontSize),
+                  "Time: ",
+                  style: TextStyle(fontSize: widget.mobileFontSize),
+                ),
+                Text(
+                  widget.nearestRezervace!.getHourMinuteString(),
+                  style: TextStyle(fontSize: widget.mobileFontSize),
                 ),
               ],
             ),
@@ -215,26 +235,27 @@ class NextAppointmentColumnMobile extends StatelessWidget {
               "Hairdresser:",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: mobileFontSize,
+                fontSize: widget.mobileFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              nearestRezervace!.kadernik.getFullNameString(),
+              widget.nearestRezervace!.kadernik.getFullNameString(),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: mobileFontSize),
+              style: TextStyle(fontSize: widget.mobileFontSize),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.h),
               child: SizedBox(
-                width: screenWidth * 0.9,
-                height: screenHeight * 0.4,
+                width: widget.screenWidth * 0.9,
+                height: widget.screenHeight * 0.4,
                 child: ClipRRect(
                   borderRadius: BorderRadiusGeometry.circular(10.r),
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: CachedNetworkImage(
-                      imageUrl: nearestRezervace!.kadernik.odkazFotografie,
+                      imageUrl:
+                          widget.nearestRezervace!.kadernik.odkazFotografie,
                       httpHeaders: {
                         "Access-Control-Allow-Origin": "*",
                         "User-Agent": "Mozilla/5.0...",
@@ -255,15 +276,16 @@ class NextAppointmentColumnMobile extends StatelessWidget {
               "Actions:",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: mobileFontSize,
+                fontSize: widget.mobileFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            for (KadernickyUkon ukon in nearestRezervace!.kadernickeUkony)
+            for (KadernickyUkon ukon
+                in widget.nearestRezervace!.kadernickeUkony)
               Text(
                 ukon.nazev,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: mobileFontSize),
+                style: TextStyle(fontSize: widget.mobileFontSize),
               ),
           ],
         ),
@@ -272,7 +294,7 @@ class NextAppointmentColumnMobile extends StatelessWidget {
   }
 }
 
-class NextAppointmentLocationColumnMobile extends StatelessWidget {
+class NextAppointmentLocationColumnMobile extends StatefulWidget {
   const NextAppointmentLocationColumnMobile({
     super.key,
     required this.screenHeight,
@@ -293,7 +315,21 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
   final double mobileSmallerHeadingSize;
 
   @override
+  State<NextAppointmentLocationColumnMobile> createState() =>
+      _NextAppointmentLocationColumnMobileState();
+}
+
+class _NextAppointmentLocationColumnMobileState
+    extends State<NextAppointmentLocationColumnMobile> {
+  @override
   Widget build(BuildContext context) {
+    dynamic deleteRezervace(String rezervaceId) async {
+      DatabaseService dbService = DatabaseService();
+
+      await dbService.deleteRezervace(rezervaceId);
+      setState(() {});
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -302,14 +338,14 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
           "Next appointment location",
           style: TextStyle(
             fontWeight: FontWeight.w800,
-            fontSize: mobileSmallerHeadingSize,
+            fontSize: widget.mobileSmallerHeadingSize,
           ),
         ),
         SizedBox(height: 10.h),
         MapCard(
-          lokace: nearestRezervace!.kadernik.lokace,
-          width: screenWidth * 0.9,
-          height: screenHeight * 0.4,
+          lokace: widget.nearestRezervace!.kadernik.lokace,
+          width: widget.screenWidth * 0.9,
+          height: widget.screenHeight * 0.4,
         ),
         SizedBox(height: 10.h),
         Column(
@@ -318,7 +354,7 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
               "Address:",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: mobileFontSize,
+                fontSize: widget.mobileFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -326,9 +362,9 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  nearestRezervace!.kadernik.lokace.nazev,
+                  widget.nearestRezervace!.kadernik.lokace.nazev,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: mobileFontSize),
+                  style: TextStyle(fontSize: widget.mobileFontSize),
                 ),
               ],
             ),
@@ -336,9 +372,9 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  nearestRezervace!.kadernik.lokace.adresa,
+                  widget.nearestRezervace!.kadernik.lokace.adresa,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: mobileFontSize),
+                  style: TextStyle(fontSize: widget.mobileFontSize),
                 ),
               ],
             ),
@@ -346,14 +382,14 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "${nearestRezervace!.kadernik.lokace.psc} ",
+                  "${widget.nearestRezervace!.kadernik.lokace.psc} ",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: mobileFontSize),
+                  style: TextStyle(fontSize: widget.mobileFontSize),
                 ),
                 Text(
-                  nearestRezervace!.kadernik.lokace.mesto,
+                  widget.nearestRezervace!.kadernik.lokace.mesto,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: mobileFontSize),
+                  style: TextStyle(fontSize: widget.mobileFontSize),
                 ),
               ],
             ),
@@ -366,19 +402,19 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
               "Contact:",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: mobileFontSize,
+                fontSize: widget.mobileFontSize,
                 fontWeight: FontWeight.w700,
               ),
             ),
             Text(
-              "Phone: ${nearestRezervace!.kadernik.telefon}",
+              "Phone: ${widget.nearestRezervace!.kadernik.telefon}",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: mobileFontSize),
+              style: TextStyle(fontSize: widget.mobileFontSize),
             ),
             Text(
-              "Mail: ${nearestRezervace!.kadernik.email}",
+              "Mail: ${widget.nearestRezervace!.kadernik.email}",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: mobileFontSize),
+              style: TextStyle(fontSize: widget.mobileFontSize),
             ),
           ],
         ),
@@ -390,11 +426,13 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
               final result = await showDialog(
                 context: context,
                 builder: (context) => InspectRezervaceMobile(
-                  rezervace: nearestRezervace!,
-                  mobileFontSize: mobileFontSize,
-                  mobileSmallerFontSize: mobileSmallerFontSize,
-                  mobileHeadingsFontSize: mobileHeadingsFontSize,
-                  mobileSmallerHeadingsFontSize: mobileSmallerHeadingSize,
+                  rezervace: widget.nearestRezervace!,
+                  mobileFontSize: widget.mobileFontSize,
+                  mobileSmallerFontSize: widget.mobileSmallerFontSize,
+                  mobileHeadingsFontSize: widget.mobileHeadingsFontSize,
+                  mobileSmallerHeadingsFontSize:
+                      widget.mobileSmallerHeadingSize,
+                  deleteRezervace: deleteRezervace,
                 ),
               );
             },
@@ -402,7 +440,7 @@ class NextAppointmentLocationColumnMobile extends StatelessWidget {
               "Click here to see full reservation...",
               style: TextStyle(
                 fontWeight: FontWeight.w900,
-                fontSize: mobileSmallerHeadingSize,
+                fontSize: widget.mobileSmallerHeadingSize,
                 decoration: TextDecoration.underline,
               ),
             ),

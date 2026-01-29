@@ -71,6 +71,28 @@ class _ReservationsBodyState extends State<ReservationsBody> {
         final List<Rezervace> historicalRezervace =
             snapshot.data!.historicalRezervace;
 
+        dynamic deleteRezervace(String rezervaceId) async {
+          DatabaseService dbService = DatabaseService();
+          int rezervaceIndex = futureRezervace.indexWhere(
+            (item) => item.id == rezervaceId,
+          );
+          await dbService.deleteRezervace(rezervaceId);
+
+          if (rezervaceIndex == -1) {
+            //? To znamená že to není v ve futureListu, ale v historical
+            rezervaceIndex = historicalRezervace.indexWhere(
+              (item) => item.id == rezervaceId,
+            );
+            setState(() {
+              historicalRezervace.removeAt(rezervaceIndex);
+            });
+          } else {
+            setState(() {
+              futureRezervace.removeAt(rezervaceIndex);
+            });
+          }
+        }
+
         return Container(
           color: Colors.white,
           height: widget.screenHeight,
@@ -103,6 +125,7 @@ class _ReservationsBodyState extends State<ReservationsBody> {
                   screenWidth: widget.screenWidth,
                   screenHeight: widget.screenHeight,
                   fontSize: reservationCardFontSize,
+                  deleteRezervace: deleteRezervace,
                 ),
               ),
               Padding(
@@ -126,6 +149,7 @@ class _ReservationsBodyState extends State<ReservationsBody> {
                   screenWidth: widget.screenWidth,
                   screenHeight: widget.screenHeight,
                   fontSize: reservationCardFontSize,
+                  deleteRezervace: deleteRezervace,
                 ),
               ),
             ],

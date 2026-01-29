@@ -159,6 +159,13 @@ class NextAppointmentColumn extends StatefulWidget {
 class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
   @override
   Widget build(BuildContext context) {
+    dynamic deleteRezervace(String rezervaceId) async {
+      DatabaseService dbService = DatabaseService();
+
+      await dbService.deleteRezervace(rezervaceId);
+      setState(() {});
+    }
+
     return Container(
       color: Consts.background.withValues(alpha: 0.6),
       width: widget.screenWidth * 0.4,
@@ -273,14 +280,11 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
               onTap: () async {
                 final result = await showDialog(
                   context: context,
-                  builder: (context) =>
-                      InspectRezervace(rezervace: widget.nearestRezervace!),
+                  builder: (context) => InspectRezervace(
+                    rezervace: widget.nearestRezervace!,
+                    deleteRezervace: deleteRezervace,
+                  ),
                 );
-
-                if (result) {
-                  //? Asi nebude fungovat, bude potřeba aby uživatel reloadnul stránku tady - bylo by to velmi složitý abych donutil reloadnout a znova získat data z dazabáze z tohoto místa
-                  setState(() {});
-                }
               },
               child: Text(
                 "Click here to see full reservation...",

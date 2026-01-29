@@ -5,10 +5,12 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/users/Mobile/inspect_mobile/inspect_kadernicky_ukon_mobile.dart';
+import 'package:rezervacni_system_maturita/widgets/delete_alert_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
 
 class InspectRezervaceMobile extends StatelessWidget {
   final Rezervace rezervace;
+  final Function(String) deleteRezervace;
 
   final double mobileFontSize;
   final double mobileSmallerFontSize;
@@ -22,6 +24,7 @@ class InspectRezervaceMobile extends StatelessWidget {
     required this.mobileSmallerFontSize,
     required this.mobileHeadingsFontSize,
     required this.mobileSmallerHeadingsFontSize,
+    required this.deleteRezervace,
   });
 
   @override
@@ -51,14 +54,24 @@ class InspectRezervaceMobile extends StatelessWidget {
                       Positioned(
                         right: 10,
                         child: IconButton(
-                          onPressed: () {
-                            //? Logika pro vymazání z databáze a reload stránky (nefunkční reload)
-                            DatabaseService dbService = DatabaseService();
+                          onPressed: () async {
+                            bool? dialogResult = await showDialog(
+                              context: context,
+                              builder: (context) => DeleteAlertDialog(
+                                alertText:
+                                    "Do you really want to delete this reservation?",
+                                normalTextFontSize: mobileFontSize,
+                                h2FontSize: mobileSmallerHeadingsFontSize,
+                              ),
+                            );
 
-                            dbService.deleteRezervace(rezervace.id);
-                            if (context.mounted) {
-                              //? Vracím true, abych poslal znamení pro reload mateřské stránky
-                              Navigator.of(context).pop(true);
+                            if (dialogResult == true) {
+                              await deleteRezervace(rezervace.id);
+
+                              if (context.mounted) {
+                                //? Vracím true, abych poslal znamení pro reload mateřské stránky
+                                Navigator.of(context).pop(true);
+                              }
                             }
                           },
                           icon: Icon(
