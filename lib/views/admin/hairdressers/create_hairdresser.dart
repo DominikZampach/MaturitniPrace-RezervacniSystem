@@ -428,6 +428,24 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
               whenEmpty: "Select days..",
               selectedValuesStyle: TextStyle(fontSize: 0),
               separator: ", ",
+              childBuilder: (selectedValues) {
+                String text;
+                if (selectedValues.isNotEmpty) {
+                  text = "Selected ${selectedValues.length} days";
+                } else {
+                  text = "Select days...";
+                }
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 3.h,
+                    horizontal: 10.w,
+                  ),
+                  child: Text(
+                    text,
+                    style: TextStyle(fontSize: normalTextFontSize),
+                  ),
+                );
+              },
             ),
           ),
         ],

@@ -112,4 +112,12 @@ class Rezervace {
   String getHourMinuteString() {
     return DateFormat('HH:mm').format(datumCasRezervace);
   }
+
+  String getKadernickeUkonyString() {
+    String text = "";
+    for (KadernickyUkon ukon in kadernickeUkony) {
+      text = "$text ${ukon.nazev}";
+    }
+    return text.substring(1);
+  }
 }

@@ -4,6 +4,7 @@ import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_photos_dialog.dart';
+import 'package:rezervacni_system_maturita/widgets/delete_alert_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 
 class EditActionDialog extends StatefulWidget {
@@ -117,7 +118,19 @@ class _EditActionDialogState extends State<EditActionDialog> {
                               size: 20.w,
                               color: Colors.red,
                             ),
-                            onTap: () => _deleteUkon(),
+                            onTap: () async {
+                              bool? dialogResult = await showDialog(
+                                context: context,
+                                builder: (context) => DeleteAlertDialog(
+                                  alertText:
+                                      "Do you really want to delete this action?",
+                                ),
+                              );
+                              if (dialogResult == true) {
+                                _deleteUkon();
+                                return;
+                              }
+                            },
                           ),
                         ),
                       ),

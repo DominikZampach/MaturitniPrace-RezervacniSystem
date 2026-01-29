@@ -8,6 +8,7 @@ import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_actions_dialog.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/select_photos_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/carousel_photo.dart';
+import 'package:rezervacni_system_maturita/widgets/delete_alert_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 import 'package:rezervacni_system_maturita/widgets/my_multiselect.dart';
 
@@ -183,7 +184,19 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
                               size: 20.w,
                               color: Colors.red,
                             ),
-                            onTap: () => _deleteKadernik(),
+                            onTap: () async {
+                              bool? dialogResult = await showDialog(
+                                context: context,
+                                builder: (context) => DeleteAlertDialog(
+                                  alertText:
+                                      "Do you really want to delete this hairdresser\nwith all his reservations and ratings?",
+                                ),
+                              );
+                              if (dialogResult == true) {
+                                _deleteKadernik();
+                                return;
+                              }
+                            },
                           ),
                         ),
                       ),
@@ -530,6 +543,24 @@ class _EditHairdresserDialogState extends State<EditHairdresserDialog> {
               whenEmpty: "Select days..",
               selectedValuesStyle: TextStyle(fontSize: 0),
               separator: ", ",
+              childBuilder: (selectedValues) {
+                String text;
+                if (selectedValues.isNotEmpty) {
+                  text = "Selected ${selectedValues.length} days";
+                } else {
+                  text = "Select days...";
+                }
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 3.h,
+                    horizontal: 10.w,
+                  ),
+                  child: Text(
+                    text,
+                    style: TextStyle(fontSize: normalTextFontSize),
+                  ),
+                );
+              },
             ),
           ),
         ],

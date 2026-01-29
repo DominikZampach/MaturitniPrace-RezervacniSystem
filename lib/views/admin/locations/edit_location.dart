@@ -5,6 +5,7 @@ import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/services/map_service.dart';
+import 'package:rezervacni_system_maturita/widgets/delete_alert_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/informations_textbox.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
 
@@ -115,7 +116,19 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                               size: 20.w,
                               color: Colors.red,
                             ),
-                            onTap: () => _deleteLokace(),
+                            onTap: () async {
+                              bool? dialogResult = await showDialog(
+                                context: context,
+                                builder: (context) => DeleteAlertDialog(
+                                  alertText:
+                                      "Do you really want to delete this location?",
+                                ),
+                              );
+                              if (dialogResult == true) {
+                                _deleteLokace();
+                                return;
+                              }
+                            },
                           ),
                         ),
                       ),
