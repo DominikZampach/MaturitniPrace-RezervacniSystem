@@ -13,6 +13,7 @@ class Rezervace {
   late int delkaTrvani, celkovaCena;
   late String poznamkaUzivatele;
   late DateTime datumCasVytvoreniRezervace;
+  late String idUzivatele;
 
   Rezervace({
     required this.id,
@@ -23,6 +24,7 @@ class Rezervace {
     required this.poznamkaUzivatele,
     required this.datumCasVytvoreniRezervace,
     required this.celkovaCena,
+    required this.idUzivatele,
   });
 
   static Future<Rezervace> fromJson(
@@ -51,6 +53,7 @@ class Rezervace {
       datumCasVytvoreniRezervace:
           (json["DatumCasVytvoreni_rezervace"]! as Timestamp).toDate(),
       celkovaCena: json["CelkovaCena_rezervace"]! as int,
+      idUzivatele: json["id_uzivatele"]! as String,
     );
   }
 
@@ -116,8 +119,8 @@ class Rezervace {
   String getKadernickeUkonyString() {
     String text = "";
     for (KadernickyUkon ukon in kadernickeUkony) {
-      text = "$text ${ukon.nazev}";
+      text = "$text + ${ukon.nazev}";
     }
-    return text.substring(1);
+    return text.substring(3);
   }
 }

@@ -40,22 +40,22 @@ class DatabaseService {
       return uzivatel;
     }
 
-    //? Tady toto se provede, pokud se nenalezne User v databázi, pro teď se vráti dummy data
     throw Exception('Document in database doesn\'t exist!');
+  }
 
-    /* Kód využitelný třeba pro write!
-    dynamic user = firestore
+  Future<Uzivatel> getUserById(String userId) async {
+    final document = await firestore
         .collection(USERS_COLLECTION_REF)
-        .doc(instance.currentUser!.uid)
-        .withConverter(
-          fromFirestore: (snapshot, _) => {
-            if (snapshot.data() != null){
-              return Uzivatel.fromJson(instance.currentUser!.uid, snapshot.data())
-            }
-          },
-          toFirestore: (user, _) => {},
-        );
-    */
+        .doc(userId)
+        .get();
+
+    if (document.data() != null) {
+      final data = document.data() as Map<String, Object?>;
+      Uzivatel uzivatel = Uzivatel.fromJson(userId, data);
+      return uzivatel;
+    }
+
+    throw Exception('Document in database doesn\'t exist!');
   }
 
   Future<Kadernik> getKadernik(String uid) async {
@@ -223,8 +223,6 @@ class DatabaseService {
     String jmeno,
     String prijmeni,
     String telefon,
-    bool povoleneNotifikace,
-    bool jeMuz,
   ) async {
     DocumentReference newDocRef = firestore
         .collection(USERS_COLLECTION_REF)
@@ -236,8 +234,6 @@ class DatabaseService {
       prijmeni: prijmeni,
       email: instance.currentUser!.email!,
       telefon: telefon,
-      povoleneNotifikace: povoleneNotifikace,
-      jeMuz: jeMuz,
       oblibeniKadernici: [],
     );
 

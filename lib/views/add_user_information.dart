@@ -169,7 +169,6 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
       ),
       child: ElevatedButton(
         onPressed: () async {
-          //! TODO
           //? Kontrola zadaných informací
           if (nameController.text.trim().isEmpty ||
               surnameController.text.trim().isEmpty ||
@@ -185,8 +184,6 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
             nameController.text,
             surnameController.text,
             mobileController.text,
-            false,
-            true,
           );
           if (mounted) {
             Navigator.pushReplacement(

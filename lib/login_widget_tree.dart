@@ -20,17 +20,18 @@ class LoginWidgetTree extends StatelessWidget {
           return const Login();
         }
 
+        //? Print pro kontrolu při vývoji
         print(
           "Auth Email: ${snapshot.data!.email}\nAuth UID: ${snapshot.data!.uid}",
         );
 
-        //? Uživatel je přihlášen -> ověření pokud není admin
+        //? Uživatel je přihlášen -> ověření pokud není admin (používáme konstanty ze souboru Consts.dart)
         if ((snapshot.data!.email == Consts.ADMIN_EMAIL) &&
             (snapshot.data!.uid == Consts.ADMIN_UID)) {
           return const HomePageAdmin();
         }
 
-        //? Uživatel je přihlášen a zároveň to není admin -> potřebujeme ověřit, jestli existuje jeho dokument
+        //? Uživatel je přihlášen a zároveň to není admin -> potřebujeme ověřit, jestli existuje jeho uživatelský dokument
         return FutureBuilder<bool>(
           future: DatabaseService().doesUzivatelDocumentExist(),
           builder: (context, userInfoSnapshot) {
@@ -42,8 +43,10 @@ class LoginWidgetTree extends StatelessWidget {
             final hasUserDocument = userInfoSnapshot.data!;
 
             if (hasUserDocument) {
+              //? Uživatel má dokument -> má zadané údaje a existuje jeho dokument
               return const HomePage();
             } else {
+              //? Vrátíme obrazovku, kde uživatel zadá údaje o sobě a pak vytvoříme dokument v databázi
               return const AddUserInformationPage();
             }
           },

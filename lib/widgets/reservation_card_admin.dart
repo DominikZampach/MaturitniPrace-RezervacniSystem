@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
+import 'package:rezervacni_system_maturita/views/admin/reservations/inspect_reservation_admin.dart';
 import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_rezervace.dart';
 import 'package:rezervacni_system_maturita/widgets/delete_alert_dialog.dart';
 
@@ -29,7 +30,7 @@ class _ReservationCardAdminState extends State<ReservationCardAdmin> {
       onTap: () async {
         final dialogResult = await showDialog(
           context: context,
-          builder: (BuildContext context) => InspectRezervace(
+          builder: (BuildContext context) => InspectReservationAdmin(
             rezervace: widget.rezervace,
             deleteRezervace: widget.deleteRezervace,
           ),

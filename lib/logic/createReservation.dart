@@ -2,6 +2,7 @@ import 'package:rezervacni_system_maturita/models/kadernicky_ukon.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
+import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 
 class CreateReservationLogic {
@@ -264,6 +265,8 @@ class CreateReservationLogic {
       poznamkaUzivatele: note,
       datumCasVytvoreniRezervace: now,
       celkovaCena: celkovaCena,
+      idUzivatele:
+          AuthService().currentUser!.uid, //? Idk jestli bude fungovat!!
     );
 
     DatabaseService dbService = DatabaseService();
