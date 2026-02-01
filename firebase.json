@@ -1,29 +1,14 @@
 {
-  "flutter": {
-    "platforms": {
-      "dart": {
-        "lib/firebase_options.dart": {
-          "projectId": "rezervacni-system-maturi-e12ef",
-          "configurations": {
-            "web": "1:782176025406:web:f327df22fc7dc55b914a6f",
-            "windows": "1:782176025406:web:a10c687fbc4cb37f914a6f"
-          }
-        }
-      }
-    }
-  },
   "hosting": {
     "public": "build/web",
     "ignore": [
       "firebase.json",
       "**/node_modules/**"
     ],
-    "headers": [
+    "rewrites": [
       {
-        "source": "**/.env",
-        "headers": [
-          { "key": "Cache-Control", "value": "no-cache" }
-        ]
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   }

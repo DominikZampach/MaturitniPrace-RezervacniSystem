@@ -6,17 +6,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/firebase_options.dart';
 import 'package:rezervacni_system_maturita/login_widget_tree.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
-import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const LoadingWidget()); //? Dočasná aplikace s loaderem
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  print(Firebase.apps);
 
-  await dotenv.load(fileName: ".env");
+  try {
+    //? Načtení .env s try-catch blokem pro případ 404 na serveru
+    await dotenv.load(fileName: "secret.env");
+  } catch (e) {
+    debugPrint("Chyba při načítání .env: $e");
+  }
 
   runApp(const MyApp());
 }
