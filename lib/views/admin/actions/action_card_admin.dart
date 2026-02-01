@@ -22,8 +22,8 @@ class ActionCardAdmin extends StatefulWidget {
 class _ActionCardAdminState extends State<ActionCardAdmin> {
   @override
   Widget build(BuildContext context) {
-    double captionFontSize = 9.sp;
-    double mainNameFontSize = 12.sp;
+    double captionFontSize = Consts.smallerFS.sp;
+    double mainNameFontSize = Consts.normalFS.sp;
 
     return GestureDetector(
       onTap: () async {

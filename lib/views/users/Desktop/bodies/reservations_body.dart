@@ -60,10 +60,10 @@ class _ReservationsBodyState extends State<ReservationsBody> {
           );
         }
 
-        final double reservationCardFontSize = 11.sp;
-        final double buttonFontSize = 12.sp;
-        final double h1FontSize = 18.sp;
-        final double h2FontSize = 15.sp;
+        final double reservationCardFontSize = Consts.smallerFS.sp;
+        final double buttonFontSize = Consts.normalFS.sp;
+        final double h1FontSize = Consts.h1FS.sp;
+        final double h2FontSize = Consts.h2FS.sp;
 
         final double leftPaddingH2 = 19.w;
 

@@ -32,13 +32,12 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final double headingFontSize = 15.sp;
-    final double smallHeadingFontSize = 13.sp;
-    final double normalTextFontSize = 11.sp;
-    final double smallerTextFontSize = 10.sp;
+    final double h2FontSize = Consts.h2FS.sp;
+    final double normalTextFontSize = Consts.normalFS.sp;
+    final double smallerTextFontSize = Consts.smallerFS.sp;
 
-    final double _labelWidth = 75.w;
-    final double _spacingGap = 10.w;
+    final double labelWidth = 75.w;
+    final double spacingGap = 10.w;
 
     final double verticalPadding = 10.h;
     final double horizontalPadding = 5.w;
@@ -82,7 +81,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                 Text(
                   "Create new action:",
                   style: TextStyle(
-                    fontSize: headingFontSize,
+                    fontSize: h2FontSize,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -93,10 +92,10 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                   horizontalPadding: horizontalPadding,
                   textInFront: "Name:",
                   controller: nameController,
-                  spacingGap: _spacingGap,
+                  spacingGap: spacingGap,
                   fontSize: normalTextFontSize,
                   textBoxWidth: 300.w,
-                  labelWidth: _labelWidth,
+                  labelWidth: labelWidth,
                 ),
                 InformationTextbox(
                   context: context,
@@ -104,10 +103,10 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                   horizontalPadding: horizontalPadding,
                   textInFront: "Description:",
                   controller: descriptionController,
-                  spacingGap: _spacingGap,
+                  spacingGap: spacingGap,
                   fontSize: normalTextFontSize,
                   textBoxWidth: 300.w,
-                  labelWidth: _labelWidth,
+                  labelWidth: labelWidth,
                   maxLines: 2,
                 ),
                 InformationTextbox(
@@ -116,10 +115,10 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                   horizontalPadding: horizontalPadding,
                   textInFront: "Duration (minutes):",
                   controller: durationController,
-                  spacingGap: _spacingGap,
+                  spacingGap: spacingGap,
                   fontSize: normalTextFontSize,
                   textBoxWidth: 300.w,
-                  labelWidth: _labelWidth,
+                  labelWidth: labelWidth,
                   onlyNumbers: true,
                 ),
                 Row(
@@ -129,7 +128,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                       "Cut type:",
                       style: TextStyle(fontSize: normalTextFontSize),
                     ),
-                    SizedBox(width: _spacingGap),
+                    SizedBox(width: spacingGap),
                     DropdownButton(
                       items: dropdownGenderOptions,
                       alignment: AlignmentGeometry.center,

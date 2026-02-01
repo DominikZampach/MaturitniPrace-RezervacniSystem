@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
@@ -57,11 +58,7 @@ class _ReservationsBodyAdminState extends State<ReservationsBodyAdmin> {
           );
         }
 
-        final double cardFontSize = 11.sp;
-        final double buttonFontSize = 12.sp;
-        final double smallerButtonFontSize = 10.sp;
-        final double h1FontSize = 18.sp;
-        final double h2FontSize = 15.sp;
+        final double h1FontSize = Consts.h1FS.sp;
 
         final List<Rezervace> listAllFutureRezervace = snapshot.data!;
         listAllFutureRezervace.sort(

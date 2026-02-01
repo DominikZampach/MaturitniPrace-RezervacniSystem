@@ -30,8 +30,8 @@ class HairdresserCardAdmin extends StatefulWidget {
 class _HairdresserCardAdminState extends State<HairdresserCardAdmin> {
   @override
   Widget build(BuildContext context) {
-    double captionFontSize = 9.sp;
-    double mainNameFontSize = 12.sp;
+    double captionFontSize = Consts.smallerFS.sp;
+    double mainNameFontSize = Consts.normalFS.sp;
 
     return GestureDetector(
       onTap: () async {

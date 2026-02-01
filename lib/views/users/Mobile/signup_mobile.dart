@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
 import 'package:rezervacni_system_maturita/widgets/bookmycut_logo.dart';
@@ -22,10 +23,9 @@ class _SignupMobileState extends State<SignupMobile> {
 
   @override
   Widget build(BuildContext context) {
-    final double mobileFontSize = 40.sp;
-    final double mobileSmallerFontSize = 35.sp;
-    final double mobileHeadingsFontSize = 55.sp;
-    final double mobileSmallerHeadingFontSize = 50.sp;
+    final double mobileFontSize = Consts.normalFSM.sp;
+    final double mobileSmallerFontSize = Consts.smallerFSM.sp;
+    final double mobileHeadingsFontSize = Consts.h1FSM.sp;
 
     final double verticalPadding = 10.h;
     final double horizontalPadding = 10.w;

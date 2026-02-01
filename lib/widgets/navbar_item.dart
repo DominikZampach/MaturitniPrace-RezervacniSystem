@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 
 class NavbarItem extends StatelessWidget {
   final double verticalPadding;
@@ -16,7 +17,7 @@ class NavbarItem extends StatelessWidget {
     required this.onClick,
     this.fontSize,
   }) {
-    fontSize ??= 13.sp;
+    fontSize ??= Consts.h3FS.sp;
   }
 
   @override

@@ -125,9 +125,8 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
 
   @override
   Widget build(BuildContext context) {
-    //! Vždy je potřeba dát tyhle velikosti závislé na obrazovce do buildu, aby se vždy refreshnuli
-    final double headingFontSize = 15.sp;
-    final double normalTextFontSize = 11.sp;
+    final double headingFontSize = Consts.h2FS.sp;
+    final double normalTextFontSize = Consts.normalFS.sp;
 
     return Dialog(
       backgroundColor: Consts.background,

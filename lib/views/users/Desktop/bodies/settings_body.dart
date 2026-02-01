@@ -40,10 +40,10 @@ class _SettingsBodyState extends State<SettingsBody> {
 
   @override
   Widget build(BuildContext context) {
-    final double normalTextFontSize = 12.sp;
-    final double smallerTextFontSize = 10.sp;
-    final double h1FontSize = 18.sp;
-    final double h2FontSize = 15.sp;
+    final double normalTextFontSize = Consts.normalFS.sp;
+    final double smallerTextFontSize = Consts.smallerFS.sp;
+    final double h1FontSize = Consts.h1FS.sp;
+    final double h2FontSize = Consts.h2FS.sp;
 
     return Expanded(
       child: Container(

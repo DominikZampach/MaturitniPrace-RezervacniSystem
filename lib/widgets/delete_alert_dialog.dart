@@ -22,10 +22,10 @@ class _DeleteAlertDialogState extends State<DeleteAlertDialog> {
   @override
   Widget build(BuildContext context) {
     double normalTextFontSize = widget.normalTextFontSize == null
-        ? 12.sp
+        ? Consts.normalFS.sp
         : widget.normalTextFontSize!;
     final double h2FontSize = widget.h2FontSize == null
-        ? 15.sp
+        ? Consts.h2FS.sp
         : widget.h2FontSize!;
 
     return AlertDialog(

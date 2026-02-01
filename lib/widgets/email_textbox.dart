@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 
 class EmailTextbox extends StatelessWidget {
   final BuildContext context;
@@ -16,7 +17,7 @@ class EmailTextbox extends StatelessWidget {
     required this.emailController,
     this.fontSize,
   }) {
-    fontSize ??= 15.sp;
+    fontSize ??= Consts.h2FS.sp;
   }
 
   @override

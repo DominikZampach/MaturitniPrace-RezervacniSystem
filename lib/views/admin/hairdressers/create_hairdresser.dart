@@ -91,10 +91,9 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final double headingFontSize = 15.sp;
-    final double smallHeadingFontSize = 13.sp;
-    final double normalTextFontSize = 11.sp;
-    final double smallerTextFontSize = 10.sp;
+    final double headingFontSize = Consts.h2FS.sp;
+    final double normalTextFontSize = Consts.normalFS.sp;
+    final double smallerTextFontSize = Consts.smallerFS.sp;
 
     final double _labelWidth = 75.w;
     final double _labelWidthRightColumn = 30.w;

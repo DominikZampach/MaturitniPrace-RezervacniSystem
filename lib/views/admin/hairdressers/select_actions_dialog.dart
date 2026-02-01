@@ -34,10 +34,10 @@ class SelectActionsDialog extends StatefulWidget {
 }
 
 class _SelectActionsDialogState extends State<SelectActionsDialog> {
-  final double headingFontSize = 15.sp;
-  final double smallHeadingFontSize = 13.sp;
-  final double normalTextFontSize = 11.sp;
-  final double smallerTextFontSize = 10.sp;
+  final double headingFontSize = Consts.h2FS.sp;
+  final double smallHeadingFontSize = Consts.h3FS.sp;
+  final double normalTextFontSize = Consts.normalFS.sp;
+  final double smallerTextFontSize = Consts.smallerFS.sp;
 
   //? Toto bude callback funkce, která se zavolá v ActionCard kdykoliv se změní ať už to, jestli uživatel tento úkon dělá nebo při změně ceny
   dynamic onChanged(String ukonId, bool status, int price) {

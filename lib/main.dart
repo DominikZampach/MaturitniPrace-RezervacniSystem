@@ -28,7 +28,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(980, 776), //Velikost testovacího zařízení
+      designSize: const Size(
+        980,
+        776,
+      ), //? Velikost testovacího zařízení na kterém tvořím layout
       minTextAdapt: true,
       splitScreenMode: true,
       rebuildFactor: (old, data) => old.size != data.size, //RebuildFactors.all

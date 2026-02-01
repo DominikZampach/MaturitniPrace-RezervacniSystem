@@ -25,9 +25,9 @@ class _FiltersDialogDesktopState extends State<FiltersDialogDesktop> {
 
   @override
   Widget build(BuildContext context) {
-    final double headingFontSize = 15.sp;
-    final double smallHeadingFontSize = 13.sp;
-    final double normalTextFontSize = 11.sp;
+    final double headingFontSize = Consts.h2FS.sp;
+    final double smallHeadingFontSize = Consts.h3FS.sp;
+    final double normalTextFontSize = Consts.normalFS.sp;
 
     final List<DropdownMenuItem<double>> _dropdownMenuRatingItems = [
       for (double i = 0; i <= 10; i++)

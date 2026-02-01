@@ -20,8 +20,9 @@ class UserCardAdmin extends StatefulWidget {
 class _UserCardAdminState extends State<UserCardAdmin> {
   @override
   Widget build(BuildContext context) {
-    double captionFontSize = 9.sp;
-    double mainNameFontSize = 12.sp;
+    double captionFontSize = Consts.smallerFS.sp;
+    double mainNameFontSize = Consts.normalFS.sp;
+
     return GestureDetector(
       onTap: () async {
         final dialogResult = await showDialog(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/sort_kadernici.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
 import 'package:rezervacni_system_maturita/models/kadernik.dart';
 import 'package:rezervacni_system_maturita/models/lokace.dart';
@@ -105,11 +106,9 @@ class _BrowseBodyState extends State<BrowseBody> {
           );
         }
 
-        final double reservationCardFontSize = 11.sp;
-        final double buttonFontSize = 12.sp;
-        final double smallerButtonFontSize = 10.sp;
-        final double h1FontSize = 18.sp;
-        final double h2FontSize = 15.sp;
+        final double smallerButtonFontSize = Consts.smallerFS.sp;
+        final double h1FontSize = Consts.h1FS.sp;
+        final double h2FontSize = Consts.h2FS.sp;
 
         final List<Kadernik> listAllKadernici = snapshot.data!.listAllKadernici;
         final List<Hodnoceni> listAllHodnoceni =

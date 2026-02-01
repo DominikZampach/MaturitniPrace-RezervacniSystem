@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 
 class InformationTextbox extends StatelessWidget {
   final BuildContext context;
@@ -33,7 +34,7 @@ class InformationTextbox extends StatelessWidget {
     this.labelWidth,
   }) {
     //? Nastavení defaultních hodnot pokud uživatel specifická data
-    fontSize ??= 15.sp;
+    fontSize ??= Consts.h2FS.sp;
     textBoxWidth ??= 300.w;
     leftAlignment ??= false;
     maxLines ??= 1;

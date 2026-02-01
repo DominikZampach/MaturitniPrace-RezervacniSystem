@@ -20,7 +20,7 @@ class SideNavbarMobileDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double mobileFontSize = 40.sp;
+    double mobileFontSize = Consts.normalFSM.sp;
     double logoSize = 300.w;
     double containerPadding = 5.h;
 

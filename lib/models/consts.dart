@@ -25,4 +25,17 @@ class Consts {
     "Accept":
         "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
   };
+
+  //? FontSizes
+  static const double normalFS = 11;
+  static const double smallerFS = 9;
+  static const double h1FS = 18;
+  static const double h2FS = 15;
+  static const double h3FS = 13;
+
+  //? Mobilní FontSizes
+  static const double normalFSM = 40;
+  static const double smallerFSM = 35;
+  static const double h1FSM = 55;
+  static const double h2FSM = 50;
 }
