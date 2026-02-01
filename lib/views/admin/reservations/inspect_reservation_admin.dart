@@ -9,6 +9,7 @@ import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_k
 import 'package:rezervacni_system_maturita/widgets/delete_alert_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
+import 'package:rezervacni_system_maturita/widgets/user_card_admin.dart';
 
 class InspectReservationAdmin extends StatelessWidget {
   final Rezervace rezervace;
@@ -174,6 +175,7 @@ class InspectReservationAdmin extends StatelessWidget {
       flex: 1,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             "Location:",
@@ -211,6 +213,7 @@ class InspectReservationAdmin extends StatelessWidget {
               fontSize: normalTextFontSize,
               fontWeight: FontWeight.normal,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -272,12 +275,15 @@ class InspectReservationAdmin extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          UserCardAdmin(uzivatel: uzivatel, centerText: true),
+          /*
           SizedBox(height: 10.h),
           Text(
             "${uzivatel.jmeno} ${uzivatel.prijmeni}\nEmail: ${uzivatel.email}\nMobile:${uzivatel.telefon}",
             style: TextStyle(fontSize: normalTextFontSize),
             textAlign: TextAlign.center,
           ),
+          */
         ],
       ),
     );

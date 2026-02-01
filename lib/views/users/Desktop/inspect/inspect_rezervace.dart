@@ -190,6 +190,7 @@ class InspectRezervace extends StatelessWidget {
               fontSize: normalTextFontSize,
               fontWeight: FontWeight.normal,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

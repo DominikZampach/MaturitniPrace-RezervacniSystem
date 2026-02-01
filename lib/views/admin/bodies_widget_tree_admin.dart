@@ -3,6 +3,7 @@ import 'package:rezervacni_system_maturita/views/admin/bodies_admin/actions_body
 import 'package:rezervacni_system_maturita/views/admin/bodies_admin/hairdressers_body_admin.dart';
 import 'package:rezervacni_system_maturita/views/admin/bodies_admin/locations_body_admin.dart';
 import 'package:rezervacni_system_maturita/views/admin/bodies_admin/reservations_body_admin.dart';
+import 'package:rezervacni_system_maturita/views/admin/bodies_admin/users_body_admin.dart';
 
 class WidgetTreeBodiesAdmin extends StatefulWidget {
   final int selectedIndex;
@@ -40,6 +41,11 @@ class _WidgetTreeBodiesAdminState extends State<WidgetTreeBodiesAdmin> {
       );
     } else if (widget.selectedIndex == 3) {
       return ReservationsBodyAdmin(
+        screenWidth: widget.screenWidth,
+        screenHeight: widget.screenHeight,
+      );
+    } else if (widget.selectedIndex == 4) {
+      return UsersBodyAdmin(
         screenWidth: widget.screenWidth,
         screenHeight: widget.screenHeight,
       );

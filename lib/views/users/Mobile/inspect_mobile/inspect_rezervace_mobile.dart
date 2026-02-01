@@ -178,6 +178,7 @@ class InspectRezervaceMobile extends StatelessWidget {
             fontSize: normalTextFontSize,
             fontWeight: FontWeight.normal,
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

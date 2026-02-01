@@ -585,6 +585,31 @@ class DatabaseService {
     return lokace;
   }
 
+  //? Získání všech uživatelů v listu (bez adminského uživatele)
+  Future<List<Uzivatel>> getAllUsersWithouAdmin() async {
+    final query = await firestore.collection(USERS_COLLECTION_REF).get();
+
+    if (query.docs.isEmpty) {
+      print("Žádní uživatelé v databázi");
+      return [];
+    }
+
+    List<Uzivatel> listAllUsers = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      Uzivatel uzivatel = Uzivatel.fromJson(document.id, data);
+      //? Zamezení přidání adminského účtu do listu
+      if ((uzivatel.userUID != Consts.ADMIN_UID) &&
+          (uzivatel.email != Consts.ADMIN_EMAIL)) {
+        listAllUsers.add(uzivatel);
+      }
+    }
+
+    return listAllUsers;
+  }
+
   //? Zjištění, pokud existuje nějaký dokument Hodnoceni určitého kadeřníka, kde hodnotitel je uživatel
   Future<Hodnoceni?> getHodnoceniOfSpecificKadernikByCurrentUzivatel(
     String kadernikId,

@@ -73,6 +73,12 @@ class SideNavbar extends StatelessWidget {
                     isSelected: selectedIndex == 3,
                     onClick: () => onItemSelect(3),
                   ),
+                  NavbarItem(
+                    verticalPadding: 10,
+                    text: "Users",
+                    isSelected: selectedIndex == 4,
+                    onClick: () => onItemSelect(4),
+                  ),
                 ],
               ),
               ElevatedButton(
