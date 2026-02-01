@@ -5,7 +5,7 @@ import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/admin/locations/create_location.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
-import 'package:rezervacni_system_maturita/widgets/location_card_admin.dart';
+import 'package:rezervacni_system_maturita/views/admin/locations/location_card_admin.dart';
 
 class LocationsBodyAdmin extends StatefulWidget {
   final double screenWidth;

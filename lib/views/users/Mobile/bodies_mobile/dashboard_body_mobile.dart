@@ -111,36 +111,34 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
           );
         } else {
           //? Toto se provede pokud nebude nalezena jakákoliv rezervace
-          return Flexible(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.w),
-                child: Container(
-                  width: double.infinity,
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.all(20.w),
+              child: Container(
+                width: double.infinity,
 
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _welcomeText(
-                        widget.uzivatel,
-                        widget.mobileHeadingsFontSize,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.r),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _welcomeText(
+                      widget.uzivatel,
+                      widget.mobileHeadingsFontSize,
+                    ),
+                    SizedBox(height: widget.screenHeight * 0.5),
+                    Text(
+                      "You've got no reservations incoming, go book some!",
+                      style: TextStyle(
+                        fontSize: widget.mobileHeadingsFontSize,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(height: widget.screenHeight * 0.5),
-                      Text(
-                        "You've got no reservations incoming, go book some!",
-                        style: TextStyle(
-                          fontSize: widget.mobileHeadingsFontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                        softWrap: true,
-                      ),
-                    ],
-                  ),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                  ],
                 ),
               ),
             ),

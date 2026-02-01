@@ -1,71 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
-   <!-- Firebase JS SDK -->
-  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js"></script>
-
-  <script>
-    import { initializeApp } from "firebase/app";
-    import { getAnalytics } from "firebase/analytics";
-    import { getAuth } from "firebase/auth";
-    
-    const firebaseConfig = {
-      apiKey: "AIzaSyCqkG_hhXlVeJBARFdtfTvNLbgzQbaLhIo",
-      authDomain: "rezervacni-system-maturi-e12ef.firebaseapp.com",
-      projectId: "rezervacni-system-maturi-e12ef",
-      storageBucket: "rezervacni-system-maturi-e12ef.firebasestorage.app",
-      messagingSenderId: "782176025406",
-      appId: "1:782176025406:web:f327df22fc7dc55b914a6f",
-      measurementId: "G-30Z9NPX5K5"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app);
-  </script>
-
-  <!-- nastavení pro to, aby nebylo možné udělat okno menší než tyto hodnoty! -->
-  <style>
-  html, body {
-    min-width: 800px;
-    min-height: 600px;
-  }
-  </style>
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="BookMyCut - Rezervační systém.">
 
-  <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="rezervacni_system_maturita">
+  <meta name="apple-mobile-web-app-title" content="BookMyCut">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
   <title>BookMyCut</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    body { background-color: #f3f3f3; margin: 0; }
+    /* Spinner pro loading */
+    .loading-container {
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; width: 100vw; position: fixed;
+      top: 0; left: 0; background-color: #f3f3f3; z-index: 9999;
+    }
+    .loader {
+      border: 8px solid #e0e0e0; border-top: 8px solid #3498db;
+      border-radius: 50%; width: 60px; height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
-  <script src="flutter_bootstrap.js"></script>
+  <div id="loading-indicator" class="loading-container">
+    <div class="loader"></div>
+  </div>
+
+  <script src="flutter_bootstrap.js" async></script>
+
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Flutter loader
+      _flutter.loader.loadEntrypoint({
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            // Odstranění spinneru po načtení
+            var loader = document.getElementById("loading-indicator");
+            if (loader) { loader.remove(); }
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>

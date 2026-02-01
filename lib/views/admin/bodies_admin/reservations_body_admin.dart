@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/rezervace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
-import 'package:rezervacni_system_maturita/widgets/reservation_card_admin.dart';
+import 'package:rezervacni_system_maturita/views/admin/reservations/reservation_card_admin.dart';
 
 class ReservationsBodyAdmin extends StatefulWidget {
   final double screenWidth;

@@ -49,6 +49,10 @@ class _BodiesWidgetTreeMobileState extends State<BodiesWidgetTreeMobile> {
           );
         }
 
+        if (!snapshot.hasData || snapshot.data == null) {
+          return const LoadingWidget();
+        }
+
         Uzivatel soucasnyUzivatel = snapshot.data!;
 
         final double mobileFontSize = 40.sp;

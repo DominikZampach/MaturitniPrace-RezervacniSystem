@@ -8,7 +8,7 @@ import 'package:rezervacni_system_maturita/models/lokace.dart';
 import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/admin/hairdressers/create_hairdresser.dart';
 import 'package:rezervacni_system_maturita/widgets/hairdresser_card.dart';
-import 'package:rezervacni_system_maturita/widgets/hairdresser_card_admin.dart';
+import 'package:rezervacni_system_maturita/views/admin/hairdressers/hairdresser_card_admin.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 
 class HairdressersBodyAdmin extends StatefulWidget {

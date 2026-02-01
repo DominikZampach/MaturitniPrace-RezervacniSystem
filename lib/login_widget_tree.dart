@@ -15,8 +15,13 @@ class LoginWidgetTree extends StatelessWidget {
     return StreamBuilder(
       stream: AuthService().authStateChanges,
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
         //? Uživatel není přihlášen -> ukaž login
-        if (!snapshot.hasData) {
+        if (!snapshot.hasData || snapshot.data == null) {
           return const Login();
         }
 
@@ -35,18 +40,28 @@ class LoginWidgetTree extends StatelessWidget {
         return FutureBuilder<bool>(
           future: DatabaseService().doesUzivatelDocumentExist(),
           builder: (context, userInfoSnapshot) {
-            //? Načítání Firestore
-            if (!userInfoSnapshot.hasData) {
-              return Scaffold(body: Center(child: CircularProgressIndicator()));
+            debugPrint("Stav připojení: ${userInfoSnapshot.connectionState}");
+            debugPrint("Má data: ${userInfoSnapshot.hasData}");
+
+            if (userInfoSnapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
             }
 
-            final hasUserDocument = userInfoSnapshot.data!;
+            if (userInfoSnapshot.hasError) {
+              return Scaffold(
+                body: Center(
+                  child: Text("Chyba databáze: ${userInfoSnapshot.error}"),
+                ),
+              );
+            }
+
+            final bool hasUserDocument = userInfoSnapshot.data ?? false;
 
             if (hasUserDocument) {
-              //? Uživatel má dokument -> má zadané údaje a existuje jeho dokument
               return const HomePage();
             } else {
-              //? Vrátíme obrazovku, kde uživatel zadá údaje o sobě a pak vytvoříme dokument v databázi
               return const AddUserInformationPage();
             }
           },

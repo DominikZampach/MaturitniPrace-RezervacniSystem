@@ -1,4 +1,3 @@
-import 'package:firebase_core_web/firebase_core_web_interop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/views/users/Desktop/bodies/bodies_widget_tree.dart';
@@ -79,13 +78,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Expanded scaffoldBodyMobile(double screenWidth, double screenHeight) {
-    return Expanded(
-      child: BodiesWidgetTreeMobile(
-        selectedIndex: selectedIndex,
-        screenWidth: screenWidth,
-        screenHeight: screenHeight,
-      ),
+  Widget scaffoldBodyMobile(double screenWidth, double screenHeight) {
+    return BodiesWidgetTreeMobile(
+      selectedIndex: selectedIndex,
+      screenWidth: screenWidth,
+      screenHeight: screenHeight,
     );
   }
 

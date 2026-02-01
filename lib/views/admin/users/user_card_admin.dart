@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/uzivatel.dart';
+import 'package:rezervacni_system_maturita/views/admin/users/inspect_user_admin.dart';
 
 class UserCardAdmin extends StatefulWidget {
   final Uzivatel uzivatel;
@@ -25,7 +26,8 @@ class _UserCardAdminState extends State<UserCardAdmin> {
       onTap: () async {
         final dialogResult = await showDialog(
           context: context,
-          builder: (BuildContext context) => Placeholder(),
+          builder: (BuildContext context) =>
+              InspectUserAdmin(uzivatel: widget.uzivatel),
         );
       },
       child: Card(

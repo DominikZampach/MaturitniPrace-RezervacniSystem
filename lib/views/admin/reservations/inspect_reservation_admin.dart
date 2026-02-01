@@ -9,7 +9,7 @@ import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_k
 import 'package:rezervacni_system_maturita/widgets/delete_alert_dialog.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
-import 'package:rezervacni_system_maturita/widgets/user_card_admin.dart';
+import 'package:rezervacni_system_maturita/views/admin/users/user_card_admin.dart';
 
 class InspectReservationAdmin extends StatelessWidget {
   final Rezervace rezervace;

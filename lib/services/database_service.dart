@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/models/hodnoceni.dart';
@@ -135,18 +136,21 @@ class DatabaseService {
 
   //? Zjištění, pokud existuje dokument s uid současného uživatele
   Future<bool> doesUzivatelDocumentExist() async {
-    final document = await firestore
-        .collection(USERS_COLLECTION_REF)
-        .doc(instance.currentUser!.uid)
-        .get();
+    try {
+      final user = FirebaseAuth.instance.currentUser;
 
-    //? Potřeba kontrolovat takto, ne pomocí document.exists, protože pomocí .collection().doc()... se vždy něco vytvoří, ikdyž je to prázdné
-    //print("Existuje dokument?: ${document.exists}");
-    //print("Obsah dokumentu: ${document.data()}");
-    if (document.data() == null) {
+      if (user == null) return false;
+
+      final doc = await firestore
+          .collection(USERS_COLLECTION_REF)
+          .doc(user.uid)
+          .get();
+
+      return doc.exists;
+    } catch (e) {
+      debugPrint("Chyba v doesUzivatelDocumentExist: $e");
       return false;
     }
-    return true;
   }
 
   Future<bool> isUserAdmin() async {
@@ -493,6 +497,34 @@ class DatabaseService {
     rezervaceList = await Future.wait(listFutureRezervace);
 
     print("Počet budoucích rezervací: ${rezervaceList.length}");
+    return rezervaceList;
+  }
+
+  //? Získání všech rezervací určitého uživatele
+  Future<List<Rezervace>> getAllRezervaceOfUser(String userUid) async {
+    final query = await firestore
+        .collection(REZERVACE_COLLECTION_REF)
+        .where('id_uzivatele', isEqualTo: userUid)
+        .orderBy('DatumCas_rezervace', descending: false)
+        .get();
+
+    if (query.docs.isEmpty) {
+      print("Žádné rezervace uživatele!");
+      return [];
+    }
+
+    List<Rezervace> rezervaceList = [];
+    List<Future<Rezervace>> listFutureRezervace = [];
+
+    for (var document in query.docs) {
+      final data = document.data();
+
+      Future<Rezervace> futureRezervace = Rezervace.fromJson(data);
+      listFutureRezervace.add(futureRezervace);
+    }
+
+    rezervaceList = await Future.wait(listFutureRezervace);
+
     return rezervaceList;
   }
 
