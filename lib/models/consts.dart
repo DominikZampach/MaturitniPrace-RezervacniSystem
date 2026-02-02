@@ -27,8 +27,8 @@ class Consts {
   };
 
   //? FontSizes
-  static const double normalFS = 11;
-  static const double smallerFS = 9;
+  static const double normalFS = 12;
+  static const double smallerFS = 10;
   static const double h1FS = 18;
   static const double h2FS = 15;
   static const double h3FS = 13;

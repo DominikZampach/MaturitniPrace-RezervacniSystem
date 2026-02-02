@@ -9,7 +9,6 @@ import 'package:rezervacni_system_maturita/services/database_service.dart';
 import 'package:rezervacni_system_maturita/views/users/Desktop/inspect/inspect_rezervace.dart';
 import 'package:rezervacni_system_maturita/widgets/loading_widget.dart';
 import 'package:rezervacni_system_maturita/widgets/map_card.dart';
-import 'package:rezervacni_system_maturita/widgets/minimap_from_adress.dart';
 
 class DashboardBody extends StatefulWidget {
   final double screenHeight;
@@ -55,6 +54,10 @@ class _DashboardBodyState extends State<DashboardBody> {
           );
         }
 
+        final double normalFontSize = Consts.normalFS.sp;
+        final double h1FontSize = Consts.h1FS.sp;
+        final double h2FontSize = Consts.h2FS.sp;
+
         final Rezervace? nearestRezervace = snapshot.data;
 
         if (nearestRezervace != null) {
@@ -69,7 +72,7 @@ class _DashboardBodyState extends State<DashboardBody> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   SizedBox(height: 20.h),
-                  _welcomeText(widget.uzivatel, true),
+                  _welcomeText(widget.uzivatel, true, h1FontSize),
                   SizedBox(height: 25.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -78,11 +81,15 @@ class _DashboardBodyState extends State<DashboardBody> {
                         screenHeight: widget.screenHeight,
                         screenWidth: widget.screenWidth,
                         nearestRezervace: nearestRezervace,
+                        h2FontSize: h2FontSize,
+                        normalFontSize: normalFontSize,
                       ),
                       NextAppointmentLocationColumn(
                         screenHeight: widget.screenHeight,
                         screenWidth: widget.screenWidth,
                         nearestRezervace: nearestRezervace,
+                        h2FontSize: h2FontSize,
+                        normalFontSize: normalFontSize,
                       ),
                     ],
                   ),
@@ -106,12 +113,12 @@ class _DashboardBodyState extends State<DashboardBody> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _welcomeText(widget.uzivatel, false),
+                      _welcomeText(widget.uzivatel, false, h1FontSize),
                       SizedBox(height: widget.screenHeight * 0.5),
                       Text(
                         "You've got no reservations incoming, go book some!",
                         style: TextStyle(
-                          fontSize: 17.sp,
+                          fontSize: h2FontSize,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
@@ -127,14 +134,14 @@ class _DashboardBodyState extends State<DashboardBody> {
     );
   }
 
-  Padding _welcomeText(Uzivatel uzivatel, bool wantPadding) {
+  Padding _welcomeText(Uzivatel uzivatel, bool wantPadding, double h1FontSize) {
     return Padding(
       padding: wantPadding
           ? EdgeInsets.only(left: 25.w)
           : EdgeInsetsGeometry.all(0),
       child: Text(
         "Welcome, ${uzivatel.jmeno} ${uzivatel.prijmeni}",
-        style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: h1FontSize, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -146,11 +153,16 @@ class NextAppointmentColumn extends StatefulWidget {
     required this.screenHeight,
     required this.screenWidth,
     required this.nearestRezervace,
+    required this.h2FontSize,
+    required this.normalFontSize,
   });
 
   final double screenHeight;
   final double screenWidth;
   final Rezervace? nearestRezervace;
+
+  final double h2FontSize;
+  final double normalFontSize;
 
   @override
   State<NextAppointmentColumn> createState() => _NextAppointmentColumnState();
@@ -177,7 +189,10 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
           SizedBox(height: 10.h),
           Text(
             "Next appointment",
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.sp),
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: widget.h2FontSize,
+            ),
           ),
           SizedBox(height: 20.h),
           Column(
@@ -185,20 +200,26 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Date: ", style: TextStyle(fontSize: 12.sp)),
+                  Text(
+                    "Date: ",
+                    style: TextStyle(fontSize: widget.normalFontSize),
+                  ),
                   Text(
                     widget.nearestRezervace!.getDayMonthYearString(),
-                    style: TextStyle(fontSize: 12.sp),
+                    style: TextStyle(fontSize: widget.normalFontSize),
                   ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Time: ", style: TextStyle(fontSize: 12.sp)),
+                  Text(
+                    "Time: ",
+                    style: TextStyle(fontSize: widget.normalFontSize),
+                  ),
                   Text(
                     widget.nearestRezervace!.getHourMinuteString(),
-                    style: TextStyle(fontSize: 12.sp),
+                    style: TextStyle(fontSize: widget.normalFontSize),
                   ),
                 ],
               ),
@@ -216,14 +237,14 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                       "Hairdresser:",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: widget.normalFontSize,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       widget.nearestRezervace!.kadernik.getFullNameString(),
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12.sp),
+                      style: TextStyle(fontSize: widget.normalFontSize),
                     ),
 
                     SizedBox(height: 10.h),
@@ -232,7 +253,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                       "Actions:",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: widget.normalFontSize,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -241,7 +262,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                       Text(
                         ukon.nazev,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 12.sp),
+                        style: TextStyle(fontSize: widget.normalFontSize),
                       ),
                   ],
                 ),
@@ -290,7 +311,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                 "Click here to see full reservation...",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
-                  fontSize: 15.sp,
+                  fontSize: widget.h2FontSize,
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -308,11 +329,16 @@ class NextAppointmentLocationColumn extends StatelessWidget {
     required this.screenHeight,
     required this.screenWidth,
     required this.nearestRezervace,
+    required this.h2FontSize,
+    required this.normalFontSize,
   });
 
   final double screenHeight;
   final double screenWidth;
   final Rezervace? nearestRezervace;
+
+  final double h2FontSize;
+  final double normalFontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -327,7 +353,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
           SizedBox(height: 40.h),
           Text(
             "Next appointment location",
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17.sp),
+            style: TextStyle(fontWeight: FontWeight.w800, fontSize: h2FontSize),
           ),
           SizedBox(height: 10.h),
           MapCard(
@@ -341,7 +367,10 @@ class NextAppointmentLocationColumn extends StatelessWidget {
               Text(
                 "Address:",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: normalFontSize,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -349,7 +378,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
                   Text(
                     nearestRezervace!.kadernik.lokace.nazev,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12.sp),
+                    style: TextStyle(fontSize: normalFontSize),
                   ),
                 ],
               ),
@@ -359,7 +388,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
                   Text(
                     nearestRezervace!.kadernik.lokace.adresa,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12.sp),
+                    style: TextStyle(fontSize: normalFontSize),
                   ),
                 ],
               ),
@@ -369,12 +398,12 @@ class NextAppointmentLocationColumn extends StatelessWidget {
                   Text(
                     "${nearestRezervace!.kadernik.lokace.psc} ",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12.sp),
+                    style: TextStyle(fontSize: normalFontSize),
                   ),
                   Text(
                     nearestRezervace!.kadernik.lokace.mesto,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12.sp),
+                    style: TextStyle(fontSize: normalFontSize),
                   ),
                 ],
               ),
@@ -386,17 +415,20 @@ class NextAppointmentLocationColumn extends StatelessWidget {
               Text(
                 "Contact:",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                  fontSize: normalFontSize,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               Text(
                 "Phone: ${nearestRezervace!.kadernik.telefon}",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12.sp),
+                style: TextStyle(fontSize: normalFontSize),
               ),
               Text(
                 "Mail: ${nearestRezervace!.kadernik.email}",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12.sp),
+                style: TextStyle(fontSize: normalFontSize),
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rezervacni_system_maturita/logic/showToast.dart';
+import 'package:rezervacni_system_maturita/models/consts.dart';
 import 'package:rezervacni_system_maturita/services/auth_service.dart';
 import 'package:rezervacni_system_maturita/views/login.dart';
 import 'package:rezervacni_system_maturita/widgets/email_textbox.dart';
@@ -21,8 +22,13 @@ class _SignupDesktopState extends State<SignupDesktop> {
 
   @override
   Widget build(BuildContext context) {
-    final double verticalPadding = 10.h;
-    final double horizontalPadding = 10.w;
+    final double verticalPadding = 5.h;
+    final double horizontalPadding = 20.w;
+
+    final double smallerFontSize = Consts.smallerFS.sp;
+    final double normalFontSize = Consts.normalFS.sp;
+    final double h1FontSize = Consts.h1FS.sp;
+    final double h2FontSize = Consts.h2FS.sp;
 
     return Center(
       //? SingleChildScroolView zajišťuje, že nikdy nebude něco přetékat přes okraj při zmenšování
@@ -47,14 +53,14 @@ class _SignupDesktopState extends State<SignupDesktop> {
                 Text(
                   "Register now",
                   style: TextStyle(
-                    fontSize: 25.sp,
+                    fontSize: h1FontSize,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12.sp),
+                  style: TextStyle(fontSize: smallerFontSize),
                 ),
                 EmailTextbox(
                   context: context,
@@ -76,8 +82,19 @@ class _SignupDesktopState extends State<SignupDesktop> {
                   hintText: "repeat password",
                   passwordController: _repeatPasswordController,
                 ),
-                _signupButton(context, verticalPadding, horizontalPadding),
-                _loginRedirect(context, verticalPadding, horizontalPadding),
+                SizedBox(height: 5.h),
+                _signupButton(
+                  context,
+                  verticalPadding,
+                  horizontalPadding,
+                  h2FontSize,
+                ),
+                _loginRedirect(
+                  context,
+                  verticalPadding,
+                  horizontalPadding,
+                  smallerFontSize,
+                ),
               ],
             ),
           ),
@@ -90,6 +107,7 @@ class _SignupDesktopState extends State<SignupDesktop> {
     BuildContext context,
     double verticalPadding,
     double horizontalPadding,
+    double fontSize,
   ) {
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(
@@ -109,7 +127,7 @@ class _SignupDesktopState extends State<SignupDesktop> {
           "Sign up",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20.sp,
+            fontSize: fontSize,
             color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
@@ -153,6 +171,7 @@ class _SignupDesktopState extends State<SignupDesktop> {
     BuildContext context,
     double verticalPadding,
     double horizontalPadding,
+    double smallerFontSize,
   ) {
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(
@@ -162,7 +181,10 @@ class _SignupDesktopState extends State<SignupDesktop> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Already have an account? ", style: TextStyle(fontSize: 10.sp)),
+          Text(
+            "Already have an account? ",
+            style: TextStyle(fontSize: smallerFontSize),
+          ),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -173,7 +195,7 @@ class _SignupDesktopState extends State<SignupDesktop> {
             child: Text(
               "Login",
               style: TextStyle(
-                fontSize: 10.sp,
+                fontSize: smallerFontSize,
                 color: Theme.of(context).colorScheme.primary,
                 decoration: TextDecoration.underline,
                 decorationColor: Theme.of(context).colorScheme.primary,
