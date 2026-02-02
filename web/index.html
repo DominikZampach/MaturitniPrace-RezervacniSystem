@@ -2,19 +2,11 @@
 <html>
 <head>
   <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="BookMyCut - Rezervační systém.">
-
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="BookMyCut">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
   <title>BookMyCut</title>
-  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="favicon.png"/>
 
   <style>
     body { background-color: #f3f3f3; margin: 0; }
@@ -22,9 +14,10 @@
       display: flex; justify-content: center; align-items: center;
       height: 100vh; width: 100vw; position: fixed;
       top: 0; left: 0; background-color: #f3f3f3; z-index: 9999;
+      transition: opacity 0.5s ease-out; /* Hezké zmizení */
     }
     .loader {
-      border: 8px solid #e0e0e0; border-top: 8px solid #3498db;
+      border: 8px solid #EAFFDA; border-top: 8px solid #B0F080;
       border-radius: 50%; width: 60px; height: 60px;
       animation: spin 1s linear infinite;
     }
@@ -39,17 +32,18 @@
   <script src="flutter_bootstrap.js" async></script>
 
   <script>
-    window.addEventListener('load', function(ev) {
-      _flutter.loader.loadEntrypoint({
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            var loader = document.getElementById("loading-indicator");
-            if (loader) { loader.remove(); }
-            appRunner.runApp();
-          });
-        }
-      });
-    });
+    // Tento hlídač kontroluje každých 100ms, zda Flutter už vytvořil svůj prvek.
+    // Funguje to nezávisle na tom, jak se Flutter rozhodne nastartovat.
+    var checkExist = setInterval(function() {
+       if (document.querySelector('flt-glass-pane') || document.querySelector('canvas')) {
+          var loader = document.getElementById("loading-indicator");
+          if (loader) {
+             loader.style.opacity = '0';
+             setTimeout(function() { loader.remove(); }, 500);
+          }
+          clearInterval(checkExist);
+       }
+    }, 100);
   </script>
 </body>
 </html>

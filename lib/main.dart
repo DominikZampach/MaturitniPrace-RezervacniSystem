@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
       ), //? Velikost testovacího zařízení na kterém tvořím layout
       minTextAdapt: true,
       splitScreenMode: true,
+      ensureScreenSize: true,
       rebuildFactor: (old, data) => old.size != data.size, //RebuildFactors.all
       builder: (_, child) {
         return MaterialApp(

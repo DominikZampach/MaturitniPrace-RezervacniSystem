@@ -26,7 +26,6 @@ class _SignupDesktopState extends State<SignupDesktop> {
     final double horizontalPadding = 20.w;
 
     final double smallerFontSize = Consts.smallerFS.sp;
-    final double normalFontSize = Consts.normalFS.sp;
     final double h1FontSize = Consts.h1FS.sp;
     final double h2FontSize = Consts.h2FS.sp;
 
