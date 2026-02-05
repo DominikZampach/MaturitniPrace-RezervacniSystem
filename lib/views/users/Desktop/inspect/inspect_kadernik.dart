@@ -252,7 +252,8 @@ class _InspectKadernikState extends State<InspectKadernik> {
         viewportFraction: 0.33,
         initialPage: 0,
         autoPlay: true,
-        enableInfiniteScroll: true,
+        enableInfiniteScroll: false,
+        padEnds: false,
         autoPlayInterval: Duration(seconds: 5),
       ),
       itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {

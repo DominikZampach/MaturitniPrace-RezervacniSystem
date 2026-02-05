@@ -44,7 +44,7 @@ class _LoginMobileState extends State<LoginMobile> {
               ),
             ),
             Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+              "Log in and book your cut.",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: mobileSmallerFontSize),
             ),

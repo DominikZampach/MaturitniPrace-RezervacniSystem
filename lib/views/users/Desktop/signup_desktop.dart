@@ -57,7 +57,7 @@ class _SignupDesktopState extends State<SignupDesktop> {
                   ),
                 ),
                 Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                  "Create an account and book your first cut!",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: smallerFontSize),
                 ),

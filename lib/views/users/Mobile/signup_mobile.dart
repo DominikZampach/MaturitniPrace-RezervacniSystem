@@ -45,7 +45,7 @@ class _SignupMobileState extends State<SignupMobile> {
               ),
             ),
             Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+              "Create an account and book your first cut!",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: mobileSmallerFontSize),
             ),

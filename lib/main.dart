@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       rebuildFactor: (old, data) => old.size != data.size, //RebuildFactors.all
       builder: (_, child) {
         return MaterialApp(
-          debugShowCheckedModeBanner: true,
+          debugShowCheckedModeBanner: false,
           title: "BookMyCut",
           theme: ThemeData(
             //? Font jsem smazal možná dát nový, teď už funkční?
