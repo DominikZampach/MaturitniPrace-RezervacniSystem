@@ -106,7 +106,7 @@ class _ReservationCardMobileState extends State<ReservationCardMobile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${widget.rezervace.kadernik.getFullNameString()} - ${widget.rezervace.kadernik.lokace.nazev}",
+                        widget.rezervace.kadernik.getFullNameString(),
                         style: TextStyle(
                           fontSize: widget.mobileSmallerFontSize,
                         ),
