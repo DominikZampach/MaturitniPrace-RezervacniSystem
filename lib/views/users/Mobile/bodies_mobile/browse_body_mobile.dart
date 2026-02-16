@@ -190,7 +190,7 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
                             children: [
                               ElevatedButton(
                                 onPressed: () async {
-                                  final Filters
+                                  final Filters?
                                   updatedFilters = await showDialog(
                                     context: context,
                                     builder: (context) => FiltersDialogMobile(
@@ -204,9 +204,11 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
                                     ),
                                   );
 
-                                  setState(() {
-                                    currentFilters = updatedFilters;
-                                  });
+                                  if (updatedFilters != null) {
+                                    setState(() {
+                                      currentFilters = updatedFilters;
+                                    });
+                                  }
                                 },
                                 child: Text(
                                   "Filters",

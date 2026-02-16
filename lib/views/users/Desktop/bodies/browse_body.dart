@@ -188,7 +188,7 @@ class _BrowseBodyState extends State<BrowseBody> {
                               ElevatedButton(
                                 onPressed: () async {
                                   //TODO
-                                  final Filters updatedFilters =
+                                  final Filters? updatedFilters =
                                       await showDialog(
                                         context: context,
                                         builder: (context) =>
@@ -197,10 +197,11 @@ class _BrowseBodyState extends State<BrowseBody> {
                                               allLokace: allLokace,
                                             ),
                                       );
-
-                                  setState(() {
-                                    currentFilters = updatedFilters;
-                                  });
+                                  if (updatedFilters != null) {
+                                    setState(() {
+                                      currentFilters = updatedFilters;
+                                    });
+                                  }
                                 },
                                 child: Text(
                                   "Filters",
