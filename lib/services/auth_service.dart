@@ -63,13 +63,13 @@ class AuthService {
 
       switch (e.code) {
         case 'invalid-credential':
-          message = "Invalid login.";
+          message = "Nesprávné heslo nebo přihlašovací jméno.";
           break;
         case 'too-many-requests':
-          message = "Too many requests. Please try it later.";
+          message = "Moc požadavků na přihlášení. Zkuste to později.";
           break;
         default:
-          message = "An unknown error occurred: ${e.message}";
+          message = "Neznámý error: ${e.message}";
       }
 
       ToastClass.showToastSnackbar(message: message);
@@ -102,42 +102,23 @@ class AuthService {
 
       switch (e.code) {
         case 'email-already-in-use':
-          message = "The email address is already in use by another account.";
+          message = "Tato emailová adresa je již použitá.";
           break;
         case 'invalid-email':
-          message = "The email address is not valid.";
+          message = "Tato emailová adresy není validní.";
           break;
         case 'operation-not-allowed':
-          message = "Email/Password accounts are not enabled.";
+          message = "Přihlašování pomocí emailu s heslem není povolené.";
           break;
         default:
-          message = "An unknown error occurred: ${e.message}";
+          message = "Neznámý error: ${e.message}";
       }
 
       ToastClass.showToastSnackbar(message: message);
     } catch (e) {
-      ToastClass.showToastSnackbar(message: "An unexpected error occurred: $e");
+      ToastClass.showToastSnackbar(message: "Neznámý error: $e");
     }
   }
-
-  /*
-  Future<void> loginGoogle(BuildContext context) async {
-    try {
-      await _firebaseAuth.signInWithRedirect(GoogleAuthProvider());
-
-      if (context.mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => const HomePage(),
-          ),
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      ToastClass.showToastSnackbar(message: e.message!);
-    }
-  }
-  */
 
   Future<void> logout(BuildContext context) async {
     await _firebaseAuth.signOut();

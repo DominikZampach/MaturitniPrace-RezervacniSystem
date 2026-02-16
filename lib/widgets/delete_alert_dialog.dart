@@ -30,7 +30,7 @@ class _DeleteAlertDialogState extends State<DeleteAlertDialog> {
 
     return AlertDialog(
       title: Text(
-        "Delete confirmation",
+        "Potvrzení smazání",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: h2FontSize),
         textAlign: TextAlign.center,
       ),
@@ -62,7 +62,7 @@ class _DeleteAlertDialogState extends State<DeleteAlertDialog> {
             ),
           ),
           child: Text(
-            "Confirm",
+            "Smazat",
             style: TextStyle(
               fontSize: normalTextFontSize,
               fontWeight: FontWeight.w600,
@@ -79,7 +79,7 @@ class _DeleteAlertDialogState extends State<DeleteAlertDialog> {
             backgroundColor: WidgetStatePropertyAll(Consts.secondary),
           ),
           child: Text(
-            "Cancel",
+            "Zrušit",
             style: TextStyle(
               fontSize: normalTextFontSize,
               fontWeight: FontWeight.normal,

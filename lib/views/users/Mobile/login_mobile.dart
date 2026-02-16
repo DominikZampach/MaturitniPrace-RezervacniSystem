@@ -37,14 +37,14 @@ class _LoginMobileState extends State<LoginMobile> {
             BookMyCutLogo(size: 100.h),
             SizedBox(height: 30.h),
             Text(
-              "Login",
+              "Přihlášení",
               style: TextStyle(
                 fontSize: mobileHeadingsFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              "Log in and book your cut.",
+              "Přihlaste se a rezervujte si svůj střih.",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: mobileSmallerFontSize),
             ),
@@ -98,7 +98,7 @@ class _LoginMobileState extends State<LoginMobile> {
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),
         child: Text(
-          "Log in",
+          "Přihlásit",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: normalFontSize,
@@ -111,12 +111,12 @@ class _LoginMobileState extends State<LoginMobile> {
 
   void _login() async {
     if (_emailController.text.isEmpty) {
-      ToastClass.showToastSnackbar(message: "You need to write your email");
+      ToastClass.showToastSnackbar(message: "Musíte zadat email.");
       return;
     }
 
     if (_passwordController.text.isEmpty) {
-      ToastClass.showToastSnackbar(message: "You need to write password");
+      ToastClass.showToastSnackbar(message: "Musíte zadat heslo.");
       return;
     }
 
@@ -141,10 +141,7 @@ class _LoginMobileState extends State<LoginMobile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "Are you new here? ",
-            style: TextStyle(fontSize: smallerFontSize),
-          ),
+          Text("Jste zde nový? ", style: TextStyle(fontSize: smallerFontSize)),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -155,7 +152,7 @@ class _LoginMobileState extends State<LoginMobile> {
               );
             },
             child: Text(
-              "Create an account",
+              "Vytvořit účet",
               style: TextStyle(
                 fontSize: smallerFontSize,
                 color: Theme.of(context).colorScheme.primary,

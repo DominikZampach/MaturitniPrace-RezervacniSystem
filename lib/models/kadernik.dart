@@ -130,13 +130,13 @@ class Kadernik {
   //? Konvertuje na normální list s celými názvy, jako je Monday, Tuesday, ...
   List<String> getListOfWorkingDays() {
     const Map<String, String> dny = {
-      "1": "Monday",
-      "2": "Tuesday",
-      "3": "Wednesday",
-      "4": "Thursday",
-      "5": "Friday",
-      "6": "Saturday",
-      "7": "Sunday",
+      "1": "Pondělí",
+      "2": "Úterý",
+      "3": "Středa",
+      "4": "Čtvrtek",
+      "5": "Pátek",
+      "6": "Sobota",
+      "7": "Neděle",
     };
 
     List<String> pracovniDnySplit = pracovniDny.split(',');
@@ -154,13 +154,13 @@ class Kadernik {
   //? Konvertuje zpět na string s čísly a uloží jej do proměnné tady
   void saveNewWorkingDays(List<String> newPracovniDny) {
     const Map<String, String> dny = {
-      "Monday": "1",
-      "Tuesday": "2",
-      "Wednesday": "3",
-      "Thursday": "4",
-      "Friday": "5",
-      "Saturday": "6",
-      "Sunday": "7",
+      "Pondělí": "1",
+      "Úterý": "2",
+      "Středa": "3",
+      "Čtvrtek": "4",
+      "Pátek": "5",
+      "Sobota": "6",
+      "Neděle": "7",
     };
 
     String newPracovniDnyString = "";

@@ -35,9 +35,7 @@ class InspectReservationAdmin extends StatelessWidget {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -71,7 +69,7 @@ class InspectReservationAdmin extends StatelessWidget {
                         alignment: AlignmentGeometry.center,
                         children: [
                           Text(
-                            "Reservation - ${rezervace.getDayMonthYearString()}",
+                            "Rezervace - ${rezervace.getDayMonthYearString()}",
                             style: TextStyle(
                               fontSize: headingFontSize,
                               fontWeight: FontWeight.bold,
@@ -85,7 +83,7 @@ class InspectReservationAdmin extends StatelessWidget {
                                   context: context,
                                   builder: (context) => DeleteAlertDialog(
                                     alertText:
-                                        "Do you really want to delete this reservation?",
+                                        "Opravdu chcete smazat tuto rezervaci?",
                                   ),
                                 );
 
@@ -145,7 +143,7 @@ class InspectReservationAdmin extends StatelessWidget {
                             style: TextStyle(fontSize: normalTextFontSize),
                             children: [
                               TextSpan(
-                                text: "Note: ",
+                                text: "Poznámka: ",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               TextSpan(text: rezervace.poznamkaUzivatele),
@@ -178,7 +176,7 @@ class InspectReservationAdmin extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Location:",
+            "Lokace:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,
@@ -200,7 +198,7 @@ class InspectReservationAdmin extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Text(
-            "Address:",
+            "Adresa:",
             style: TextStyle(
               fontSize: normalTextFontSize,
               fontWeight: FontWeight.bold,
@@ -234,7 +232,7 @@ class InspectReservationAdmin extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            "Hairdresser:",
+            "Kadeřník:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,
@@ -269,21 +267,13 @@ class InspectReservationAdmin extends StatelessWidget {
           ),
           SizedBox(height: 20.h),
           Text(
-            "User:",
+            "Uživatel:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,
             ),
           ),
           UserCardAdmin(uzivatel: uzivatel, centerText: true),
-          /*
-          SizedBox(height: 10.h),
-          Text(
-            "${uzivatel.jmeno} ${uzivatel.prijmeni}\nEmail: ${uzivatel.email}\nMobile:${uzivatel.telefon}",
-            style: TextStyle(fontSize: normalTextFontSize),
-            textAlign: TextAlign.center,
-          ),
-          */
         ],
       ),
     );
@@ -304,7 +294,7 @@ class InspectReservationAdmin extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            "Basic info:",
+            "Základní informace:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,
@@ -316,7 +306,7 @@ class InspectReservationAdmin extends StatelessWidget {
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
                 TextSpan(
-                  text: "Date: ",
+                  text: "Datum: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: rezervace.getDayMonthYearString()),
@@ -329,7 +319,7 @@ class InspectReservationAdmin extends StatelessWidget {
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
                 TextSpan(
-                  text: "Time: ",
+                  text: "Čas: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: rezervace.getHourMinuteString()),
@@ -342,7 +332,7 @@ class InspectReservationAdmin extends StatelessWidget {
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
                 TextSpan(
-                  text: "Cut duration: ",
+                  text: "Délka trvání: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: "${rezervace.delkaTrvani} min"),
@@ -355,7 +345,7 @@ class InspectReservationAdmin extends StatelessWidget {
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
                 TextSpan(
-                  text: "Price: ",
+                  text: "Cena: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: "${rezervace.celkovaCena} Kč"),
@@ -365,7 +355,7 @@ class InspectReservationAdmin extends StatelessWidget {
 
           SizedBox(height: 50.h),
           Text(
-            "Services:",
+            "Úkony:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,

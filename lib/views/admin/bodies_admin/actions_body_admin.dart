@@ -54,9 +54,7 @@ class _ActionsBodyAdminState extends State<ActionsBodyAdmin> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -152,7 +150,7 @@ class _ActionsBodyAdminState extends State<ActionsBodyAdmin> {
                     );
                   },
                   label: Text(
-                    "Add Action",
+                    "Přidat úkon",
                     style: TextStyle(
                       fontSize: buttonFontSize,
                       color: Colors.black,
@@ -174,7 +172,7 @@ class _ActionsBodyAdminState extends State<ActionsBodyAdmin> {
                       SizedBox(
                         width: double.infinity,
                         child: Text(
-                          "All Male Actions",
+                          "Všechny pánské úkony",
                           style: TextStyle(
                             fontSize: h2FontSize,
                             fontWeight: FontWeight.w600,
@@ -215,7 +213,7 @@ class _ActionsBodyAdminState extends State<ActionsBodyAdmin> {
                       SizedBox(
                         width: double.infinity,
                         child: Text(
-                          "All Female Actions",
+                          "Všechny dámské úkony",
                           style: TextStyle(
                             fontSize: h2FontSize,
                             fontWeight: FontWeight.w600,

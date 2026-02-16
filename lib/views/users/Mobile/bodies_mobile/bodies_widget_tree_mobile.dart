@@ -44,9 +44,7 @@ class _BodiesWidgetTreeMobileState extends State<BodiesWidgetTreeMobile> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 

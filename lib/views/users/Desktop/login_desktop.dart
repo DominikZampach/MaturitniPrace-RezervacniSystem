@@ -48,14 +48,14 @@ class _LoginDesktopState extends State<LoginDesktop> {
             child: Column(
               children: [
                 Text(
-                  "Login",
+                  "Přihlášení",
                   style: TextStyle(
                     fontSize: h1FontSize,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  "Log in and book your cut.",
+                  "Přihlaste se a rezervujte si svůj střih.",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: smallerFontSize),
                 ),
@@ -114,7 +114,7 @@ class _LoginDesktopState extends State<LoginDesktop> {
           ),
         ),
         child: Text(
-          "Log in",
+          "Přihlásit",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: fontSize,
@@ -127,12 +127,12 @@ class _LoginDesktopState extends State<LoginDesktop> {
 
   void _login() async {
     if (_emailController.text.isEmpty) {
-      ToastClass.showToastSnackbar(message: "You need to write your email");
+      ToastClass.showToastSnackbar(message: "Musíte vyplnit email.");
       return;
     }
 
     if (_passwordController.text.isEmpty) {
-      ToastClass.showToastSnackbar(message: "You need to write password");
+      ToastClass.showToastSnackbar(message: "Musíte vyplnit heslo.");
       return;
     }
 
@@ -157,10 +157,7 @@ class _LoginDesktopState extends State<LoginDesktop> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "Are you new here? ",
-            style: TextStyle(fontSize: smallerFontSize),
-          ),
+          Text("Jste zde nový? ", style: TextStyle(fontSize: smallerFontSize)),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -169,7 +166,7 @@ class _LoginDesktopState extends State<LoginDesktop> {
               );
             },
             child: Text(
-              "Create an account",
+              "Vytvořit účet",
               style: TextStyle(
                 fontSize: smallerFontSize,
                 color: Theme.of(context).colorScheme.primary,

@@ -54,9 +54,9 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
                     child: Column(
                       children: [
                         Text(
-                          "Welcome, let's enter basic informations\nabout you:",
+                          "Vítejte prosím zadejte základní informace\no Vás:",
                           style: TextStyle(
-                            fontSize: 23.sp,
+                            fontSize: Consts.h2FS.sp,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -65,28 +65,39 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
                           context: context,
                           verticalPadding: 8.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Name:",
+                          textInFront: "Křestní jméno:",
                           controller: nameController,
-                          spacingGap: 40.w,
+                          spacingGap: 10.w,
+                          labelWidth: 90.w,
+                          fontSize: Consts.h3FS.sp,
                         ),
                         InformationTextbox(
                           context: context,
                           verticalPadding: 8.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Last name:",
+                          textInFront: "Přijmení:",
                           spacingGap: 10.w,
                           controller: surnameController,
+                          labelWidth: 90.w,
+                          fontSize: Consts.h3FS.sp,
                         ),
                         InformationTextbox(
                           context: context,
                           verticalPadding: 8.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Mobile:",
-                          spacingGap: 39.w,
+                          textInFront: "Telefon:",
+                          spacingGap: 10.w,
                           controller: mobileController,
+                          labelWidth: 90.w,
+                          fontSize: Consts.h3FS.sp,
                         ),
-                        SizedBox(height: 30.h),
-                        _saveInformationsButton(context, 15, 30, 16.sp),
+                        SizedBox(height: 20.h),
+                        _saveInformationsButton(
+                          context,
+                          15,
+                          30,
+                          Consts.h3FS.sp,
+                        ),
                       ],
                     ),
                   ),
@@ -104,7 +115,7 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
                     BookMyCutLogo(size: 100.h),
                     SizedBox(height: 30.h),
                     Text(
-                      "Welcome, let's enter basic informations\nabout you:",
+                      "Vítejte prosím zadejte základní informace\no Vás:",
                       style: TextStyle(
                         fontSize: mobileHeadingsFontSize,
                         fontWeight: FontWeight.bold,
@@ -114,7 +125,7 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
                     InformationTextboxLabelUp(
                       context: context,
                       verticalPadding: 8.h,
-                      textUp: "Name:",
+                      textUp: "Křestní jméno:",
                       controller: nameController,
                       spacingGap: 5.h,
                       alignOnLeft: true,
@@ -125,7 +136,7 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
                     InformationTextboxLabelUp(
                       context: context,
                       verticalPadding: 8.h,
-                      textUp: 'Last name:',
+                      textUp: 'Přijmení:',
                       spacingGap: 5.h,
                       controller: surnameController,
                       alignOnLeft: true,
@@ -136,7 +147,7 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
                     InformationTextboxLabelUp(
                       context: context,
                       verticalPadding: 8.h,
-                      textUp: "Mobile:",
+                      textUp: "Telefon:",
                       spacingGap: 5.h,
                       controller: mobileController,
                       alignOnLeft: true,
@@ -174,7 +185,7 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
               surnameController.text.trim().isEmpty ||
               mobileController.text.trim().isEmpty) {
             ToastClass.showToastSnackbar(
-              message: "You need to enter all informations!",
+              message: "Musíte zadat všechny údaje.",
             );
             return;
           }
@@ -200,7 +211,7 @@ class _AddUserInformationPageState extends State<AddUserInformationPage> {
           ),
         ),
         child: Text(
-          "Save Information",
+          "Uložit informace",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: fontSize,

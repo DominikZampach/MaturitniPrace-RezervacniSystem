@@ -63,12 +63,12 @@ class _ReservationCardAdminState extends State<ReservationCardAdmin> {
                     ),
                     SizedBox(height: 5.h),
                     Text(
-                      "Hairdresser: ${widget.rezervace.kadernik.jmeno} ${widget.rezervace.kadernik.prijmeni}",
+                      "Kadeřník: ${widget.rezervace.kadernik.jmeno} ${widget.rezervace.kadernik.prijmeni}",
                       style: TextStyle(fontSize: captionFontSize),
                     ),
                     SizedBox(height: 5.h),
                     Text(
-                      "Actions: ${widget.rezervace.getKadernickeUkonyString()}",
+                      "Úkony: ${widget.rezervace.getKadernickeUkonyString()}",
                       style: TextStyle(fontSize: captionFontSize),
                       softWrap: true,
                       maxLines: 2,
@@ -80,8 +80,7 @@ class _ReservationCardAdminState extends State<ReservationCardAdmin> {
                     bool? dialogResult = await showDialog(
                       context: context,
                       builder: (context) => DeleteAlertDialog(
-                        alertText:
-                            "Do you really want to delete this reservation?",
+                        alertText: "Opravdu chcete smazat tuto rezervaci?",
                       ),
                     );
                     if (dialogResult == true) {

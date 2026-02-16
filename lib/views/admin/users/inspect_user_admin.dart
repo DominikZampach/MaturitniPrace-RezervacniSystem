@@ -30,9 +30,7 @@ class _InspectUserAdminState extends State<InspectUserAdmin> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -86,7 +84,7 @@ class _InspectUserAdminState extends State<InspectUserAdmin> {
                     Column(
                       children: [
                         Text(
-                          "Basic information",
+                          "Základní informace",
                           style: TextStyle(
                             fontSize: smallHeadingFontSize,
                             fontWeight: FontWeight.bold,
@@ -94,17 +92,17 @@ class _InspectUserAdminState extends State<InspectUserAdmin> {
                         ),
                         SizedBox(height: 10.h),
                         Text(
-                          "Name: ${widget.uzivatel.jmeno}",
+                          "Jméno: ${widget.uzivatel.jmeno}",
                           style: TextStyle(fontSize: normalTextFontSize),
                         ),
                         SizedBox(height: 5.h),
                         Text(
-                          "Surname: ${widget.uzivatel.prijmeni}",
+                          "Příjmení: ${widget.uzivatel.prijmeni}",
                           style: TextStyle(fontSize: normalTextFontSize),
                         ),
                         SizedBox(height: 5.h),
                         Text(
-                          "Phone: ${widget.uzivatel.telefon}",
+                          "Telefon: ${widget.uzivatel.telefon}",
                           style: TextStyle(fontSize: normalTextFontSize),
                         ),
                         SizedBox(height: 5.h),
@@ -118,7 +116,7 @@ class _InspectUserAdminState extends State<InspectUserAdmin> {
                     Column(
                       children: [
                         Text(
-                          "Reservations",
+                          "Rezervace",
                           style: TextStyle(
                             fontSize: smallHeadingFontSize,
                             fontWeight: FontWeight.bold,
@@ -143,7 +141,7 @@ class _InspectUserAdminState extends State<InspectUserAdmin> {
                                   fontWeight: FontWeight.w600,
                                 ),
                                 subtitle: Text(
-                                  "Hairdresser: ${rezervace.kadernik.jmeno} \"${rezervace.kadernik.prezdivka}\" ${rezervace.kadernik.prijmeni}",
+                                  "Kadeřník: ${rezervace.kadernik.jmeno} \"${rezervace.kadernik.prezdivka}\" ${rezervace.kadernik.prijmeni}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: normalTextFontSize,

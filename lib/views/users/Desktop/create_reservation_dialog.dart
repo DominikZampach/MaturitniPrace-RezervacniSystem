@@ -150,9 +150,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
           } else if (snapshot.hasError) {
             print("Error při načítání dat: ${snapshot.error}");
             return const Center(
-              child: Text(
-                "Error occured while trying to load data from database!",
-              ),
+              child: Text("Naskytla se chyba při načítání dat z databáze!"),
             );
           }
 
@@ -188,7 +186,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "Create Reservation",
+                      "Vytvořit rezervaci",
                       style: TextStyle(
                         fontSize: headingFontSize,
                         fontWeight: FontWeight.bold,
@@ -202,7 +200,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                       mainAxisSize: MainAxisSize.min, // Důležité pro Dialog
                       children: [
                         _buildRowItem(
-                          caption: "Hair salon:",
+                          caption: "Lokace:",
                           widget: _dropdownButtonLokace(
                             snapshot,
                             normalTextFontSize,
@@ -211,7 +209,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                         ),
 
                         _buildRowItem(
-                          caption: "Hairdresser:",
+                          caption: "Kadeřník:",
                           widget: _dropdownButtonKadernik(
                             snapshot,
                             normalTextFontSize,
@@ -220,7 +218,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                         ),
 
                         _buildRowItem(
-                          caption: "Cut type:",
+                          caption: "Typ:",
                           widget: _radioGroupGender(
                             snapshot,
                             normalTextFontSize,
@@ -229,7 +227,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                         ),
 
                         _buildRowItem(
-                          caption: "Actions:",
+                          caption: "Úkony:",
                           widget: SizedBox(
                             width: 300,
                             height: 70,
@@ -243,19 +241,19 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                         ),
 
                         _buildRowItem(
-                          caption: "Estimated price:",
+                          caption: "Cena:",
                           widget: _textTotalPrice(normalTextFontSize),
                           normalTextFontSize: normalTextFontSize,
                         ),
 
                         _buildRowItem(
-                          caption: "Estimated length of all actions:",
+                          caption: "Délka trvání:",
                           widget: _textTotalTime(normalTextFontSize),
                           normalTextFontSize: normalTextFontSize,
                         ),
 
                         _buildRowItem(
-                          caption: "Select available date:",
+                          caption: "Datum:",
                           widget: _elevatedButtonDatum(
                             snapshot,
                             context,
@@ -265,13 +263,13 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
                         ),
 
                         _buildRowItem(
-                          caption: "Select available time:",
+                          caption: "Čas:",
                           widget: _dropdownButtonCas(normalTextFontSize),
                           normalTextFontSize: normalTextFontSize,
                         ),
 
                         _buildRowItem(
-                          caption: "Note:",
+                          caption: "Poznámka:",
                           widget: _textFieldNote(normalTextFontSize),
                           normalTextFontSize: normalTextFontSize,
                         ),
@@ -327,7 +325,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
       child: Padding(
         padding: const EdgeInsets.all(3.0),
         child: Text(
-          "Create",
+          "Vytvořit",
           style: TextStyle(fontSize: headingFontSize, color: Colors.black),
         ),
       ),
@@ -421,7 +419,7 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
       ),
       child: Text(
         selectedDate == null
-            ? "Select date"
+            ? "Vyberte datum"
             : "${selectedDate!.day}.${selectedDate!.month}",
         style: TextStyle(fontSize: normalTextFontSize, color: Colors.black),
         textAlign: TextAlign.left,
@@ -477,9 +475,9 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
         childBuilder: (selectedValues) {
           String text;
           if (selectedValues.isNotEmpty) {
-            text = "Selected ${selectedValues.length} actions";
+            text = "Vybráno úkonů: ${selectedValues.length}";
           } else {
-            text = "Select actions...";
+            text = "Vyberte úkony...";
           }
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 10.w),
@@ -514,14 +512,14 @@ class _CreateReservationDialogState extends State<CreateReservationDialog> {
           Row(
             children: [
               Radio<String>(value: "Male"),
-              Text("Male", style: TextStyle(fontSize: normalTextFontSize)),
+              Text("Pánský", style: TextStyle(fontSize: normalTextFontSize)),
             ],
           ),
           SizedBox(width: 20.w),
           Row(
             children: [
               Radio<String>(value: "Female"),
-              Text("Female", style: TextStyle(fontSize: normalTextFontSize)),
+              Text("Dámský", style: TextStyle(fontSize: normalTextFontSize)),
             ],
           ),
         ],

@@ -54,9 +54,7 @@ class _ReservationsBodyState extends State<ReservationsBody> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -111,7 +109,7 @@ class _ReservationsBodyState extends State<ReservationsBody> {
               Padding(
                 padding: EdgeInsets.only(left: leftPaddingH2, bottom: 10.h),
                 child: Text(
-                  "Upcoming",
+                  "Nadcházející",
                   style: TextStyle(
                     fontSize: h2FontSize,
                     fontWeight: FontWeight.w700,
@@ -135,7 +133,7 @@ class _ReservationsBodyState extends State<ReservationsBody> {
                   top: 20.h,
                 ),
                 child: Text(
-                  "History",
+                  "Historie",
                   style: TextStyle(
                     fontSize: h2FontSize,
                     fontWeight: FontWeight.w700,
@@ -176,7 +174,7 @@ class _ReservationsBodyState extends State<ReservationsBody> {
         ),
 
         Text(
-          "Your Reservations",
+          "Vaše rezervace",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: headingFontSize,
@@ -205,7 +203,7 @@ class _ReservationsBodyState extends State<ReservationsBody> {
         }
       },
       label: Text(
-        "Create Reservation",
+        "Vytvořit rezervaci",
         style: TextStyle(
           fontSize: fontSize,
           color: Colors.black,

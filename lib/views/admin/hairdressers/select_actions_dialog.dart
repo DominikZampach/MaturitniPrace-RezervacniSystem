@@ -88,7 +88,7 @@ class _SelectActionsDialogState extends State<SelectActionsDialog> {
             children: [
               Center(
                 child: Text(
-                  "Select actions and set prices:",
+                  "Vyberte úkony a nastavte ceny:",
                   style: TextStyle(
                     fontSize: headingFontSize,
                     fontWeight: FontWeight.bold,
@@ -97,7 +97,7 @@ class _SelectActionsDialogState extends State<SelectActionsDialog> {
               ),
               SizedBox(height: 20.h),
               Text(
-                "Male actions:",
+                "Pánské úkony:",
                 style: TextStyle(
                   fontSize: smallHeadingFontSize,
                   fontWeight: FontWeight.w700,
@@ -108,7 +108,7 @@ class _SelectActionsDialogState extends State<SelectActionsDialog> {
               _listViewUkony(widget.listAllMaleKadernickeUkony),
               SizedBox(height: 10.h),
               Text(
-                "Female actions:",
+                "Dámské úkony:",
                 style: TextStyle(
                   fontSize: smallHeadingFontSize,
                   fontWeight: FontWeight.w700,

@@ -31,7 +31,7 @@ class EmailTextbox extends StatelessWidget {
         controller: emailController,
         decoration: InputDecoration(
           filled: true,
-          hintText: 'example@gmail.com',
+          hintText: 'petrnovak@gmail.com',
           hintStyle: TextStyle(
             fontWeight: FontWeight.w200,
             fontSize: fontSize,

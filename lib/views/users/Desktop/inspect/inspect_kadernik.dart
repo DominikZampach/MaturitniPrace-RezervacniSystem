@@ -94,9 +94,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -155,7 +153,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
                               ),
                               SizedBox(height: 20.h),
                               Text(
-                                "${widget.kadernik.jmeno}'s work:",
+                                "Práce kadeřníka:",
                                 style: TextStyle(
                                   fontSize: smallHeadingFontSize,
                                   fontWeight: FontWeight.bold,
@@ -176,7 +174,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
                               _kaderniksPhoto(),
                               SizedBox(height: 20.h),
                               Text(
-                                "Location:",
+                                "Lokace:",
                                 style: TextStyle(
                                   fontSize: headingFontSize,
                                   fontWeight: FontWeight.w700,
@@ -191,7 +189,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
                               ),
                               SizedBox(height: 10.h),
                               Text(
-                                "Address:",
+                                "Adresa:",
                                 style: TextStyle(
                                   fontSize: normalTextFontSize,
                                   fontWeight: FontWeight.w600,
@@ -222,7 +220,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
                                   ),
                                 ),
                                 child: Text(
-                                  "Book now",
+                                  "Rezervovat nyní",
                                   style: TextStyle(
                                     fontSize: smallHeadingFontSize,
                                     color: Colors.black,
@@ -308,7 +306,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
             Padding(
               padding: EdgeInsets.only(left: 10.w),
               child: Text(
-                "Services:",
+                "Úkony:",
                 style: TextStyle(
                   fontSize: smallHeadingFontSize,
                   fontWeight: FontWeight.w700,
@@ -391,7 +389,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Rating:",
+              "Hodnocení:",
               style: TextStyle(
                 fontSize: smallHeadingFontSize,
                 fontWeight: FontWeight.w700,
@@ -402,7 +400,7 @@ class _InspectKadernikState extends State<InspectKadernik> {
               text: TextSpan(
                 style: TextStyle(fontSize: normalTextFontSize),
                 children: [
-                  TextSpan(text: "Average rating: "),
+                  TextSpan(text: "Průměrné hodnocení: "),
                   TextSpan(
                     text: "${widget.hodnoceniKadernika}*",
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -412,13 +410,13 @@ class _InspectKadernikState extends State<InspectKadernik> {
             ),
             SizedBox(height: 10.h),
             Text(
-              "Number of reviews: ${widget.pocetHodnoceniKadernika}",
+              "Počet hodnocení: ${widget.pocetHodnoceniKadernika}",
               style: TextStyle(fontSize: normalTextFontSize),
             ),
             Row(
               children: [
                 Text(
-                  "Your rating:",
+                  "Tvé hodnocení:",
                   style: TextStyle(fontSize: normalTextFontSize),
                 ),
                 DropdownButton(
@@ -426,7 +424,6 @@ class _InspectKadernikState extends State<InspectKadernik> {
                   items: dropdownMenuItems,
                   alignment: AlignmentGeometry.center,
                   onChanged: (dynamic newValue) async {
-                    //TODO: Přepsat do čitelnější formy, nějak to funguje ale je to mega bordel
                     DatabaseService dbService = DatabaseService();
                     String? idToDelele;
                     Hodnoceni? hodnoceniToAdd;

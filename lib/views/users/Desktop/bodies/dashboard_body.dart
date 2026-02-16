@@ -48,9 +48,7 @@ class _DashboardBodyState extends State<DashboardBody> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -116,7 +114,7 @@ class _DashboardBodyState extends State<DashboardBody> {
                       _welcomeText(widget.uzivatel, false, h1FontSize),
                       SizedBox(height: widget.screenHeight * 0.5),
                       Text(
-                        "You've got no reservations incoming, go book some!",
+                        "Nemáte žádné nadcházející rezervace!",
                         style: TextStyle(
                           fontSize: h2FontSize,
                           fontWeight: FontWeight.bold,
@@ -188,7 +186,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
         children: [
           SizedBox(height: 10.h),
           Text(
-            "Next appointment",
+            "Příští rezervace",
             style: TextStyle(
               fontWeight: FontWeight.w800,
               fontSize: widget.h2FontSize,
@@ -201,7 +199,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Date: ",
+                    "Datum: ",
                     style: TextStyle(fontSize: widget.normalFontSize),
                   ),
                   Text(
@@ -214,7 +212,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Time: ",
+                    "Čas: ",
                     style: TextStyle(fontSize: widget.normalFontSize),
                   ),
                   Text(
@@ -234,7 +232,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                 child: Column(
                   children: [
                     Text(
-                      "Hairdresser:",
+                      "Kadeřník:",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: widget.normalFontSize,
@@ -250,7 +248,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                     SizedBox(height: 10.h),
 
                     Text(
-                      "Actions:",
+                      "Úkony:",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: widget.normalFontSize,
@@ -308,7 +306,7 @@ class _NextAppointmentColumnState extends State<NextAppointmentColumn> {
                 );
               },
               child: Text(
-                "Click here to see full reservation...",
+                "Klikněte zde pro zobrazení plné rezervace...",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   fontSize: widget.h2FontSize,
@@ -352,7 +350,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
         children: [
           SizedBox(height: 40.h),
           Text(
-            "Next appointment location",
+            "Lokace příští rezervace",
             style: TextStyle(fontWeight: FontWeight.w800, fontSize: h2FontSize),
           ),
           SizedBox(height: 10.h),
@@ -365,7 +363,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
           Column(
             children: [
               Text(
-                "Address:",
+                "Adresa:",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: normalFontSize,
@@ -413,7 +411,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
           Column(
             children: [
               Text(
-                "Contact:",
+                "Kontakt:",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: normalFontSize,
@@ -421,12 +419,12 @@ class NextAppointmentLocationColumn extends StatelessWidget {
                 ),
               ),
               Text(
-                "Phone: ${nearestRezervace!.kadernik.telefon}",
+                "Telefon: ${nearestRezervace!.kadernik.telefon}",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: normalFontSize),
               ),
               Text(
-                "Mail: ${nearestRezervace!.kadernik.email}",
+                "Email: ${nearestRezervace!.kadernik.email}",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: normalFontSize),
               ),

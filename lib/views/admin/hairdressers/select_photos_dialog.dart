@@ -53,7 +53,7 @@ class _SelectPhotosDialogState extends State<SelectPhotosDialog> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Edit photos",
+                "Úprava seznamu fotek",
                 style: TextStyle(
                   fontSize: headingFontSize,
                   fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _SelectPhotosDialogState extends State<SelectPhotosDialog> {
               ),
               SizedBox(height: 5.h),
               Text(
-                "Number of photos: ${widget.photosUrls.length}",
+                "Počet fotek: ${widget.photosUrls.length}",
                 style: TextStyle(fontSize: smallHeadingFontSize),
               ),
               SizedBox(
@@ -102,7 +102,7 @@ class _SelectPhotosDialogState extends State<SelectPhotosDialog> {
                                 ),
                               ),
                               child: Text(
-                                "Delete",
+                                "Smazat",
                                 style: TextStyle(
                                   fontSize: smallerTextFontSize,
                                   color: Colors.black,
@@ -118,7 +118,7 @@ class _SelectPhotosDialogState extends State<SelectPhotosDialog> {
                 context: context,
                 verticalPadding: 5.h,
                 horizontalPadding: 0,
-                textInFront: "New Photo URL: ",
+                textInFront: "URL nové fotografie: ",
                 controller: _newUrlController,
                 spacingGap: 5.w,
                 textBoxWidth: 400.w,
@@ -131,7 +131,7 @@ class _SelectPhotosDialogState extends State<SelectPhotosDialog> {
 
                   if (urlInput.isEmpty) {
                     ToastClass.showToastSnackbar(
-                      message: "Please enter a URL.",
+                      message: "Prosím zadejte URL.",
                     );
                     return;
                   }
@@ -153,21 +153,21 @@ class _SelectPhotosDialogState extends State<SelectPhotosDialog> {
                           widget.updateCallback(widget.photosUrls);
                           _newUrlController.clear();
                         });
-                        ToastClass.showToastSnackbar(message: "Photo added.");
-                      } else {
                         ToastClass.showToastSnackbar(
-                          message: "URL is not a valid image file.",
+                          message: "Fotografie přidána.",
                         );
+                      } else {
+                        ToastClass.showToastSnackbar(message: "URL nefunguje.");
                       }
                     } else {
                       ToastClass.showToastSnackbar(
                         message:
-                            "Image not found (Error ${response.statusCode})",
+                            "Fotografie nebyla nalezena (Error ${response.statusCode})",
                       );
                     }
                   } catch (e) {
                     ToastClass.showToastSnackbar(
-                      message: "Invalid URL format.",
+                      message: "Neplatný URL formát.",
                     );
                     print(e.toString());
                   }
@@ -176,7 +176,7 @@ class _SelectPhotosDialogState extends State<SelectPhotosDialog> {
                   backgroundColor: WidgetStatePropertyAll(Consts.secondary),
                 ),
                 child: Text(
-                  "Add Photo",
+                  "Přidat fotografii",
                   style: TextStyle(
                     fontSize: normalTextFontSize,
                     color: Colors.black,

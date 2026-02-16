@@ -97,7 +97,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                     alignment: Alignment.center,
                     children: [
                       Text(
-                        "Edit this location:",
+                        "Úprava této lokace:",
                         style: TextStyle(
                           fontSize: headingFontSize,
                           fontWeight: FontWeight.bold,
@@ -118,7 +118,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                                 context: context,
                                 builder: (context) => DeleteAlertDialog(
                                   alertText:
-                                      "Do you really want to delete this location?",
+                                      "Opravdu chcete smazat tuto lokaci?",
                                 ),
                               );
                               if (dialogResult == true) {
@@ -145,7 +145,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                           context: context,
                           verticalPadding: verticalPadding,
                           horizontalPadding: horizontalPadding,
-                          textInFront: "Name:",
+                          textInFront: "Název:",
                           controller: nameController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -157,7 +157,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                           context: context,
                           verticalPadding: verticalPadding,
                           horizontalPadding: horizontalPadding,
-                          textInFront: "Address:",
+                          textInFront: "Adresa:",
                           controller: addressController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -169,7 +169,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                           context: context,
                           verticalPadding: verticalPadding,
                           horizontalPadding: horizontalPadding,
-                          textInFront: "City:",
+                          textInFront: "Město:",
                           controller: cityController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -181,7 +181,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                           context: context,
                           verticalPadding: verticalPadding,
                           horizontalPadding: horizontalPadding,
-                          textInFront: "PSC:",
+                          textInFront: "PSČ:",
                           controller: pscController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -229,7 +229,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                             ),
                           ),
                           child: Text(
-                            "Test Map",
+                            "Test mapy",
                             style: TextStyle(
                               fontSize: normalTextFontSize,
                               color: Colors.black,
@@ -244,7 +244,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
                 ElevatedButton.icon(
                   onPressed: () => _updateLokace(),
                   label: Text(
-                    "Save",
+                    "Uložit",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: normalTextFontSize,
@@ -276,14 +276,14 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
     );
     if (isLokaceStillUsed) {
       ToastClass.showToastSnackbar(
-        message: "Location is still used by hairdresser, you cannot delete it",
+        message: "Lokace je stále používána kadeřníky.",
       );
       return;
     }
 
     if (mounted) {
       await widget.deleteLokace(widget.lokace.id);
-      ToastClass.showToastSnackbar(message: "Location deleted");
+      ToastClass.showToastSnackbar(message: "Lokace smazána.");
       Navigator.of(context).pop();
     }
   }
@@ -306,7 +306,7 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
         Navigator.of(context).pop();
       }
     } else {
-      ToastClass.showToastSnackbar(message: "You must enter all information");
+      ToastClass.showToastSnackbar(message: "Musíte zadat všechny údaje.");
     }
   }
 
@@ -320,10 +320,10 @@ class _EditLocationDialogState extends State<EditLocationDialog> {
       if (newLatLong != null) {
         latitudeMap = newLatLong.latitude;
         longitudeMap = newLatLong.longitude;
-        ToastClass.showToastSnackbar(message: "Location updated");
+        ToastClass.showToastSnackbar(message: "Lokace upravena.");
       } else {
         ToastClass.showToastSnackbar(
-          message: "Error while trying to get Mapy.cz informations",
+          message: "Error při komunikaci s Mapy.com API.",
         );
       }
     });

@@ -65,17 +65,17 @@ class InspectKadernickyUkonMobile extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 Text(
-                  "Cut type: ${kadernickyUkon.getTypStrihu()}",
+                  "Typ: ${kadernickyUkon.getTypStrihu()}",
                   style: TextStyle(fontSize: mobileFontSize),
                 ),
                 SizedBox(height: 10.h),
                 Text(
-                  "Duration: ${kadernickyUkon.delkaMinuty} min",
+                  "Trvání: ${kadernickyUkon.delkaMinuty} min",
                   style: TextStyle(fontSize: mobileFontSize),
                 ),
                 SizedBox(height: 15.h),
                 Text(
-                  "Photos:",
+                  "Fotografie:",
                   style: TextStyle(
                     fontSize: mobileSmallerHeadingsFontSize,
                     fontWeight: FontWeight.bold,

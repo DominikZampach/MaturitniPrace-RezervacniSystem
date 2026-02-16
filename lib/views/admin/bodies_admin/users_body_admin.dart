@@ -52,9 +52,7 @@ class _UsersBodyAdminState extends State<UsersBodyAdmin> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -75,7 +73,7 @@ class _UsersBodyAdminState extends State<UsersBodyAdmin> {
               children: [
                 SizedBox(height: 10.h),
                 Text(
-                  "All Users",
+                  "Všichni uživatelé",
                   style: TextStyle(
                     fontSize: h1FontSize,
                     fontWeight: FontWeight.bold,

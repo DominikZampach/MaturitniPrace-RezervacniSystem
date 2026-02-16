@@ -67,7 +67,7 @@ class _ActionCardAdminState extends State<ActionCardAdmin> {
                 ),
                 SizedBox(height: 5.h),
                 Text(
-                  "Type: ${widget.ukon.getTypStrihu()}",
+                  "Typ: ${widget.ukon.getTypStrihu()}",
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
                     fontSize: captionFontSize,

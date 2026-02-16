@@ -12,8 +12,12 @@ var _theState = RM.inject(() => _TheState());
 class RowWrapper extends InheritedWidget {
   final dynamic data;
   final bool Function() shouldNotify;
-  RowWrapper({required Widget child, this.data, required this.shouldNotify})
-    : super(child: child);
+  const RowWrapper({
+    super.key,
+    required Widget child,
+    this.data,
+    required this.shouldNotify,
+  }) : super(child: child);
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {

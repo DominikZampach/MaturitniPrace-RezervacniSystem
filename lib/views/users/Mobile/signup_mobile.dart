@@ -38,14 +38,14 @@ class _SignupMobileState extends State<SignupMobile> {
             BookMyCutLogo(size: 100.h),
             SizedBox(height: 30.h),
             Text(
-              "Register now",
+              "Registrace",
               style: TextStyle(
                 fontSize: mobileHeadingsFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              "Create an account and book your first cut!",
+              "Registrujte se a rezervujte si svůj první haircut!",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: mobileSmallerFontSize),
             ),
@@ -111,7 +111,7 @@ class _SignupMobileState extends State<SignupMobile> {
           ),
         ),
         child: Text(
-          "Sign up",
+          "Registrovat",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: normalFontSize,
@@ -124,26 +124,24 @@ class _SignupMobileState extends State<SignupMobile> {
 
   void _register() async {
     if (_emailController.text.isEmpty) {
-      ToastClass.showToastSnackbar(message: "You need to write your email");
+      ToastClass.showToastSnackbar(message: "Musíte zadat email.");
       return;
     }
 
     if (_passwordController.text.isEmpty) {
-      ToastClass.showToastSnackbar(message: "You need to write password");
+      ToastClass.showToastSnackbar(message: "Musíte zadat heslo.");
       return;
     }
 
     if (_passwordController.text.length < 6) {
       ToastClass.showToastSnackbar(
-        message: "Password should be at least 6 characters",
+        message: "Heslo musí mít minimálně 6 znaků.",
       );
       return;
     }
 
     if (_repeatPasswordController.text != _passwordController.text) {
-      ToastClass.showToastSnackbar(
-        message: "The password must be same in both textboxes",
-      );
+      ToastClass.showToastSnackbar(message: "Hesla se musí shodovat.");
       return;
     }
 
@@ -168,10 +166,7 @@ class _SignupMobileState extends State<SignupMobile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "Already have an account? ",
-            style: TextStyle(fontSize: smallerFontSize),
-          ),
+          Text("Již máte účet? ", style: TextStyle(fontSize: smallerFontSize)),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -180,7 +175,7 @@ class _SignupMobileState extends State<SignupMobile> {
               );
             },
             child: Text(
-              "Login",
+              "Přihlásit se",
               style: TextStyle(
                 fontSize: smallerFontSize,
                 color: Theme.of(context).colorScheme.primary,

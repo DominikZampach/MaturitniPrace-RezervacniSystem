@@ -172,7 +172,7 @@ class _HairdresserCardMobileState extends State<HairdresserCardMobile> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     child: Text(
-                      "Avg. Rating:\n${widget.hodnoceniKadernika}*",
+                      "Hodnocení:\n${widget.hodnoceniKadernika}*",
                       style: TextStyle(fontSize: ratingFontSize),
                       textAlign: TextAlign.center,
                     ),

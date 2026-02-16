@@ -158,7 +158,7 @@ class _HairdresserCardState extends State<HairdresserCard> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     child: Text(
-                      "Avg. Rating: ${widget.hodnoceniKadernika}*",
+                      "Hodnocení: ${widget.hodnoceniKadernika}*",
                       style: TextStyle(fontSize: captionFontSize),
                     ),
                   ),

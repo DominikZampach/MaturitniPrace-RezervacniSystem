@@ -73,7 +73,7 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Create new location:",
+                  "Vytvoření nové lokace:",
                   style: TextStyle(
                     fontSize: headingFontSize,
                     fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
                           context: context,
                           verticalPadding: verticalPadding,
                           horizontalPadding: horizontalPadding,
-                          textInFront: "Name:",
+                          textInFront: "Název:",
                           controller: nameController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -104,7 +104,7 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
                           context: context,
                           verticalPadding: verticalPadding,
                           horizontalPadding: horizontalPadding,
-                          textInFront: "Address:",
+                          textInFront: "Adresa:",
                           controller: addressController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -116,7 +116,7 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
                           context: context,
                           verticalPadding: verticalPadding,
                           horizontalPadding: horizontalPadding,
-                          textInFront: "City:",
+                          textInFront: "Město:",
                           controller: cityController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -128,7 +128,7 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
                           context: context,
                           verticalPadding: verticalPadding,
                           horizontalPadding: horizontalPadding,
-                          textInFront: "PSC:",
+                          textInFront: "PSČ:",
                           controller: pscController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -176,7 +176,7 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
                             ),
                           ),
                           child: Text(
-                            "Test Map",
+                            "Test mapy",
                             style: TextStyle(
                               fontSize: normalTextFontSize,
                               color: Colors.black,
@@ -191,7 +191,7 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
                 ElevatedButton.icon(
                   onPressed: () => createLokace(),
                   label: Text(
-                    "Create location",
+                    "Vytvořit lokaci",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: normalTextFontSize,
@@ -233,14 +233,12 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
       );
 
       await widget.addLokace(newLokaceWithoutId);
-      ToastClass.showToastSnackbar(message: "New location created");
+      ToastClass.showToastSnackbar(message: "Nová lokace vytvořena.");
       if (mounted) {
         Navigator.of(context).pop();
       }
     } else {
-      ToastClass.showToastSnackbar(
-        message: "You must enter all information and test map!",
-      );
+      ToastClass.showToastSnackbar(message: "Musíte zadat všechny údaje.");
     }
   }
 
@@ -254,10 +252,10 @@ class _CreateLocationDialogState extends State<CreateLocationDialog> {
       if (newLatLong != null) {
         latitudeMap = newLatLong.latitude;
         longitudeMap = newLatLong.longitude;
-        ToastClass.showToastSnackbar(message: "Location updated");
+        ToastClass.showToastSnackbar(message: "Lokace upravena.");
       } else {
         ToastClass.showToastSnackbar(
-          message: "Error while trying to get Mapy.cz informations",
+          message: "Error při komunikaci s Mapy.com API.",
         );
       }
     });

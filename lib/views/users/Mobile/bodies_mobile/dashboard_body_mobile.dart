@@ -59,9 +59,7 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -130,7 +128,7 @@ class _DashboardBodyMobileState extends State<DashboardBodyMobile> {
                     ),
                     SizedBox(height: widget.screenHeight * 0.5),
                     Text(
-                      "You've got no reservations incoming, go book some!",
+                      "Nemáte žádnou nadcházející rezervací, jděte si nějakou vytvořit!",
                       style: TextStyle(
                         fontSize: widget.mobileHeadingsFontSize,
                         fontWeight: FontWeight.bold,
@@ -189,7 +187,7 @@ class _NextAppointmentColumnMobileState
       children: [
         SizedBox(height: 10.h),
         Text(
-          "Next appointment",
+          "Příští rezervace",
           style: TextStyle(
             fontWeight: FontWeight.w800,
             fontSize: widget.mobileSmallerHeadingSize,
@@ -202,7 +200,7 @@ class _NextAppointmentColumnMobileState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Date: ",
+                  "Datum: ",
                   style: TextStyle(fontSize: widget.mobileFontSize),
                 ),
                 Text(
@@ -215,7 +213,7 @@ class _NextAppointmentColumnMobileState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Time: ",
+                  "Čas: ",
                   style: TextStyle(fontSize: widget.mobileFontSize),
                 ),
                 Text(
@@ -230,7 +228,7 @@ class _NextAppointmentColumnMobileState
         Column(
           children: [
             Text(
-              "Hairdresser:",
+              "Kadeřník:",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: widget.mobileFontSize,
@@ -271,7 +269,7 @@ class _NextAppointmentColumnMobileState
             SizedBox(height: 5.h),
 
             Text(
-              "Actions:",
+              "Úkony:",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: widget.mobileFontSize,
@@ -333,7 +331,7 @@ class _NextAppointmentLocationColumnMobileState
       children: [
         SizedBox(height: 10.h),
         Text(
-          "Next appointment location",
+          "Lokace příští rezervace",
           style: TextStyle(
             fontWeight: FontWeight.w800,
             fontSize: widget.mobileSmallerHeadingSize,
@@ -349,7 +347,7 @@ class _NextAppointmentLocationColumnMobileState
         Column(
           children: [
             Text(
-              "Address:",
+              "Adresa:",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: widget.mobileFontSize,
@@ -397,7 +395,7 @@ class _NextAppointmentLocationColumnMobileState
         Column(
           children: [
             Text(
-              "Contact:",
+              "Kontakt:",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: widget.mobileFontSize,
@@ -405,12 +403,12 @@ class _NextAppointmentLocationColumnMobileState
               ),
             ),
             Text(
-              "Phone: ${widget.nearestRezervace!.kadernik.telefon}",
+              "Telefon: ${widget.nearestRezervace!.kadernik.telefon}",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: widget.mobileFontSize),
             ),
             Text(
-              "Mail: ${widget.nearestRezervace!.kadernik.email}",
+              "Email: ${widget.nearestRezervace!.kadernik.email}",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: widget.mobileFontSize),
             ),
@@ -435,12 +433,13 @@ class _NextAppointmentLocationColumnMobileState
               );
             },
             child: Text(
-              "Click here to see full reservation...",
+              "Klikněte zde pro zobrazení plné rezervace...",
               style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: widget.mobileSmallerHeadingSize,
                 decoration: TextDecoration.underline,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ),

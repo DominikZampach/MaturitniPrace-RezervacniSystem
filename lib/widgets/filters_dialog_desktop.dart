@@ -47,7 +47,7 @@ class _FiltersDialogDesktopState extends State<FiltersDialogDesktop> {
         alignment: AlignmentGeometry.center,
         value: null,
         child: Text(
-          "No preference",
+          "Žádné preference",
           style: TextStyle(fontSize: normalTextFontSize),
           textAlign: TextAlign.center,
         ),
@@ -84,7 +84,7 @@ class _FiltersDialogDesktopState extends State<FiltersDialogDesktop> {
             children: [
               SizedBox(height: 10.h),
               Text(
-                "Filters:",
+                "Filtry:",
                 style: TextStyle(
                   fontSize: headingFontSize,
                   fontWeight: FontWeight.bold,
@@ -122,7 +122,7 @@ class _FiltersDialogDesktopState extends State<FiltersDialogDesktop> {
         Navigator.of(context).pop(filters);
       },
       child: Text(
-        "Save filters",
+        "Uložit filtry",
         style: TextStyle(
           fontSize: normalTextFontSize,
           color: Colors.black,
@@ -142,7 +142,7 @@ class _FiltersDialogDesktopState extends State<FiltersDialogDesktop> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Select location:",
+          "Vyberte lokaci:",
           style: TextStyle(fontSize: smallHeadingFontSize),
         ),
         DropdownButton<String>(
@@ -170,7 +170,7 @@ class _FiltersDialogDesktopState extends State<FiltersDialogDesktop> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Minimal rating:",
+          "Minimální hodnocení:",
           style: TextStyle(fontSize: smallHeadingFontSize),
         ),
         DropdownButton<double>(
@@ -196,7 +196,7 @@ class _FiltersDialogDesktopState extends State<FiltersDialogDesktop> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Show only favourite:",
+          "Zobrazit pouze oblíbené:",
           style: TextStyle(fontSize: smallHeadingFontSize),
         ),
         Checkbox(

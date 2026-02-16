@@ -52,9 +52,7 @@ class _LocationsBodyAdminState extends State<LocationsBodyAdmin> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -109,7 +107,7 @@ class _LocationsBodyAdminState extends State<LocationsBodyAdmin> {
               children: [
                 SizedBox(height: 10.h),
                 Text(
-                  "All Locations",
+                  "Všechny lokace",
                   style: TextStyle(
                     fontSize: h1FontSize,
                     fontWeight: FontWeight.bold,
@@ -125,7 +123,7 @@ class _LocationsBodyAdminState extends State<LocationsBodyAdmin> {
                     );
                   },
                   label: Text(
-                    "Add Location",
+                    "Přidat lokaci",
                     style: TextStyle(
                       fontSize: buttonFontSize,
                       color: Colors.black,

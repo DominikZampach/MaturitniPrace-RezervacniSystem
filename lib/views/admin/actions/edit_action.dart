@@ -62,11 +62,11 @@ class _EditActionDialogState extends State<EditActionDialog> {
     final List<DropdownMenuItem<String>> dropdownGenderOptions = [
       DropdownMenuItem(
         value: "male",
-        child: Text("Male", style: TextStyle(fontSize: smallerTextFontSize)),
+        child: Text("Pánský", style: TextStyle(fontSize: smallerTextFontSize)),
       ),
       DropdownMenuItem(
         value: "female",
-        child: Text("Female", style: TextStyle(fontSize: smallerTextFontSize)),
+        child: Text("Dámský", style: TextStyle(fontSize: smallerTextFontSize)),
       ),
     ];
 
@@ -101,7 +101,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
                     alignment: Alignment.center,
                     children: [
                       Text(
-                        "Edit this action:",
+                        "Uprav tento úkon:",
                         style: TextStyle(
                           fontSize: headingFontSize,
                           fontWeight: FontWeight.bold,
@@ -122,7 +122,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
                                 context: context,
                                 builder: (context) => DeleteAlertDialog(
                                   alertText:
-                                      "Do you really want to delete this action?",
+                                      "Opravdu chcete smazat tento kadeřnický úkon?",
                                 ),
                               );
                               if (dialogResult == true) {
@@ -141,7 +141,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
                   context: context,
                   verticalPadding: verticalPadding,
                   horizontalPadding: horizontalPadding,
-                  textInFront: "Name:",
+                  textInFront: "Název:",
                   controller: nameController,
                   spacingGap: _spacingGap,
                   fontSize: normalTextFontSize,
@@ -152,7 +152,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
                   context: context,
                   verticalPadding: verticalPadding,
                   horizontalPadding: horizontalPadding,
-                  textInFront: "Description:",
+                  textInFront: "Popis:",
                   controller: descriptionController,
                   spacingGap: _spacingGap,
                   fontSize: normalTextFontSize,
@@ -164,7 +164,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
                   context: context,
                   verticalPadding: verticalPadding,
                   horizontalPadding: horizontalPadding,
-                  textInFront: "Duration (minutes):",
+                  textInFront: "Trvání (minuty):",
                   controller: durationController,
                   spacingGap: _spacingGap,
                   fontSize: normalTextFontSize,
@@ -176,7 +176,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Cut type:",
+                      "Typ:",
                       style: TextStyle(fontSize: normalTextFontSize),
                     ),
                     SizedBox(width: _spacingGap),
@@ -213,7 +213,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
                     fixedSize: WidgetStatePropertyAll(Size(120.w, 40.h)),
                   ),
                   child: Text(
-                    "Photos:",
+                    "Fotografie:",
                     style: TextStyle(
                       fontSize: normalTextFontSize,
                       color: Colors.black,
@@ -224,7 +224,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
                 ElevatedButton.icon(
                   onPressed: () => _updateUkon(),
                   label: Text(
-                    "Save",
+                    "Uložit",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: normalTextFontSize,
@@ -251,7 +251,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
 
   void _deleteUkon() async {
     await widget.deleteUkon(widget.kadernickyUkon.id);
-    ToastClass.showToastSnackbar(message: "Action deleted");
+    ToastClass.showToastSnackbar(message: "Kadeřnický úkon smazán.");
 
     if (mounted) {
       Navigator.of(context).pop();
@@ -274,7 +274,7 @@ class _EditActionDialogState extends State<EditActionDialog> {
         Navigator.of(context).pop();
       }
     } else {
-      ToastClass.showToastSnackbar(message: "You must enter all informations");
+      ToastClass.showToastSnackbar(message: "Musíte zadat všechny údaje!");
     }
   }
 }

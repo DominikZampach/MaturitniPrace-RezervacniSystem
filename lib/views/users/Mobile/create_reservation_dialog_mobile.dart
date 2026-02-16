@@ -146,9 +146,7 @@ class _CreateReservationDialogMobileState
           } else if (snapshot.hasError) {
             print("Error při načítání dat: ${snapshot.error}");
             return const Center(
-              child: Text(
-                "Error occured while trying to load data from database!",
-              ),
+              child: Text("Naskytla se chyba při načítání dat z databáze!"),
             );
           }
 
@@ -192,7 +190,7 @@ class _CreateReservationDialogMobileState
                         alignment: AlignmentGeometry.center,
                         children: [
                           Text(
-                            "Create Reservation",
+                            "Vytvořit rezervaci",
                             style: TextStyle(
                               fontSize: widget.mobileHeadingsFontSize,
                               fontWeight: FontWeight.bold,
@@ -219,7 +217,7 @@ class _CreateReservationDialogMobileState
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildColumnItem(
-                          caption: "Hair salon:",
+                          caption: "Lokace:",
                           widget: _dropdownButtonLokace(
                             snapshot,
                             widget.mobileSmallerFontSize,
@@ -230,7 +228,7 @@ class _CreateReservationDialogMobileState
                         ),
 
                         _buildColumnItem(
-                          caption: "Hairdresser:",
+                          caption: "Kadeřník:",
                           widget: _dropdownButtonKadernik(
                             snapshot,
                             widget.mobileSmallerFontSize,
@@ -241,7 +239,7 @@ class _CreateReservationDialogMobileState
                         ),
 
                         _buildColumnItem(
-                          caption: "Cut type:",
+                          caption: "Typ:",
                           widget: _radioGroupGender(
                             snapshot,
                             widget.mobileSmallerFontSize,
@@ -252,7 +250,7 @@ class _CreateReservationDialogMobileState
                         ),
 
                         _buildColumnItem(
-                          caption: "Actions:",
+                          caption: "Úkony:",
                           widget: SizedBox(
                             width: 300,
                             height: 70,
@@ -266,7 +264,7 @@ class _CreateReservationDialogMobileState
                         ),
 
                         _buildColumnItem(
-                          caption: "Estimated price:",
+                          caption: "Cena:",
                           widget: _textTotalPrice(widget.mobileSmallerFontSize),
                           textFontSize: widget.mobileFontSize,
                           verticalSpacing: 10.h,
@@ -274,7 +272,7 @@ class _CreateReservationDialogMobileState
                         ),
 
                         _buildColumnItem(
-                          caption: "Estimated length of all actions:",
+                          caption: "Délka trvání:",
                           widget: _textTotalTime(widget.mobileSmallerFontSize),
                           textFontSize: widget.mobileFontSize,
                           verticalSpacing: 10.h,
@@ -282,7 +280,7 @@ class _CreateReservationDialogMobileState
                         ),
 
                         _buildColumnItem(
-                          caption: "Select available date:",
+                          caption: "Datum:",
                           widget: _elevatedButtonDatum(
                             snapshot,
                             context,
@@ -294,7 +292,7 @@ class _CreateReservationDialogMobileState
                         ),
 
                         _buildColumnItem(
-                          caption: "Select available time:",
+                          caption: "Čas:",
                           widget: _dropdownButtonCas(
                             widget.mobileSmallerFontSize,
                           ),
@@ -304,7 +302,7 @@ class _CreateReservationDialogMobileState
                         ),
 
                         _buildColumnItem(
-                          caption: "Note:",
+                          caption: "Poznámka:",
                           widget: _textFieldNote(
                             widget.mobileSmallerFontSize,
                             700.w,
@@ -370,7 +368,7 @@ class _CreateReservationDialogMobileState
       child: Padding(
         padding: const EdgeInsets.all(3.0),
         child: Text(
-          "Create",
+          "Vytvořit",
           style: TextStyle(fontSize: headingFontSize, color: Colors.black),
         ),
       ),
@@ -464,7 +462,7 @@ class _CreateReservationDialogMobileState
       ),
       child: Text(
         selectedDate == null
-            ? "Select date"
+            ? "Vyberte datum"
             : "${selectedDate!.day}.${selectedDate!.month}",
         style: TextStyle(fontSize: normalTextFontSize, color: Colors.black),
         textAlign: TextAlign.left,
@@ -517,9 +515,9 @@ class _CreateReservationDialogMobileState
       childBuilder: (selectedValues) {
         String text;
         if (selectedValues.isNotEmpty) {
-          text = "Selected ${selectedValues.length} actions";
+          text = "Vybraných úkonů: ${selectedValues.length}";
         } else {
-          text = "Select actions...";
+          text = "Vyberte úkony...";
         }
 
         return Padding(
@@ -548,14 +546,14 @@ class _CreateReservationDialogMobileState
           Row(
             children: [
               Radio<String>(value: "Male"),
-              Text("Male", style: TextStyle(fontSize: normalTextFontSize)),
+              Text("Pánský", style: TextStyle(fontSize: normalTextFontSize)),
             ],
           ),
           SizedBox(width: 20.w),
           Row(
             children: [
               Radio<String>(value: "Female"),
-              Text("Female", style: TextStyle(fontSize: normalTextFontSize)),
+              Text("Dámský", style: TextStyle(fontSize: normalTextFontSize)),
             ],
           ),
         ],

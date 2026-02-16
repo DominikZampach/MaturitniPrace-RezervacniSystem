@@ -66,9 +66,7 @@ class _HairdressersBodyAdminState extends State<HairdressersBodyAdmin> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -115,7 +113,7 @@ class _HairdressersBodyAdminState extends State<HairdressersBodyAdmin> {
               children: [
                 SizedBox(height: 10.h),
                 Text(
-                  "All Hairdressers",
+                  "Všichni kadeřníci",
                   style: TextStyle(
                     fontSize: h1FontSize,
                     fontWeight: FontWeight.bold,
@@ -137,7 +135,7 @@ class _HairdressersBodyAdminState extends State<HairdressersBodyAdmin> {
                     );
                   },
                   label: Text(
-                    "Add Hairdresser",
+                    "Přidat kadeřníka",
                     style: TextStyle(
                       fontSize: buttonFontSize,
                       color: Colors.black,

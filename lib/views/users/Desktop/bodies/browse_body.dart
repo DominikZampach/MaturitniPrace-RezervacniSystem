@@ -88,9 +88,7 @@ class _BrowseBodyState extends State<BrowseBody> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -136,7 +134,7 @@ class _BrowseBodyState extends State<BrowseBody> {
               children: [
                 SizedBox(height: 10.h),
                 Text(
-                  "Our Hairdressers",
+                  "Naši kadeřníci",
                   style: TextStyle(
                     fontSize: h1FontSize,
                     fontWeight: FontWeight.bold,
@@ -172,7 +170,7 @@ class _BrowseBodyState extends State<BrowseBody> {
                               color: Colors.black,
                             ),
                             label: Text(
-                              "Sort by: $currentSort",
+                              "Řazení: $currentSort",
                               style: TextStyle(
                                 fontSize: smallerButtonFontSize,
                                 color: Colors.black,
@@ -204,7 +202,7 @@ class _BrowseBodyState extends State<BrowseBody> {
                                   }
                                 },
                                 child: Text(
-                                  "Filters",
+                                  "Filtrování",
                                   style: TextStyle(
                                     fontSize: smallerButtonFontSize,
                                     color: Colors.black,
@@ -230,7 +228,7 @@ class _BrowseBodyState extends State<BrowseBody> {
                                   });
                                 },
                                 child: Text(
-                                  "Delete filters",
+                                  "Smazat filtry",
                                   style: TextStyle(
                                     fontSize: smallerButtonFontSize,
                                     color: Colors.black,
@@ -273,7 +271,7 @@ class _BrowseBodyState extends State<BrowseBody> {
                         )
                       : Center(
                           child: Text(
-                            "No hairdresser matches your filters!",
+                            "Žádní kadeřníci nevyhovují vaším filtrům.",
                             style: TextStyle(
                               fontSize: h2FontSize,
                               fontWeight: FontWeight.bold,

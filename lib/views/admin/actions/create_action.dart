@@ -45,11 +45,11 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
     final List<DropdownMenuItem<String>> dropdownGenderOptions = [
       DropdownMenuItem(
         value: "male",
-        child: Text("Male", style: TextStyle(fontSize: smallerTextFontSize)),
+        child: Text("Pánský", style: TextStyle(fontSize: smallerTextFontSize)),
       ),
       DropdownMenuItem(
         value: "female",
-        child: Text("Female", style: TextStyle(fontSize: smallerTextFontSize)),
+        child: Text("Dámský", style: TextStyle(fontSize: smallerTextFontSize)),
       ),
     ];
 
@@ -79,7 +79,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Create new action:",
+                  "Nový kadeřnický úkon:",
                   style: TextStyle(
                     fontSize: h2FontSize,
                     fontWeight: FontWeight.bold,
@@ -90,7 +90,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                   context: context,
                   verticalPadding: verticalPadding,
                   horizontalPadding: horizontalPadding,
-                  textInFront: "Name:",
+                  textInFront: "Název:",
                   controller: nameController,
                   spacingGap: spacingGap,
                   fontSize: normalTextFontSize,
@@ -101,7 +101,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                   context: context,
                   verticalPadding: verticalPadding,
                   horizontalPadding: horizontalPadding,
-                  textInFront: "Description:",
+                  textInFront: "Popis:",
                   controller: descriptionController,
                   spacingGap: spacingGap,
                   fontSize: normalTextFontSize,
@@ -113,7 +113,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                   context: context,
                   verticalPadding: verticalPadding,
                   horizontalPadding: horizontalPadding,
-                  textInFront: "Duration (minutes):",
+                  textInFront: "Trvání (minuty):",
                   controller: durationController,
                   spacingGap: spacingGap,
                   fontSize: normalTextFontSize,
@@ -125,7 +125,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Cut type:",
+                      "Typ:",
                       style: TextStyle(fontSize: normalTextFontSize),
                     ),
                     SizedBox(width: spacingGap),
@@ -160,7 +160,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                     fixedSize: WidgetStatePropertyAll(Size(120.w, 40.h)),
                   ),
                   child: Text(
-                    "Photos:",
+                    "Fotografie:",
                     style: TextStyle(
                       fontSize: normalTextFontSize,
                       color: Colors.black,
@@ -171,7 +171,7 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
                 ElevatedButton.icon(
                   onPressed: () => createUkon(),
                   label: Text(
-                    "Create",
+                    "Vytvořit",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: normalTextFontSize,
@@ -211,14 +211,12 @@ class _CreateActionDialogState extends State<CreateActionDialog> {
       );
 
       await widget.addUkon(newUkonWithoutID);
-      ToastClass.showToastSnackbar(message: "New action created");
+      ToastClass.showToastSnackbar(message: "Nový kadeřnický úkon vytvořen!");
       if (mounted) {
         Navigator.of(context).pop();
       }
     } else {
-      ToastClass.showToastSnackbar(
-        message: "You must enter all information (and ideally add photos)",
-      );
+      ToastClass.showToastSnackbar(message: "Musíte zadat všechny údaje!");
     }
   }
 }

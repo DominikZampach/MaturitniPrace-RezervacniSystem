@@ -46,7 +46,7 @@ class _FiltersDialogMobileState extends State<FiltersDialogMobile> {
         alignment: AlignmentGeometry.center,
         value: null,
         child: Text(
-          "No preference",
+          "Žádné preference",
           style: TextStyle(fontSize: widget.normalTextFontSize),
           textAlign: TextAlign.center,
         ),
@@ -83,7 +83,7 @@ class _FiltersDialogMobileState extends State<FiltersDialogMobile> {
             children: [
               SizedBox(height: 10.h),
               Text(
-                "Filters:",
+                "Filtry:",
                 style: TextStyle(
                   fontSize: widget.headingFontSize,
                   fontWeight: FontWeight.bold,
@@ -126,7 +126,7 @@ class _FiltersDialogMobileState extends State<FiltersDialogMobile> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
         child: Text(
-          "Save filters",
+          "Uložit filtry",
           style: TextStyle(
             fontSize: normalTextFontSize,
             color: Colors.black,
@@ -147,7 +147,7 @@ class _FiltersDialogMobileState extends State<FiltersDialogMobile> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Select location:",
+          "Vyberte lokaci:",
           style: TextStyle(fontSize: smallHeadingFontSize),
         ),
         DropdownButton<String>(
@@ -175,7 +175,7 @@ class _FiltersDialogMobileState extends State<FiltersDialogMobile> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Minimal rating:",
+          "Minimální hodnocení:",
           style: TextStyle(fontSize: smallHeadingFontSize),
         ),
         DropdownButton<double>(
@@ -201,7 +201,7 @@ class _FiltersDialogMobileState extends State<FiltersDialogMobile> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Show only favourite:",
+          "Zobrazit pouze oblíbené:",
           style: TextStyle(fontSize: smallHeadingFontSize),
         ),
         Checkbox(

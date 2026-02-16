@@ -54,14 +54,14 @@ class SideNavbarMobileDrawer extends StatelessWidget {
                 ),
                 NavbarItem(
                   verticalPadding: verticalPadding,
-                  text: "Reservations",
+                  text: "Rezervace",
                   fontSize: mobileFontSize,
                   isSelected: selectedIndex == 1,
                   onClick: () => onItemSelect(1),
                 ),
                 NavbarItem(
                   verticalPadding: verticalPadding,
-                  text: "Browse",
+                  text: "Kadeřníci",
                   fontSize: mobileFontSize,
                   isSelected: selectedIndex == 2,
                   onClick: () => onItemSelect(2),
@@ -70,7 +70,7 @@ class SideNavbarMobileDrawer extends StatelessWidget {
             ),
             NavbarItem(
               verticalPadding: verticalPadding,
-              text: "Settings",
+              text: "Nastavení",
               fontSize: mobileFontSize,
               isSelected: selectedIndex == 3,
               onClick: () => onItemSelect(3),

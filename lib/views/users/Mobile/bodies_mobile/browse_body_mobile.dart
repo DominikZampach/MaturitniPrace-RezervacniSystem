@@ -99,9 +99,7 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -139,7 +137,7 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
               children: [
                 SizedBox(height: 10.h),
                 Text(
-                  "Our Hairdressers",
+                  "Naši kadeřníci",
                   style: TextStyle(
                     fontSize: widget.mobileHeadingsFontSize,
                     fontWeight: FontWeight.bold,
@@ -175,7 +173,7 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
                               color: Colors.black,
                             ),
                             label: Text(
-                              "Sort by: $currentSort",
+                              "Řazení: $currentSort",
                               style: TextStyle(
                                 fontSize: widget.mobileSmallerFontSize,
                                 color: Colors.black,
@@ -211,7 +209,7 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
                                   }
                                 },
                                 child: Text(
-                                  "Filters",
+                                  "Filtrování",
                                   style: TextStyle(
                                     fontSize: widget.mobileSmallerFontSize,
                                     color: Colors.black,
@@ -237,7 +235,7 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
                                   });
                                 },
                                 child: Text(
-                                  "Delete filters",
+                                  "Smazat filtry",
                                   style: TextStyle(
                                     fontSize: widget.mobileSmallerFontSize,
                                     color: Colors.black,
@@ -288,7 +286,7 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
                         )
                       : Center(
                           child: Text(
-                            "No hairdresser matches your filters!",
+                            "Žádní kadeřnící vyhovující vašemu filtrování!",
                             style: TextStyle(
                               fontSize: widget.mobileSmallerHeadingFontSize,
                               fontWeight: FontWeight.bold,

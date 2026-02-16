@@ -52,7 +52,7 @@ class InspectRezervace extends StatelessWidget {
                     alignment: AlignmentGeometry.center,
                     children: [
                       Text(
-                        "Reservation - ${rezervace.getDayMonthYearString()}",
+                        "Rezervace - ${rezervace.getDayMonthYearString()}",
                         style: TextStyle(
                           fontSize: headingFontSize,
                           fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class InspectRezervace extends StatelessWidget {
                               context: context,
                               builder: (context) => DeleteAlertDialog(
                                 alertText:
-                                    "Do you really want to delete this reservation?",
+                                    "Opravdu chcete smazat tuto rezervaci?",
                               ),
                             );
 
@@ -125,7 +125,7 @@ class InspectRezervace extends StatelessWidget {
                         style: TextStyle(fontSize: normalTextFontSize),
                         children: [
                           TextSpan(
-                            text: "Note: ",
+                            text: "Poznámka: ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           TextSpan(text: rezervace.poznamkaUzivatele),
@@ -155,7 +155,7 @@ class InspectRezervace extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            "Location:",
+            "Lokace:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,
@@ -177,7 +177,7 @@ class InspectRezervace extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Text(
-            "Address:",
+            "Adresa:",
             style: TextStyle(
               fontSize: normalTextFontSize,
               fontWeight: FontWeight.bold,
@@ -210,7 +210,7 @@ class InspectRezervace extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            "Hairdresser:",
+            "Kadeřník:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,
@@ -222,7 +222,6 @@ class InspectRezervace extends StatelessWidget {
             style: TextStyle(fontSize: normalTextFontSize),
           ),
           SizedBox(height: 20.h),
-          //TODO: Udělat z tohoto vlastní Widget a použít ho i v Dashboardu
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
             height: MediaQuery.of(context).size.height * 0.3,
@@ -264,7 +263,7 @@ class InspectRezervace extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            "Basic info:",
+            "Základní informace:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,
@@ -276,7 +275,7 @@ class InspectRezervace extends StatelessWidget {
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
                 TextSpan(
-                  text: "Date: ",
+                  text: "Datum: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: rezervace.getDayMonthYearString()),
@@ -289,7 +288,7 @@ class InspectRezervace extends StatelessWidget {
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
                 TextSpan(
-                  text: "Time: ",
+                  text: "Čas: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: rezervace.getHourMinuteString()),
@@ -302,7 +301,7 @@ class InspectRezervace extends StatelessWidget {
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
                 TextSpan(
-                  text: "Cut duration: ",
+                  text: "Trvání: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: "${rezervace.delkaTrvani} min"),
@@ -315,7 +314,7 @@ class InspectRezervace extends StatelessWidget {
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
                 TextSpan(
-                  text: "Price: ",
+                  text: "Cena: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 TextSpan(text: "${rezervace.celkovaCena} Kč"),
@@ -325,7 +324,7 @@ class InspectRezervace extends StatelessWidget {
 
           SizedBox(height: 50.h),
           Text(
-            "Services:",
+            "Úkony:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.bold,

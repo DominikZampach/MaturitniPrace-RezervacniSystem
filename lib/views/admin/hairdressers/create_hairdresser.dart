@@ -53,13 +53,13 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
   late List<String> photosUrls;
 
   final List<String> multiselectDropdownDayOptions = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
+    "Pondělí",
+    "Úterý",
+    "Středa",
+    "Čtvrtek",
+    "Pátek",
+    "Sobota",
+    "Neděle",
   ];
 
   @override
@@ -137,7 +137,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "Add Hairdresser",
+                  "Přidat kadeřníka",
                   style: TextStyle(
                     fontSize: headingFontSize,
                     fontWeight: FontWeight.bold,
@@ -156,7 +156,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                           context: context,
                           verticalPadding: 10.h,
                           horizontalPadding: 5.w,
-                          textInFront: "First name:",
+                          textInFront: "Křestní jméno:",
                           controller: firstNameController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -168,7 +168,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                           context: context,
                           verticalPadding: 10.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Nickname:",
+                          textInFront: "Přezdívka:",
                           controller: prezdivkaNameController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -180,7 +180,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                           context: context,
                           verticalPadding: 10.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Last name:",
+                          textInFront: "Příjmení:",
                           controller: lastNameController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -204,7 +204,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                           context: context,
                           verticalPadding: 10.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Phone:",
+                          textInFront: "Telefon:",
                           controller: mobileController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -216,7 +216,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                           context: context,
                           verticalPadding: 10.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Description:",
+                          textInFront: "Popis:",
                           controller: popisekController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -272,7 +272,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                           context: context,
                           verticalPadding: 10.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Photo:",
+                          textInFront: "Foto:",
                           controller: odkazFotografieController,
                           spacingGap: _spacingGap,
                           fontSize: smallerTextFontSize,
@@ -302,7 +302,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                             ),
                           ),
                           child: Text(
-                            "Select actions:",
+                            "Vyberte úkony:",
                             style: TextStyle(
                               fontSize: normalTextFontSize,
                               color: Colors.black,
@@ -330,7 +330,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                             ),
                           ),
                           child: Text(
-                            "Work Photos:",
+                            "Foto práce:",
                             style: TextStyle(
                               fontSize: normalTextFontSize,
                               color: Colors.black,
@@ -341,7 +341,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                           context: context,
                           verticalPadding: 10.h,
                           horizontalPadding: 5.w,
-                          textInFront: "Lunch break length (min):",
+                          textInFront: "Doba obědové pauzy (min):",
                           controller: delkaObedovePauzyController,
                           spacingGap: _spacingGap,
                           fontSize: normalTextFontSize,
@@ -366,10 +366,10 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                   onPressed: () => createNewKadernik(),
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Consts.secondary),
-                    fixedSize: WidgetStatePropertyAll(Size(160.w, 40.h)),
+                    fixedSize: WidgetStatePropertyAll(Size(200.w, 40.h)),
                   ),
                   child: Text(
-                    "Create new hairdresser",
+                    "Vytvořit nového kadeřníka",
                     style: TextStyle(
                       fontSize: normalTextFontSize,
                       fontWeight: FontWeight.bold,
@@ -401,7 +401,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
           SizedBox(
             width: _labelWidth,
             child: Text(
-              "Working days:",
+              "Pracovní dny:",
               style: TextStyle(fontSize: normalTextFontSize),
             ),
           ),
@@ -424,15 +424,15 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                   selectedDays = newSelectedDays;
                 });
               },
-              whenEmpty: "Select days..",
+              whenEmpty: "Vyberte dny...",
               selectedValuesStyle: TextStyle(fontSize: 0),
               separator: ", ",
               childBuilder: (selectedValues) {
                 String text;
                 if (selectedValues.isNotEmpty) {
-                  text = "Selected ${selectedValues.length} days";
+                  text = "Vybráno dnů: ${selectedValues.length}";
                 } else {
-                  text = "Select days...";
+                  text = "Vyberte dny...";
                 }
                 return Padding(
                   padding: EdgeInsets.symmetric(
@@ -466,7 +466,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
           SizedBox(
             width: _labelWidth,
             child: Text(
-              "Location:",
+              "Lokace:",
               style: TextStyle(fontSize: normalTextFontSize),
             ),
           ),
@@ -500,7 +500,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
           SizedBox(
             width: _labelWidth,
             child: Text(
-              "Lunch Break:",
+              "Obědová pauza:",
               style: TextStyle(fontSize: normalTextFontSize),
             ),
           ),
@@ -519,7 +519,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                   lunchTime = resultTime;
                 });
               } else {
-                ToastClass.showToastSnackbar(message: "Invalid time");
+                ToastClass.showToastSnackbar(message: "Neplatný čas.");
               }
             },
             style: ButtonStyle(
@@ -554,7 +554,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
           SizedBox(
             width: _labelWidth,
             child: Text(
-              "Closing Time:",
+              "Konec pracovní doby:",
               style: TextStyle(fontSize: normalTextFontSize),
             ),
           ),
@@ -573,7 +573,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                   endTime = resultTime;
                 });
               } else {
-                ToastClass.showToastSnackbar(message: "Invalid time");
+                ToastClass.showToastSnackbar(message: "Neplatný čas.");
               }
             },
             style: ButtonStyle(
@@ -608,7 +608,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
           SizedBox(
             width: _labelWidth,
             child: Text(
-              "Open Time:",
+              "Začátek pracovní doby:",
               style: TextStyle(fontSize: normalTextFontSize),
             ),
           ),
@@ -627,7 +627,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
                   startTime = resultTime;
                 });
               } else {
-                ToastClass.showToastSnackbar(message: "Invalid time");
+                ToastClass.showToastSnackbar(message: "Neplatný čas.");
               }
             },
             style: ButtonStyle(
@@ -657,7 +657,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
         fixedSize: WidgetStatePropertyAll(Size(100.w, 30.h)),
       ),
       child: Text(
-        "Test Photo",
+        "Test fotografie",
         style: TextStyle(fontSize: smallerTextFontSize, color: Colors.black),
       ),
     );
@@ -705,7 +705,7 @@ class _CreateHairdresserDialogState extends State<CreateHairdresserDialog> {
         Navigator.of(context).pop();
       }
     } else {
-      ToastClass.showToastSnackbar(message: "You must enter all informations");
+      ToastClass.showToastSnackbar(message: "Musíte zadat všechny údaje!");
     }
   }
 }

@@ -98,9 +98,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
         } else if (snapshot.hasError) {
           print("Error při načítání dat: ${snapshot.error}");
           return const Center(
-            child: Text(
-              "Error occured while trying to load data from database!",
-            ),
+            child: Text("Naskytla se chyba při načítání dat z databáze!"),
           );
         }
 
@@ -137,7 +135,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
                   ),
                   SizedBox(height: 20.h),
                   Text(
-                    "${widget.kadernik.jmeno}'s work:",
+                    "Práce kadeřníka:",
                     style: TextStyle(
                       fontSize: widget.mobileSmallerHeadingsFontSize,
                       fontWeight: FontWeight.bold,
@@ -147,7 +145,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
                   _carousel(),
                   SizedBox(height: 20.h),
                   Text(
-                    "Location:",
+                    "Lokace:",
                     style: TextStyle(
                       fontSize: widget.mobileSmallerHeadingsFontSize,
                       fontWeight: FontWeight.w700,
@@ -162,7 +160,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    "Address:",
+                    "Adresa:",
                     style: TextStyle(
                       fontSize: widget.mobileFontSize,
                       fontWeight: FontWeight.w600,
@@ -194,7 +192,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
                       backgroundColor: WidgetStatePropertyAll(Consts.secondary),
                     ),
                     child: Text(
-                      "Book now",
+                      "Rezervovat nyní",
                       style: TextStyle(
                         fontSize: widget.mobileSmallerHeadingsFontSize,
                         color: Colors.black,
@@ -272,7 +270,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
           Padding(
             padding: EdgeInsets.only(left: 10.w),
             child: Text(
-              "Services:",
+              "Úkony:",
               style: TextStyle(
                 fontSize: smallHeadingFontSize,
                 fontWeight: FontWeight.w700,
@@ -358,7 +356,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "Rating:",
+            "Hodnocení:",
             style: TextStyle(
               fontSize: smallHeadingFontSize,
               fontWeight: FontWeight.w700,
@@ -369,7 +367,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
             text: TextSpan(
               style: TextStyle(fontSize: normalTextFontSize),
               children: [
-                TextSpan(text: "Average rating: "),
+                TextSpan(text: "Průměrné hodnocení: "),
                 TextSpan(
                   text: "${widget.hodnoceniKadernika}*",
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -379,7 +377,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
           ),
           SizedBox(height: 10.h),
           Text(
-            "Number of reviews: ${widget.pocetHodnoceniKadernika}",
+            "Počet hodnocení: ${widget.pocetHodnoceniKadernika}",
             style: TextStyle(fontSize: normalTextFontSize),
           ),
           Row(
@@ -387,7 +385,7 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Your rating:",
+                "Tvé hodnocení:",
                 style: TextStyle(fontSize: normalTextFontSize),
               ),
               DropdownButton(
@@ -395,7 +393,6 @@ class _InspectKadernikMobileState extends State<InspectKadernikMobile> {
                 items: dropdownMenuItems,
                 alignment: AlignmentGeometry.center,
                 onChanged: (dynamic newValue) async {
-                  //TODO: Přepsat do čitelnější formy, nějak to funguje ale je to mega bordel
                   DatabaseService dbService = DatabaseService();
                   String? idToDelele;
                   Hodnoceni? hodnoceniToAdd;

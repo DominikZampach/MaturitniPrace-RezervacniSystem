@@ -53,7 +53,7 @@ class _SettingsBodyState extends State<SettingsBody> {
             children: [
               SizedBox(height: 10.h),
               Text(
-                "Settings",
+                "Nastavení",
                 style: TextStyle(
                   fontSize: h1FontSize,
                   fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _SettingsBodyState extends State<SettingsBody> {
               ),
               SizedBox(height: 15.h),
               Text(
-                "User informations",
+                "Údaje o Vás",
                 style: TextStyle(
                   fontSize: h2FontSize,
                   fontWeight: FontWeight.bold,
@@ -71,31 +71,34 @@ class _SettingsBodyState extends State<SettingsBody> {
                 context: context,
                 verticalPadding: 10.h,
                 horizontalPadding: 0,
-                textInFront: "First name:",
+                textInFront: "Křestní jméno:",
                 controller: _firstNameController,
                 spacingGap: 15,
                 fontSize: normalTextFontSize,
                 textBoxWidth: 200.w,
+                labelWidth: 80.w,
               ),
               InformationTextbox(
                 context: context,
                 verticalPadding: 10.h,
                 horizontalPadding: 0,
-                textInFront: "Last name:",
+                textInFront: "Příjmení:",
                 controller: _lastNameController,
                 spacingGap: 15,
                 fontSize: normalTextFontSize,
                 textBoxWidth: 200.w,
+                labelWidth: 80.w,
               ),
               InformationTextbox(
                 context: context,
                 verticalPadding: 10.h,
                 horizontalPadding: 0,
-                textInFront: "       Mobile:",
+                textInFront: "Telefon:",
                 controller: _mobileController,
                 spacingGap: 15,
                 fontSize: normalTextFontSize,
                 textBoxWidth: 200.w,
+                labelWidth: 80.w,
               ),
               SizedBox(height: 5.h),
               ElevatedButton(
@@ -115,7 +118,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                     widget.uzivatel.telefon = _mobileController.text;
                   }
 
-                  ToastClass.showToastSnackbar(message: "Successfully saved.");
+                  ToastClass.showToastSnackbar(message: "Údaje uloženy.");
                   widget.onChanged(widget.uzivatel);
                   await DatabaseService().updateUzivatel(widget.uzivatel);
                 },
@@ -124,7 +127,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                   backgroundColor: WidgetStatePropertyAll(Consts.secondary),
                 ),
                 child: Text(
-                  "Save",
+                  "Uložit",
                   style: TextStyle(
                     fontSize: normalTextFontSize,
                     color: Colors.black,
@@ -134,14 +137,14 @@ class _SettingsBodyState extends State<SettingsBody> {
               ),
               SizedBox(height: 50.h),
               Text(
-                "Support",
+                "Podpora",
                 style: TextStyle(
                   fontSize: h2FontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                "If you find any bug or technical problem,\nplease let me know through one of following methods:",
+                "Pokud naleznete nějaký technický problém nebo\nbug, kontaktujte mě na:",
                 style: TextStyle(fontSize: smallerTextFontSize),
                 maxLines: 3,
                 textAlign: TextAlign.center,
@@ -165,7 +168,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: "Phone: ",
+                      text: "Telefon: ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(text: "+420 732 683 400"),
@@ -183,7 +186,7 @@ class _SettingsBodyState extends State<SettingsBody> {
                   backgroundColor: WidgetStatePropertyAll(Consts.secondary),
                 ),
                 child: Text(
-                  "Logout",
+                  "Odhlásit",
                   style: TextStyle(
                     fontSize: normalTextFontSize,
                     fontWeight: FontWeight.bold,

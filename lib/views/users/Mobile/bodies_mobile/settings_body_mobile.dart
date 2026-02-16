@@ -60,7 +60,7 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
           children: [
             SizedBox(height: 10.h),
             Text(
-              "Settings",
+              "Nastavení",
               style: TextStyle(
                 fontSize: widget.mobileHeadingsFontSize,
                 fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
             ),
             SizedBox(height: 15.h),
             Text(
-              "User informations",
+              "Údaje o Vás",
               style: TextStyle(
                 fontSize: widget.mobileSmallerHeadingFontSize,
                 fontWeight: FontWeight.bold,
@@ -77,7 +77,7 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
             InformationTextboxLabelUp(
               context: context,
               verticalPadding: 5.h,
-              textUp: "First name",
+              textUp: "Křestní jméno",
               controller: _firstNameController,
               spacingGap: 5.h,
               fontSize: widget.mobileFontSize,
@@ -88,7 +88,7 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
             InformationTextboxLabelUp(
               context: context,
               verticalPadding: 5.h,
-              textUp: "Last name",
+              textUp: "Příjmení",
               controller: _lastNameController,
               spacingGap: 5.h,
               fontSize: widget.mobileFontSize,
@@ -99,7 +99,7 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
             InformationTextboxLabelUp(
               context: context,
               verticalPadding: 5.h,
-              textUp: "Mobile",
+              textUp: "Telefon",
               controller: _mobileController,
               spacingGap: 5.h,
               fontSize: widget.mobileFontSize,
@@ -125,7 +125,7 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
                   widget.uzivatel.telefon = _mobileController.text;
                 }
 
-                ToastClass.showToastSnackbar(message: "Successfully saved.");
+                ToastClass.showToastSnackbar(message: "Údaje uloženy.");
                 widget.onChanged(widget.uzivatel);
                 await DatabaseService().updateUzivatel(widget.uzivatel);
               },
@@ -134,7 +134,7 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
                 backgroundColor: WidgetStatePropertyAll(Consts.secondary),
               ),
               child: Text(
-                "Save",
+                "Uložit",
                 style: TextStyle(
                   fontSize: widget.mobileFontSize,
                   color: Colors.black,
@@ -144,14 +144,14 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
             ),
             SizedBox(height: 50.h),
             Text(
-              "Support",
+              "Podpora",
               style: TextStyle(
                 fontSize: widget.mobileSmallerFontSize,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              "If you find any bug or technical problem,\nplease let me know through one of following methods:",
+              "Pokud naleznete nějaký technický problém nebo bug, kontaktujte mě na:",
               style: TextStyle(fontSize: widget.mobileSmallerFontSize),
               maxLines: 3,
               textAlign: TextAlign.center,
@@ -175,7 +175,7 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
               TextSpan(
                 children: [
                   TextSpan(
-                    text: "Phone: ",
+                    text: "Telefon: ",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextSpan(text: "+420 732 683 400"),
@@ -189,11 +189,11 @@ class _SettingsBodyMobileState extends State<SettingsBodyMobile> {
                 await AuthService().logout(context);
               },
               style: ButtonStyle(
-                fixedSize: WidgetStatePropertyAll(Size(300.w, 40.h)),
+                fixedSize: WidgetStatePropertyAll(Size(320.w, 40.h)),
                 backgroundColor: WidgetStatePropertyAll(Consts.secondary),
               ),
               child: Text(
-                "Logout",
+                "Odhlásit",
                 style: TextStyle(
                   fontSize: widget.mobileSmallerHeadingFontSize,
                   fontWeight: FontWeight.bold,
