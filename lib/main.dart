@@ -7,6 +7,8 @@ import 'package:rezervacni_system_maturita/firebase_options.dart';
 import 'package:rezervacni_system_maturita/login_widget_tree.dart';
 import 'package:rezervacni_system_maturita/models/consts.dart';
 
+//? Odkaz na web: https://rezervacni-system-maturi-e12ef.web.app/
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

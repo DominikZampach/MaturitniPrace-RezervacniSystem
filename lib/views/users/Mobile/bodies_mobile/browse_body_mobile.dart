@@ -38,9 +38,8 @@ class BrowseBodyMobile extends StatefulWidget {
 }
 
 class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
-  late String currentSort;
+  late String currentSort = "A-Z";
   List<Kadernik> listKadernikuProZobrazeni = [];
-  late Future<_NactenaData> futureLogika;
   final List<Lokace> allLokace = [];
 
   final Filters defaultFilters = Filters(
@@ -59,8 +58,6 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
   @override
   void initState() {
     super.initState();
-    //? Tohle zajistí, aby se to provedlou pouze 1x, ne při každém setState()
-    futureLogika = _nacteniDat();
   }
 
   Future<_NactenaData> _nacteniDat() async {
@@ -86,15 +83,6 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
       }
     }
 
-    //? První přidání všech kadeřníků do listu pro zobrazení
-    listKadernikuProZobrazeni.addAll(listAllKadernici);
-
-    //? Default řazení od A do Z
-    listKadernikuProZobrazeni = SortKadernici.sortByNameAZ(
-      listKadernikuProZobrazeni,
-    );
-    currentSort = "A-Z";
-
     return _NactenaData(
       listAllHodnoceni: listAllHodnoceni,
       listAllKadernici: listAllKadernici,
@@ -104,7 +92,7 @@ class _BrowseBodyMobileState extends State<BrowseBodyMobile> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: futureLogika,
+      future: _nacteniDat(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return LoadingWidget();
