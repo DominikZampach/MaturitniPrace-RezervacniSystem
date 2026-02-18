@@ -348,7 +348,7 @@ class NextAppointmentLocationColumn extends StatelessWidget {
         //mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 40.h),
+          SizedBox(height: 10.h),
           Text(
             "Lokace příští rezervace",
             style: TextStyle(fontWeight: FontWeight.w800, fontSize: h2FontSize),

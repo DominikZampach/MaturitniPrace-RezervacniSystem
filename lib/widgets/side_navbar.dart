@@ -87,7 +87,7 @@ class SideNavbar extends StatelessWidget {
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(Consts.secondary),
-                  fixedSize: WidgetStatePropertyAll(Size(75.w, 35.h)),
+                  fixedSize: WidgetStatePropertyAll(Size(85.w, 35.h)),
                 ),
                 child: Text(
                   "Odhlásit",

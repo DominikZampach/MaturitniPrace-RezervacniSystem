@@ -41,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCqkG_hhXlVeJBARFdtfTvNLbgzQbaLhIo',
+    apiKey: 'AIzaSyA54fNvhv1dhElIBaz7Xe4oJZXw7aKA-KA',
     appId: '1:782176025406:web:f327df22fc7dc55b914a6f',
     messagingSenderId: '782176025406',
     projectId: 'rezervacni-system-maturi-e12ef',
@@ -77,7 +77,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCqkG_hhXlVeJBARFdtfTvNLbgzQbaLhIo',
+    apiKey: 'AIzaSyA54fNvhv1dhElIBaz7Xe4oJZXw7aKA-KA',
     appId: '1:782176025406:web:a10c687fbc4cb37f914a6f',
     messagingSenderId: '782176025406',
     projectId: 'rezervacni-system-maturi-e12ef',
@@ -85,5 +85,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'rezervacni-system-maturi-e12ef.firebasestorage.app',
     measurementId: 'G-QPK1GCV01H',
   );
-
 }
